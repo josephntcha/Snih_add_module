@@ -1,0 +1,9 @@
+.element, .button, .value {
+    text-align: center;
+    display: block;
+    margin: auto;
+}
+
+nz-card {
+    margin-bottom: 100px;
+}
