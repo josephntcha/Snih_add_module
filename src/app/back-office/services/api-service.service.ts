@@ -553,10 +553,10 @@ export class ApiServiceService {
    * @param userId 
    * @returns 
    */
-  deleteUser(userId: number){
+  manageUser(userId: number, action: string){
     const headers = this.createAuthorization();
     if (headers) {
-      return this.http.delete<any>(`${this.apiUrl}/api/users/${userId}`, {headers});
+      return this.http.patch<any>(`${this.apiUrl}/api/users/${userId}/action?action=${action}`, {headers});
     }else{
       return throwError(()=>new Error("Autorization non accordée"));
     }

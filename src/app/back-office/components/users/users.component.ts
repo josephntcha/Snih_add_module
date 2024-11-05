@@ -54,7 +54,7 @@ export class UsersComponent implements OnInit{
   getUsers(){
     this.apiService.getUsers().subscribe({
       next: (data) => {
-        this.listOfData = data;
+        this.listOfData = data;        
       },error: (err) => {
         console.log(err.message);
       }
@@ -102,10 +102,11 @@ export class UsersComponent implements OnInit{
   }
 
 
-  desactiver(userId: number){
+  manageUsers(userId: number, action: string){
+    let label = action == "ACTIVATE" ? "activer" : "désactiver";
     Swal.fire({
-      title: 'Suppression',
-      text: "Voulez-vous vraiment désactiver cet compte utilisateur ?",
+      title: '',
+      text: "Voulez-vous vraiment " + label + " cet compte utilisateur ?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -114,17 +115,29 @@ export class UsersComponent implements OnInit{
       cancelButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.apiService.deleteUser(userId).subscribe({
-          next: () => {
-            Swal.fire({
-              title: "Utilisateur désactivé ! !",
-              text: '',
-              icon: 'success',
-              timer: 3500,
-              showConfirmButton: false,
-              timerProgressBar: true 
-            });
-            this.router.navigateByUrl("/Administration/users/");
+        this.apiService.manageUser(userId, action).subscribe({
+          next: (response) => {
+            if(response.success){
+              Swal.fire({
+                title: "Opération effectué avec succès !",
+                text: '',
+                icon: 'success',
+                timer: 3500,
+                showConfirmButton: false,
+                timerProgressBar: true 
+              });
+              this.getUsers();
+              this.router.navigateByUrl("/Administration/users");
+            }else{
+              Swal.fire({
+                title: response.errorMessage,
+                text: '',
+                icon: 'error',
+                timer: 3500,
+                showConfirmButton: false,
+                timerProgressBar: true 
+              });
+            }
           },error: () => {
             Swal.fire({
               title: "Une erreur inconnue s'est produite, veuillez ressayer plus tard.",

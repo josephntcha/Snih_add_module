@@ -44,6 +44,7 @@ export interface User {
   hospital: Hospital;
   speciality: Speciality;
   userType: string;
+  active: boolean;
 }
 
 export interface Hospital {

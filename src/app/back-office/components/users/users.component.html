@@ -53,7 +53,8 @@
                 <td>
                     <a *ngIf="data.userType != 'Patient'" (click)="editUser(data.id)">Editer</a>
                     <nz-divider nzType="vertical"></nz-divider>
-                    <a (click)="desactiver(data.id)">Desactiver</a>
+                    <a *ngIf="!data.active" (click)="manageUsers(data.id, 'ACTIVATE')">Activer</a>
+                    <a *ngIf="data.active" (click)="manageUsers(data.id, 'SUSPEND')">Desactiver</a>
                 </td>
             </tr>
         }
