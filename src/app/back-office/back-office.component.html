@@ -1,0 +1,136 @@
+<nz-layout class="app-layout">
+    <nz-header class="header-blue">
+        <div class="header-left">
+            <div class="logo">
+                <img 
+                    nz-image 
+                    width="40px" 
+                    height="40px" 
+                    nzSrc="/assets/images/8uag7cce0e43b8u5b1jqhcj7i3.png" 
+                    alt="" 
+                />
+                lain
+            </div>
+            <button nz-button nzType="primary" (click)="toggleCollapsed()">
+                <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
+            </button>
+        </div>
+
+        <div class="header-right">
+            @if(selectedLanguage == "en"){
+                <img
+                    nz-image
+                    width="20px"
+                    height="10px"
+                    nzSrc="/assets/images/united-states-flag.svg"
+                    alt=""
+                />
+            } @else if (selectedLanguage == "fr") {
+                <img
+                    nz-image
+                    width="20px"
+                    height="10px"
+                    nzSrc="/assets/images/france.svg"
+                    alt=""
+                />
+            }@else{
+                <img
+                    nz-image
+                    width="30px"
+                    height="50px"
+                    nzSrc="/assets/images/Spain-flag.svg"
+                    alt=""
+                />
+            }
+            <nz-select [(ngModel)]="selectedLanguage" class="language-select ">
+                <nz-option nzValue="en" nzLabel="English"></nz-option>
+                <nz-option nzValue="fr" nzLabel="Français"></nz-option>
+                <nz-option nzValue="es" nzLabel="Español"></nz-option>
+            </nz-select>
+            <!-- <nz-badge [nzCount]="5" class="notification-badge"> -->
+            <nz-badge class="notification-badge">
+                <i nz-icon nzType="bell" class="bell-icon"></i>
+            </nz-badge>
+            <span class="username">
+
+                    {{authService.username}}
+
+                    <img
+                        nz-image
+                        width="20px"
+                        height="20px"
+                        nzSrc="/assets/images/angularjs-typescript-javascript-others-bf0169ca59c033ca8514afaf142ffeed.png"
+                        alt=""
+                    />              
+            </span>
+            
+            <span class="logout"><button (click)="logout()" nz-button>Déconnection</button></span>
+        </div>
+    </nz-header>
+    <nz-layout >
+        <nz-sider nzTheme="light" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="200" [nzCollapsedWidth]="80">
+                <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
+                    @if (authService.isSuperAdmin()) {
+                        <li [nzMatchRouter]="true" [nzSelected]="activeMenu === 'dashboard'" (click)="toggleMenu('dashboard')" nz-menu-item nz-tooltip [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''" [nzTooltipPlacement]="'right'" class="dashboard-icon">
+                            <span nz-icon nzType="dashboard"></span>
+                            <span ac routerLink="super-admin-dashboard">Dashboard</span>
+                        </li>
+                    }
+                    @else if (authService.isAdmin()) {
+                        <li [nzMatchRouter]="true" [nzSelected]="activeMenu === 'dashboard'" (click)="toggleMenu('dashboard')" nz-menu-item nz-tooltip [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''" [nzTooltipPlacement]="'right'" class="dashboard-icon">
+                            <span nz-icon nzType="dashboard"></span>
+                            <span routerLink="admin-dashboard">Dashboard</span>
+                        </li>
+                    }
+                    
+                    <li [nzMatchRouter]="true" [nzSelected]="activeMenu === 'tenants'" (click)="toggleMenu('tenants')" nz-menu-item nz-tooltip [nzTooltipTitle]="isCollapsed ? 'Tenants' : ''" [nzTooltipPlacement]="'right'" class="meni-cion">
+                        <span nz-icon nzType="menu"></span>
+                        <span>Tenants</span>
+                    </li>
+                    <li nz-submenu [nzOpen]="activeMenu ==='Administration'" (nzOpenChange)="toggleMenu('Administration')" nzTitle="Administration" nzIcon="windows">
+                        <ul>
+                            @if (authService.isAdmin() || authService.isSuperAdmin()) {
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="roles">Roles</li>
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="users">Users</li>
+
+                            }
+                            @if (authService.isDoctor()) {
+                                <li [nzMatchRouter]="true" nz-menu-item [nzSelected] routerLink="/Administration/doctor-dashboard">Calendrier</li>
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="availability">Gestion disponibilité</li>
+                            }
+                        
+                        </ul>
+                    </li>
+
+                    <li nz-submenu [nzOpen]="activeMenu === 'settings'" (nzOpenChange)="toggleMenu('settings')" nzTitle="Paramétrage" nzIcon="setting">
+                        <ul>
+                            @if (authService.isAdmin() || authService.isSuperAdmin()) {
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="hospitals">Hospitals</li>
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="specialities">Specalities</li>
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="buildings">Bâtiments</li>
+                                <!-- <li [nzMatchRouter]="true" nz-menu-item routerLink="rooms">Salles</li> -->
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="settings">Settings</li>
+
+                            }                       
+                        </ul>
+                    </li>
+                </ul>
+        </nz-sider>
+        <nz-layout [class.collapsed]="isCollapsed">
+            <nz-content>
+                <div class="content-heade">
+                    <nz-breadcrumb class="breadcrumb" [nzAutoGenerate]="true"></nz-breadcrumb>
+
+                    <span class="title">{{title.split('|')[0].trim()}}</span>
+                    <span class="barre"> | </span>
+                    <span>{{title.split('|')[1]}}</span>
+                </div>
+                <nz-card class="content-body">
+
+                    <router-outlet></router-outlet>
+                    
+                </nz-card>
+            </nz-content>
+        </nz-layout>
+    </nz-layout>
+</nz-layout>

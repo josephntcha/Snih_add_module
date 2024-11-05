@@ -1,0 +1,272 @@
+/* .create_user{
+    background:  #1890ff;
+    color: white;
+     padding: 5px 15px 5px 15px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: #1890ff;
+}
+.export_excel{
+   margin-left: 5px;
+   border-radius: 6px;
+   padding: 0px 15px 0px 20px;
+}
+.iconCreate{
+ margin-right: 8px;  
+ font-weight: 600;
+ font-size: 18px;
+ opacity: 0.5; 
+}
+
+.delet{
+    margin-left: 15px;
+  }
+
+  .more{
+    margin-left: 15px;
+  }
+  .confirm{
+    background: #44ee11;
+    padding: 5px 15px 5px 15px;
+    border-radius: 5px;
+    color: white;
+  }
+  .action{
+    margin-left: 80px;
+
+  }
+  .refresh{
+    margin-left: 10px;
+  }
+  .barre{
+    opacity: 0.1;
+    font-size: 20px;
+    height: 10px;
+    margin-left: 10px;
+  }
+  .send-request{
+    margin-bottom: 16px;
+    padding: 6px;
+    background-color: #e6f7ff;
+    border: 1px solid #91d5ff;
+    border-radius: 4px;
+  }
+  .primary-icon {
+    background-color: #1890ff;  /* Couleur de fond 
+    color: white;  /* Couleur de l'icône à l'intérieur 
+    Ajoute un peu de padding pour que l'icône ne soit pas collée au bord 
+    border-radius: 50%;  /* Pour un effet circulaire 
+    display: inline-block;
+    width: 18px;  /* Ajustez la taille si nécessaire 
+    height: 18px; /* Ajustez la taille si nécessaire 
+    text-align: center;
+    line-height: 24px;  
+  }
+  .number{
+    color: #1890ff; 
+    margin-left: 5px;
+    font-size: 18px;
+    font-weight: 500;
+  }
+  .button_set{
+
+ position:relative;   
+ background: #1890ff;
+  border-radius: 2px;
+  border: #1890ff;
+  padding: 8px 15px 8px 15px;
+  margin-left: 100%;
+  }
+  .setting{
+  color: #ffff;
+  }
+  .link {
+   position: relative;
+   float: right;
+   margin-top: -18px;
+
+  }
+  .show_setting{
+    position: relative;
+    margin-left: 1000px;
+    z-index: 2;
+  }
+
+   */
+
+
+
+
+
+   .header-blue {
+    background-color: #1890ff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+  }
+  
+  .logo {
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-right {
+    display: flex;
+    align-items: center;
+  }
+  
+  .language-select {
+    margin-right: 20px;
+  }
+  
+  ::ng-deep .language-select .ant-select-selector {
+    background-color: #1890ff !important;
+    color: white !important;
+    border: none !important;
+  }
+  
+  ::ng-deep .language-select .ant-select-arrow {
+    color: white !important;
+  }
+  
+  ::ng-deep .language-select .ant-select-selection-item {
+    color: white !important;
+  }
+  
+  .notification-badge {
+    margin-right: 16px;
+  }
+  
+  .username {
+    color: white;
+    margin-left: 8px;
+  }
+
+  .logout button {
+    color: white;
+    background-color: rgb(205, 57, 57);
+    margin-left: 8px;
+    border-radius: 50px;
+  }
+  
+  .selected-items {
+    margin-bottom: 16px;
+    padding: 8px;
+    background-color: #e6f7ff;
+    border: 1px solid #91d5ff;
+    border-radius: 4px;
+  }
+  
+  .search-box {
+    margin-bottom: 16px;
+  }
+  
+  .table-operations {
+    margin-bottom: 16px;
+  }
+  
+  .table-operations button {
+    margin-right: 8px;
+  }
+  
+  
+  .advanced-filter {
+    float: right;
+  }
+  
+  .advanced-filter-icon {
+    background-color: #1890ff;
+    color: white;
+    padding: 10px;
+  }
+  
+  .advanced-filter-icon2, .advanced-filter {
+    color: #1890ff;
+  }
+  
+  nz-content {
+    /* background-color: white; */
+    margin-left: 20px;
+  }
+  
+  .content-heade {
+    background-color: white;
+    margin-left: -17px;
+    padding-bottom: 15px;
+  }
+  
+  .content-body {
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+  
+  .breadcrumb {
+    margin-left: 20px;
+    margin-bottom: 10px;
+    padding-top: 10px
+  }
+  
+  .title {
+    margin-left: 20px;
+    margin-right: 10px;
+    font-weight: bold;
+    font-size: large;
+  }
+  
+  .barre {
+    margin-right: 10px;
+    font-size: smaller ;
+  }
+  
+  .header-menu {
+    background-color: #1890ff;
+    color: white;
+    margin-left: -450px;
+    cursor: pointer;
+  }
+  
+  .bell-icon {
+    background-color: #1890ff;
+    color: white;
+  }
+  
+  .menu-icon, .dashboard-cion {
+    margin-left: 50px;
+  }
+  
+  .seachr-icon {
+    background-color: #1890ff;
+  }
+  
+  .green {
+    color: white;
+    background-color: rgb(32, 199, 32);
+  }
+  
+  .red {
+    color: white;
+    background-color: red;
+  }
+  
+  
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-left button {
+    margin-left: 100px;
+    background: transparent;
+    border: none;
+  }
+  
+  ::ng-deep .ant-layout-sider-trigger {
+    display: none;
+  }
+
+
+
