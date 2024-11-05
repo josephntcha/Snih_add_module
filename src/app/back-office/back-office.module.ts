@@ -35,6 +35,7 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzModalModule } from 'ng-zorro-antd/modal';
+import { UpdateUsersComponent } from './components/update-users/update-users.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
     RolesComponent,
     SuperAdminDashboardComponent,
     AdminDashboardComponent,
-    NewPersonalComponent
+    NewPersonalComponent,
+    UpdateUsersComponent
   ],
   imports: [
     CommonModule,

@@ -11,6 +11,7 @@ import { SuperAdminDashboardComponent } from './components/super-admin-dashboard
 import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
 import { NewPersonalComponent } from './components/new-personal/new-personal.component';
 import { RolesComponent } from './components/roles/roles.component';
+import { UpdateUsersComponent } from './components/update-users/update-users.component';
 
 const routes: Routes = [
   {
@@ -74,6 +75,14 @@ const routes: Routes = [
         data: {
           breadcrumb: 'utilisateurs',
           title: 'Utilisateurs | Gestion des utilisateurs'
+        }
+      },
+      {
+        path: "users/:userId",
+        component: UpdateUsersComponent,
+        data: {
+          breadcrumb: 'Utilistateurs',
+          title: 'Utilistateurs | Mise à jour de compte utilistateur'
         }
       },
       {

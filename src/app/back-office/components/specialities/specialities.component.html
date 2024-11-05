@@ -1,1 +1,82 @@
-<p>specialities works!</p>
+<!-- <div class="search-box">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+        <input type="text" nz-input placeholder="Search..." />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
+    </ng-template>
+</div> -->
+
+<form [formGroup]="filterForm">
+    <nz-form-item>
+        <nz-form-label>Options de filtre</nz-form-label>
+        <nz-form-control >
+            <nz-select formControlName="filterInput" (nzOpenChange)="filterSpecialities()" nzPlaceHolder="Choisir une option de filtre">
+                <nz-option [nzLabel]="'Voir toutes les spécialités'" [nzValue]="false"></nz-option>
+                <nz-option [nzLabel]="'Voir les spécialités de mon hôpital'" [nzValue]="true"></nz-option>
+            </nz-select>
+        </nz-form-control>
+    </nz-form-item>
+</form>
+
+<div class="table-operations">
+    <button (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Create new speciality</button>
+    <button nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
+</div>
+<div class="selected-items">
+    {{ setOfCheckedId.size }} éléments selectionnés
+    <a (click)="refreshCheckedStatus()">Refraîchir</a>
+</div>
+<nz-table 
+    #basicTable 
+    nzShowSizeChanger
+    [nzData]="listOfData"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+>
+    <thead>
+        <tr>
+            <th [nzChecked]="checked" 
+                [nzIndeterminate]="indeterminate" 
+                (nzCheckedChange)="onAllChecked($event)"
+            ></th>
+            <th>#ID</th>
+            <th>Nom</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of basicTable.data">
+            <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+            <td>{{ data.id }}</td>
+            <td>{{ data.name }}</td>
+            <td>
+                <a (click)="editSpeciality(data)">Editer</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a (click)="deleteSpeciality(data.id)">Spprimer</a>
+            </td>
+        </tr>
+    </tbody>
+</nz-table>
+
+
+<nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout de spécialité" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+        <!-- <nz-card> -->
+            <form [formGroup]="specialityForm" (ngSubmit)="onSubmit()">
+                <nz-form-item>
+                    <nz-form-label nzSpan="7" nzRequired>Nom</nz-form-label>
+                    <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                        <input nz-input formControlName="name" placeholder="Nom de la spécialité">
+                    </nz-form-control>
+                </nz-form-item>
+        
+                <nz-form-item>
+                    <nz-form-control nzOffset="7" nzSpan="12">
+                        <button nz-button nzType="primary" [disabled]="specialityForm.invalid">Soumettre</button>
+                        <button nz-button (click)="resetForm($event)">Réinitialiser</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        <!-- </nz-card> -->
+    </ng-container>
+</nz-modal>

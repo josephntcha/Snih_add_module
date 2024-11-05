@@ -1,1 +1,61 @@
-<p>users works!</p>
+<div class="search-box">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+        <input type="text" nz-input placeholder="Recherche..." />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
+    </ng-template>
+</div>
+<div class="table-operations">
+    <button routerLink="/Administration/new-personal" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un utilisateur</button>
+    <button nz-button (click)="exportFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
+    <a class="advanced-filter">Options avancées de filtres  <span class="advanced-filter-icon2" nz-icon nzType="down"></span><span class="advanced-filter-icon" nz-icon nzType="setting"></span> </a>
+</div>
+<div class="selected-items">
+    {{ setOfCheckedId.size }} éléments selectionnés
+    <a (click)="refreshCheckedStatus()">Rafraîchir</a>
+</div>
+<nz-table 
+    #rowSelectionTable
+    nzShowSizeChanger 
+    [nzData]="listOfData"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+>
+    <thead>
+        <tr>
+            <th 
+                [nzSelections]="listOfSelection"
+                [(nzChecked)]="checked" 
+                [nzIndeterminate]="indeterminate" 
+                (nzCheckedChange)="onAllChecked($event)"
+            ></th>
+
+            <th>User name</th>
+            <th>Name</th>
+            <th>Roles</th>
+            <th>Email address</th>
+            <!-- <th>Email confirmation</th> -->
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @for (data of rowSelectionTable.data; track data) {
+            <tr>
+                <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+                <td>{{ data.username }}</td>
+                <td>{{ data.firstName }} {{ data.lastName }}</td>
+                <td>
+                    @for (role of data.roles; track role.id) {
+                        {{ role.name }}
+                    }
+                </td>
+                <td>{{ data.email }}</td>
+                <td>
+                    <a *ngIf="data.userType != 'Patient'" (click)="editUser(data.id)">Editer</a>
+                    <nz-divider nzType="vertical"></nz-divider>
+                    <a (click)="desactiver(data.id)">Desactiver</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</nz-table>
