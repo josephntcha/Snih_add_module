@@ -1,0 +1,58 @@
+.availability{
+    margin-left: 15rem;
+   }
+   
+   .primary{
+       margin-left: 2px;
+   }
+   .button1{
+       background-color: #28a745;
+       color: #ffffff
+   
+   }
+   .button2{
+       background-color: #ffc107;
+       color: #ffffff;
+   
+   }
+   .button3{
+       background-color: #dc3545;
+       color: #ffffff;
+   
+     
+   }
+   .button4{
+       background-color: #343a40;
+       color: #ffffff;
+   
+   }
+   .action{
+       margin-left: 8rem;
+   }
+   
+   
+   .butt1{
+       margin-top: 30px;
+       margin-left: 5px;
+     }
+     .butt2{
+       background-color: #ffc107;
+       margin-top: 10px;
+       margin-left: 15px;
+     }
+     .butt3{
+       margin-top: 10px;
+       margin-left: 20px;
+       background-color: #dc3545;
+       color: #ffffff;
+     }
+     .selectOp{
+       margin-top: 65px;
+     }
+     .barre{
+       font-size: 100px;
+        font-weight: 100;
+        opacity: 0.5;
+     }
+   
+   

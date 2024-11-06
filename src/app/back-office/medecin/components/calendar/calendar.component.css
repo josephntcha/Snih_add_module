@@ -1,0 +1,52 @@
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 10px;
+  }  
+
+  .calendar-table td.other-month {
+    color: #c0c0c0; 
+  }
+  
+.calendar-table td.availability {
+  background-color: #d1d8de; 
+  color: rgb(15, 15, 15);
+  width: 20px;
+  height: 20px;
+}
+  
+  .calendar-table td:hover {
+    background-color: #eee;
+    cursor: pointer;
+  }
+  .calendar-table td{
+    width: 20px;
+    height: 20px;
+  }
+  
+  .month-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #5a5a5a;
+    text-align: center;
+    margin-right: -40px;
+  }
+  
+  .form-select, .hospital-form nz-select {
+    border-radius: 10px;
+    border: 2px solid #1890ff;
+  }
+  
+
+  
+  .appointments-count {
+    display: block;
+    font-size: 15px;
+    color: rgb(0, 1, 10);
+    margin-top: 2px;
+  }
+
+  

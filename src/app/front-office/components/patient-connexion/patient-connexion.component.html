@@ -1,0 +1,54 @@
+<br><br><br><br><br>
+<nz-space nz-row nzDirection="vertical" class="container mt-5">
+   
+    <div *ngIf="currentStep" nz-col nzSpan="24" class="col-8 offset-2 animate-slide-in">
+      <nz-card nzBordered class="bodystyle">
+        <nz-card-header>
+          <h4 class="text-center">Veuillez entrer votre code de connexion</h4>
+        </nz-card-header>
+        <nz-card-content>
+          <form [formGroup]="form1" (ngSubmit)="submitForm1()">
+            <div nz-form-item nzGutter="16">
+              <nz-form-label [nzSpan]="24" for="code">Code</nz-form-label>
+              <nz-form-control [nzSpan]="24">
+                <input nz-input id="code" formControlName="code" required />
+              </nz-form-control>
+            </div>
+            <div nz-form-item nzGutter="16">
+              <nz-form-label [nzSpan]="24" for="phone">Numéro</nz-form-label>
+              <nz-form-control [nzSpan]="24">
+                <input nz-input type="text" formControlName="phone" required />
+              </nz-form-control>
+            </div>
+            <br>
+            <button nz-button nzType="primary" class="my-2">Envoyer</button>
+          </form>
+        </nz-card-content>
+        <nz-card-footer></nz-card-footer>
+      </nz-card>
+    </div>
+  
+    <!-- Formulaire 2 -->
+    <div *ngIf="currentStep2" class="col-8 offset-2 animate-slide-in">
+      <nz-card nzBordered class="bodystyle">
+        <nz-card-header>
+          <h4 class="text-center">Entrez le code envoyé sur votre numéro de téléphone</h4>
+        </nz-card-header>
+        <nz-card-content>
+          <form [formGroup]="form2" (ngSubmit)="submitForm2()">
+            <div nz-form-item nzGutter="16">
+              <nz-form-label [nzSpan]="24" for="otpCode">Code OTP</nz-form-label>
+              <nz-form-control [nzSpan]="24">
+                <input nz-input type="text" formControlName="code2" required />
+              </nz-form-control>
+            </div>
+            <button nz-button nzType="primary" class="my-2">Envoyer</button>
+          </form>
+        </nz-card-content>
+        <nz-card-footer>
+          <small>Veuillez consulter votre téléphone pour entrer le code envoyé. NB : Le code a une date d'expiration</small>
+        </nz-card-footer>
+      </nz-card>
+    </div>
+  </nz-space>
+  

@@ -12,6 +12,7 @@ import { NzCardModule } from 'ng-zorro-antd/card';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { LoginComponent } from './components/login/login.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
+import { RouterLink } from '@angular/router';
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 
     ReactiveFormsModule,
     FormsModule,
+    RouterLink,
     NzFormModule,
     NzInputModule,
     NzIconModule,

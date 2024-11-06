@@ -1,0 +1,101 @@
+<div class="container">
+    <div nz-row>
+  
+      <div nz-col [nzSpan]="12" class="h3">Liste des RDV pour le {{ appointments[0]?.date | date:'fullDate' }}</div>
+      <button nz-button nzType="primary" (click)="showModal()" class="availability">Donner des autorisations au service Sécretariat</button>
+ 
+  
+    <nz-modal
+    [(nzVisible)]="isVisible"
+    nzTitle="Donner de Droit à un sécretaire"
+    (nzOnCancel)="handleCancel()"
+    (nzOnOk)="handleOk()"
+  
+     [nzWidth]="800"
+  >
+  
+  <ng-container *nzModalContent>
+    <div nz-row class="row container-fluid offset-md-1">
+      <form [formGroup]="secretaryForm" nz-col nzSpan="12" class="col col-md-6 mt-sm-0">
+        <div nz-row class="selectOp">
+          <label nz-col [nzSpan]="4" nz-form-label>Secrétaire</label>
+          <nz-form-control [nzSpan]="18" class="ms-4 mt-md-1">
+            <nz-select formControlName="secretary" nzPlaceHolder="Sélectionner un secrétaire">
+              <nz-option *ngFor="let secretary of secretaries" [nzValue]="secretary.id" [nzLabel]="secretary.firstName + ' ' + secretary.lastName"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </div>
+      </form>
+      
+      <span nz-col nzSpan="1" class="col-1 barre">|</span>
+    
+      <div nz-col nzSpan="10" class="col col-md-4">
+        <div *ngFor="let autority of autorities">
+          <div *ngIf="autority.name == 'CONFIRM'">
+            <label>Confirmé</label>
+            <button nz-button nzType="primary" class="butt1" (click)="allow(autority)">Autoriser</button>
+          </div>
+          <div *ngIf="autority.name == 'POSTPONE'">
+            <label>Reporté</label>
+            <button nz-button  class="butt2"  (click)="allow(autority)">Autoriser</button>
+          </div>
+          <div *ngIf="autority.name == 'CANCEL'">
+            <label>Annulé</label>
+            <button nz-button  class="butt3"  (click)="allow(autority)">Autoriser</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  
+  
+  </nz-modal>
+  
+  
+    </div>
+  
+    <br><br><br>
+    <button nz-button nzType="primary" (click)="filterAppointment('ASKED')" class="primary">Demandés</button>
+    <button nz-button nzType="primary" (click)="filterAppointment('CONFIRMED')" class="primary">Confirmés</button>
+    <button nz-button nzType="primary" (click)="filterAppointment('POSTPONE')" class="primary">Reportés</button>
+    <button nz-button nzType="primary" (click)="filterAppointment('CANCEL')" class="primary">Annulés</button>
+  
+    <br><br>
+    <nz-table [nzData]="appointments">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nom</th>
+          <th>Prenom</th>
+          <th>Email</th>
+          <th>Téléphone</th>
+          <th>Date</th>
+          <th>Statut</th>
+          <th><span class="action">Actions</span> </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let appointment of appointments; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ appointment.patientLastName }}</td>
+          <td>{{ appointment.patientFirstName }}</td>
+          <td>{{ appointment.patientEmail }}</td>
+          <td>{{ appointment.patientPhone }}</td>
+          <td>{{ appointment.date | date: 'dd/MM/yyyy' }}</td>
+          <td>
+            <ng-container *ngIf="appointment.status === 'ASKED'">En attente</ng-container>
+            <ng-container *ngIf="appointment.status === 'POSTPONE'">Reporté</ng-container>
+            <ng-container *ngIf="appointment.status === 'CONFIRMED'">Confirmé</ng-container>
+          </td>
+          <td>
+            <button nz-button class="button1" (click)="showConfirmationDialog(appointment)">Confirmer</button>
+            <button nz-button class="button2" (click)="showpostponeDialog(appointment)">Reporter</button>
+            <button nz-button class="button3" (click)="showdeleteDialog(appointment)">Annuler</button>
+            <button nz-button class="button4" (click)="followAppointment(appointment)">Suivi</button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  

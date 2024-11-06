@@ -10,7 +10,11 @@ import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
-import fr from '@angular/common/locales/fr';
+import { RouterOutlet } from '@angular/router';
+import { AuthModule } from './core/auth/auth.module';
+import { BackOfficeModule } from './back-office/back-office.module';
+import { MedecinModule } from './back-office/medecin/medecin.module';
+import { FrontOfficeModule } from './front-office/front-office.module';
 
 registerLocaleData(en);
 
@@ -19,9 +23,15 @@ registerLocaleData(en);
     AppComponent
   ],
   imports: [
+    AuthModule,
+    BackOfficeModule,
+    MedecinModule,
+    FrontOfficeModule,
+    
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    RouterOutlet
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },

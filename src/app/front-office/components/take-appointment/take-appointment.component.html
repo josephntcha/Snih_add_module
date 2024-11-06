@@ -1,0 +1,133 @@
+
+<nav nz-menu  nzMode="horizontal" class="menu-right">
+  
+    <!-- Accueil -->
+    <li nz-menu-item class="menu-item-spacing">
+      <button nz-button nzType="link" routerLink="/">ACCUEIL</button>
+    </li>
+  
+    <!-- Prendre RDV -->
+    <li nz-menu-item class="menu-item-spacing">
+      <button nz-button nzType="link" routerLink="/patient-connexion">Prendre RDV</button>
+    </li>
+
+    <li nz-menu-item class="menu-item-spacing">
+        <button nz-button nzType="link" routerLink="/patient-connexion">Dossier Médical</button>
+    </li>
+  
+    <!-- Mes rendez-vous -->
+    <li nz-menu-item class="menu-item-spacing">
+      <button nz-button nzType="link" routerLink="/patient-connexion">Mes rendez-vous</button>
+    </li>
+  
+    <!-- Déconnexion -->
+    <li nz-menu-item class="menu-item-spacing">
+      <button nz-button nzType="link" routerLink="/patient-connexion">connexion</button>
+    </li>
+    
+  </nav>
+  
+  <br><br>
+<div nz-row>
+    <div nz-col nzSpan="18" nzOffset="3" class="">
+      <a routerLink="/je_connais_mon_medecin" nz-button nzType="primary" class="float-left">Je connais mon médecin</a>
+      <br>
+      <nz-card>
+        <div nz-card-body>
+          <h4 nz-typography>Prendre un rendez-vous</h4>
+          <nz-divider></nz-divider>
+          <form [formGroup]="Hospitalform" (ngSubmit)="onSubmit()">
+            <div nz-row nzGutter="16">
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="4">Nom</nz-form-label>
+                  <nz-form-control [nzSpan]="18">
+                    <input nz-input formControlName="patientLastName" />
+                  </nz-form-control>
+                </nz-form-item>
+                
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="4">Prénom</nz-form-label>
+                  <nz-form-control [nzSpan]="18">
+                    <input nz-input formControlName="patientFirstName" />
+                  </nz-form-control>
+                </nz-form-item>
+                
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="4">Email</nz-form-label>
+                  <nz-form-control [nzSpan]="18">
+                    <input nz-input formControlName="patientEmail" />
+                  </nz-form-control>
+                </nz-form-item>
+                
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="4">Phone</nz-form-label>
+                  <nz-form-control [nzSpan]="18">
+                    <input nz-input formControlName="patientPhone" />
+                  </nz-form-control>
+                </nz-form-item>
+  
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="4">Hôpital</nz-form-label>
+                  <nz-form-control [nzSpan]="18">
+                    <nz-select formControlName="hospital">
+                      <nz-option *ngFor="let hospital of dataHospitals" [nzValue]="hospital.id" [nzLabel]="hospital.name + ' || Localisation: ' + hospital.location"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+  
+              <div nz-col nzSpan="12">
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="4">Spécialité</nz-form-label>
+                  <nz-form-control [nzSpan]="18">
+                    <nz-select formControlName="speciality">
+                      <nz-option *ngFor="let speciality of specialities" [nzValue]="speciality.id" [nzLabel]="speciality.name"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+  
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="4">Disponibilité</nz-form-label>
+                  <nz-form-control [nzSpan]="18">
+                    <nz-select formControlName="availability">
+                      <nz-option *ngFor="let availability of availabilities" [nzValue]="availability" [nzLabel]="availability['day']['name'] + ' De ' + availability.startTime + ' A ' + availability.endTime"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+  
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="4">Date du RDV</nz-form-label>
+                  <nz-form-control [nzSpan]="18">
+                    <nz-select formControlName="date">
+                      <nz-option *ngFor="let day of days" [nzValue]="day" [nzLabel]="(day | date: 'd MMMM y')"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+  
+                <nz-form-item>
+                  <nz-form-label [nzSpan]="4">Prix</nz-form-label>
+                  <nz-form-control [nzSpan]="18">
+                    <input nz-input formControlName="price" [value]="priceBySpeciality" readonly />
+                  </nz-form-control>
+                </nz-form-item>
+              </div>
+            </div>
+  
+            <div nz-row>
+              <div nz-col nzOffset="20">
+                <button nz-button nzType="primary" type="submit">Prendre RDV</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </nz-card>
+    </div>
+  </div>
+
+
+
+
+
+
+  
