@@ -30,13 +30,15 @@ import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { PatientConnexionComponent } from './components/patient-connexion/patient-connexion.component';
 import { PatientDashboardComponent } from './components/patient-dashboard/patient-dashboard.component';
+import { KnownDoctorComponent } from './components/known-doctor/known-doctor.component';
 
 
 @NgModule({
   declarations: [
     TakeAppointmentComponent,
     PatientConnexionComponent,
-    PatientDashboardComponent
+    PatientDashboardComponent,
+    KnownDoctorComponent
   ],
   imports: [
     NgFor,

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -33,7 +34,7 @@ export class LoginComponent implements OnInit{
   submitForm(): void {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe({
-        next: (data) => {
+        next: (data) => {          
           this.authService.loadProfile(data);
           if(!this.authService.isPatient()){
             if(this.authService.isSuperAdmin()){
@@ -49,7 +50,14 @@ export class LoginComponent implements OnInit{
             this.router.navigateByUrl("/patient-interface");
           }
         },error: (err) => {
-          console.log(err.message); 
+          Swal.fire({
+            title: err.message,
+            text: '',
+            icon: 'error',
+            timer: 3500,
+            showConfirmButton: false,
+            timerProgressBar: true 
+          });
         }
       })
     } else {

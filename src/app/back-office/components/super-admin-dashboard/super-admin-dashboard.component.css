@@ -1,0 +1,5 @@
+.element, .button, .value {
+    text-align: center;
+    display: block;
+    margin: auto;
+}

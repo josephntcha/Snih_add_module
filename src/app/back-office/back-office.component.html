@@ -122,7 +122,7 @@
                     <nz-breadcrumb class="breadcrumb" [nzAutoGenerate]="true"></nz-breadcrumb>
 
                     <span class="title">{{title.split('|')[0].trim()}}</span>
-                    <span class="barre"> | </span>
+                    <span *ngIf="title" class="barre"> | </span>
                     <span>{{title.split('|')[1]}}</span>
                 </div>
                 <nz-card class="content-body">
