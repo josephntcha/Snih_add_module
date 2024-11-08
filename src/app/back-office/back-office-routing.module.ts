@@ -12,6 +12,8 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
 import { NewPersonalComponent } from './components/new-personal/new-personal.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { UpdateUsersComponent } from './components/update-users/update-users.component';
+import { SecretaryComponent } from './components/secretary/secretary.component';
+import { AppointmentsDoctorComponent } from './components/appointments-doctor/appointments-doctor.component';
 
 const routes: Routes = [
   {
@@ -107,6 +109,22 @@ const routes: Routes = [
         data: {
           breadcrumb: 'paramètres',
           title: 'Paramètres | Paramétrage de la plateforme'
+        }
+      },
+      {
+        path: "staff-dashboard",
+        component: SecretaryComponent,
+        data: {
+          breadcrumb: 'Sécretariat',
+          title: 'Docteurs | Rendez-vous'
+        }
+      },
+      {
+        path: "appointmentsDoctors/:hospitalId/:doctorId",
+        component: AppointmentsDoctorComponent,
+        data: {
+          breadcrumb: 'Autorisations',
+          title: 'Docteurs | Rendez-vous'
         }
       },
     ]

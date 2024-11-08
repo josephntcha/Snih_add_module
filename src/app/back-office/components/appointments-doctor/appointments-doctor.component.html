@@ -1,0 +1,38 @@
+<div *ngFor="let availability of availabilities" class="container-fluid mt-3 p-5 bg-light">
+    <div class="row">
+      <div class="col-6 h3">Liste des RDV pour le {{ availability.appointments[0]?.date | date:'fullDate' }}</div>
+    </div>
+  
+    <br>
+    <nz-table #basicTable [nzData]="availability.appointments" [nzBordered]="true">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Email</th>
+          <th>Date</th>
+          <th>Statut</th>
+          <th *ngIf="rightConfirm || rightPostpone || rightCancel">
+            <span class="offset-md-3">Actions</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let appointment of availability.appointments; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ appointment.patientLastName }}</td>
+          <td>{{ appointment.patientFirstName }}</td>
+          <td>{{ appointment.patientEmail }}</td>
+          <td>{{ appointment.date | date:'short' }}</td>
+          <td>{{ appointment.status }}</td>
+          <td>
+            <button *ngIf="rightConfirm" nz-button nzType="primary" nzSize="small" (click)="showConfirmationDialog(appointment)">Confirmer</button>
+            <button *ngIf="rightPostpone" nz-button nzType="default" nzSize="small" class="reporter" (click)="showpostponeDialog(appointment)">Reporter</button>
+            <button *ngIf="rightCancel" nz-button nzType="default" nzSize="small" class="annuler" (click)="showdeleteDialog(appointment)">Annuler</button>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
+  </div>
+  

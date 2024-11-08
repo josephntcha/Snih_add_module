@@ -36,6 +36,8 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { UpdateUsersComponent } from './components/update-users/update-users.component';
+import { SecretaryComponent } from './components/secretary/secretary.component';
+import { AppointmentsDoctorComponent } from './components/appointments-doctor/appointments-doctor.component';
 
 
 @NgModule({
@@ -51,7 +53,9 @@ import { UpdateUsersComponent } from './components/update-users/update-users.com
     SuperAdminDashboardComponent,
     AdminDashboardComponent,
     NewPersonalComponent,
-    UpdateUsersComponent
+    UpdateUsersComponent,
+    SecretaryComponent,
+    AppointmentsDoctorComponent
   ],
   imports: [
     CommonModule,

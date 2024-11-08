@@ -98,6 +98,9 @@
                                 <li [nzMatchRouter]="true" nz-menu-item [nzSelected] routerLink="/Administration/doctor-dashboard">Calendrier</li>
                                 <li [nzMatchRouter]="true" nz-menu-item routerLink="availability">Gestion disponibilité</li>
                             }
+                            @if (authService.isSecretary()) {
+                                <li [nzMatchRouter]="true" nz-menu-item [nzSelected] routerLink="/Administration/staff-dashboard">Gestion</li>
+                            }
                         
                         </ul>
                     </li>
