@@ -12,6 +12,7 @@ import { AdminDashboardComponent } from './components/admin-dashboard/admin-dash
 import { NewPersonalComponent } from './components/new-personal/new-personal.component';
 import { RolesComponent } from './components/roles/roles.component';
 import { UpdateUsersComponent } from './components/update-users/update-users.component';
+import { MedicalRecordComponent } from './medical-record/components/medical-record/medical-record.component';
 
 const routes: Routes = [
   {
@@ -20,7 +21,7 @@ const routes: Routes = [
     data: {
       breadcrumb: "Administration"
     },
-    children: [
+      children: [
       {
         path: "hospitals", 
         component: HospitalsComponent, 
@@ -108,7 +109,7 @@ const routes: Routes = [
           breadcrumb: 'paramètres',
           title: 'Paramètres | Paramétrage de la plateforme'
         }
-      }
+      },
     ]
   }
 ];

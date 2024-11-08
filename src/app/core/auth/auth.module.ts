@@ -13,6 +13,11 @@ import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { LoginComponent } from './components/login/login.component';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { RouterLink } from '@angular/router';
+import { NzSelectModule } from 'ng-zorro-antd/select';
+import { NzLayoutModule } from 'ng-zorro-antd/layout';
+import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
+import { NzTypographyModule } from 'ng-zorro-antd/typography';
+import { NzMenuModule } from 'ng-zorro-antd/menu';
 
 
 @NgModule({
@@ -34,6 +39,10 @@ import { RouterLink } from '@angular/router';
     NzCheckboxModule,
     NzCardModule,
     NzCarouselModule,
+    NzSelectModule,
+    NzLayoutModule,
+    NzDropDownModule,
+    NzMenuModule
   ]
 })
 export class AuthModule { }

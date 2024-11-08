@@ -1,0 +1,105 @@
+      
+            <div nz-row>
+                <div nz-col nzOffset="2" nzSpan="12">
+                  <h2 nz-typography>Créer une disponibilité</h2>
+                </div>
+              </div>
+              <br>
+              <form nz-form  [formGroup]="appointmentform" (ngSubmit)="onSubmit()">
+                 <div nz-row [nzGutter]="24">
+                    <div nz-col nzSpan="12">
+                      <nz-form-item>
+                        <nz-form-label [nzSpan]="7">Jour</nz-form-label>
+                        <nz-form-control nzSpan="16">
+                          <nz-select formControlName="day" nzPlaceHolder="Sélectionner un jour">
+                            <nz-option *ngFor="let day of days" [nzValue]="day.id" [nzLabel]="day.name"></nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+          
+                      <nz-form-item>
+                        <nz-form-label [nzSpan]="7">Heure début</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                          <input nz-input type="time" formControlName="startTime" />
+                        </nz-form-control>
+                      </nz-form-item>
+          
+                      <nz-form-item>
+                        <nz-form-label [nzSpan]="7">Heure fin</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                          <input nz-input type="time" formControlName="endTime" />
+                        </nz-form-control>
+                      </nz-form-item>
+          
+                      <nz-form-item>
+                        <nz-form-label [nzSpan]="7">Périodicité</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                          <nz-select formControlName="frequency" nzPlaceHolder="Sélectionner une périodicité">
+                            <nz-option *ngFor="let frequency of frequencies" [nzValue]="frequency" [nzLabel]="frequency.name"></nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+          
+                      <nz-form-item *ngIf="mensuelle">
+                        <nz-form-label [nzSpan]="7">Ordre du jour</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                          <input nz-input type="number" formControlName="orderOfDay" />
+                        </nz-form-control>
+                      </nz-form-item>
+                      <nz-form-item >
+                        <nz-form-label [nzSpan]="7">Hôpital</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                          <nz-select formControlName="hospital" nzPlaceHolder="Sélectionner l'hôpital">
+                            <nz-option *ngFor="let hospital of hospitals" [nzValue]="hospital.id" [nzLabel]="hospital.name"></nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    <div nz-col nzSpan="12">
+                    
+          
+                      <nz-form-item >
+                        <nz-form-label [nzSpan]="3">Bâtiment</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                          <nz-select formControlName="building" nzPlaceHolder="Sélectionner le bâtiment">
+                            <nz-option *ngFor="let building of buildings" [nzValue]="building.id" [nzLabel]="building.name"></nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+          
+                      <nz-form-item >
+                        <nz-form-label [nzSpan]="3">Salle</nz-form-label>
+                        <nz-form-control [nzSpan]="16">
+                          <nz-select formControlName="room" nzPlaceHolder="Sélectionner une salle">
+                            <nz-option *ngFor="let room of rooms" [nzValue]="room.room" [nzLabel]="room.room"></nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+          
+                      <nz-form-item >
+                        <nz-form-label [nzSpan]="16">Nombre de mois valides pour la disponibilité </nz-form-label>
+                        <nz-form-control [nzSpan]="3">
+                          <input nz-input type="number" formControlName="period"/>
+                        </nz-form-control>
+                      </nz-form-item>
+  
+                      <nz-form-item>
+                        <nz-form-label [nzSpan]="16">Nombre maximum de Rendez-vous</nz-form-label>
+                        <nz-form-control [nzSpan]="3">
+                          <input nz-input type="number" formControlName="maxNumberOfAppointments" />
+                        </nz-form-control>
+                      </nz-form-item>
+                     </div>
+                  </div>
+                <div nz-row>
+                  <div nz-col class="button_sub">
+                    <button  nz-button nzType="primary" type="submit">Créer Disponibilité</button>
+                  </div>
+                </div>
+  
+              </form>
+  
+  
+                                                                                                
+        
+        

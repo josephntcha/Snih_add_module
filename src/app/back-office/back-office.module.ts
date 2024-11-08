@@ -36,6 +36,7 @@ import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { UpdateUsersComponent } from './components/update-users/update-users.component';
+import { MedicalRecordModule } from './medical-record/medical-record.module';
 
 
 @NgModule({
@@ -56,7 +57,6 @@ import { UpdateUsersComponent } from './components/update-users/update-users.com
   imports: [
     CommonModule,
     BackOfficeRoutingModule,
-
     NzLayoutModule,
     NzMenuModule,
     NzIconModule,

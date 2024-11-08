@@ -110,8 +110,10 @@
                                 <li [nzMatchRouter]="true" nz-menu-item routerLink="buildings">Bâtiments</li>
                                 <!-- <li [nzMatchRouter]="true" nz-menu-item routerLink="rooms">Salles</li> -->
                                 <li [nzMatchRouter]="true" nz-menu-item routerLink="settings">Settings</li>
-
-                            }                       
+                            }
+                            @if (authService.isDoctor()) {
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="medical-records">Dossiers médicaux</li>
+                            }                    
                         </ul>
                     </li>
                 </ul>
