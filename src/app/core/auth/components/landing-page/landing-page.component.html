@@ -1,46 +1,76 @@
-<main>
-
-    <header>
-        <nav class="nav container">
-            <h2 class="nav_logo">
-                <a routerLink="/">
-                    <!-- <img src="images/in-web.jpg" alt="Logo" width="220px"> -->
-                    SNIH
-                    <small>Système National d'Information Hospitalière</small>
-                </a>
-            </h2>
-        </nav>
-    </header>
-
-
-    <section class="hero">
-        <div class="row container">
-            <div class="col-5">
-                <h2>Bienvenue sur la plateforme nationnale d'Information Hospitalière.</h2>
-                <p>
-                    
-                </p> <br>
-                <div class="buttons">
-                 
-                        <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-                            <a class="btn rounded-pill nav-link dropdown-toggle text-dark" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Se connecter en tant que:</a>
-                            <ul class="dropdown-menu p-3" aria-labelledby="aboutDropdown">
-                                <li><a class="dropdown-item text-dark p-2" routerLink="/login">Personnel</a></li>
-                                <li><a class="dropdown-item text-dark p-2" routerLink="/patient-connexion">Patient</a></li>
-                            </ul>
-                        </div> 
-                   
-                  
-                    <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
-                        <a routerLink="/rdv" class="btn btn-primary rounded-pill">Prendre RDV</a>
-
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="col-6">
-                <img src="/assets/images/medical-signe.jpg" alt="heroImg" class="hero_img" />
-            </div> -->
+<div class="landing-container">
+  
+  <nz-layout>
+    <nz-header>
+      <div class="header-content">
+        <div class="logo">
+          <h1 nz-typography>
+            <span class="brand-name">SNIH</span>
+            <small class="brand-subtitle">Système National d'Information Hospitalière</small>
+          </h1>
         </div>
-        <!-- <img src="/assets/images/bg-bottom-hero.png" alt="" class="curveImg"/>  -->
-    </section>
-</main>
+        
+        <div class="nav-actions">
+          
+          <a nz-button nz-dropdown [nzDropdownMenu]="menu" class="login-btn">
+            <span>Se connecter</span>
+            <span nz-icon nzType="down"></span>
+          </a>
+          <nz-dropdown-menu #menu="nzDropdownMenu">
+            <ul nz-menu nzSelectable>
+              <li nz-menu-item routerLink="/login">
+                <span nz-icon nzType="user" nzTheme="outline"></span>
+                Personnel
+              </li>
+              <li nz-menu-item routerLink="/patient-connexion">
+                <span nz-icon nzType="team" nzTheme="outline"></span>
+                Patient
+              </li>
+            </ul>
+          </nz-dropdown-menu>
+
+          <button nz-button nzType="primary" routerLink="/rdv" class="rdv-btn">
+            <span nz-icon nzType="calendar" nzTheme="outline"></span>
+            Prendre RDV
+          </button>
+        </div>
+      </div>
+    </nz-header>
+
+    <!-- Contenu principal -->
+    <nz-content>
+      <div class="hero-section">
+        <div class="hero-content">
+          <div class="text-content">
+            <h2 nz-typography nzType="secondary">Bienvenue sur la plateforme nationale d'Information Hospitalière</h2>
+            <div class="feature-cards">
+              <nz-card [nzBordered]="false" class="feature-card" routerLink="/patient/appointments">
+                <span nz-icon nzType="calendar" nzTheme="outline" class="card-icon"></span>
+                <h3>Mes rendez-vous</h3>
+                <p>Voir la liste de mes rendez-vous</p>
+              </nz-card>
+              
+              <nz-card [nzBordered]="false" class="feature-card" routerLink="/patient/medical-record">
+                <span nz-icon nzType="solution" nzTheme="outline" class="card-icon"></span>
+                <h3>Dossier médical</h3>
+                <p>Accédez à mon dossier médical en toute sécurité</p>
+              </nz-card>
+              
+                <!-- <nz-card [nzBordered]="false" class="feature-card" routerLink="/login">
+                  <span nz-icon nzType="team" nzTheme="outline" class="card-icon"></span>
+                  <h3>Suivi personnalisé</h3>
+                  <p>Bénéficiez d'un suivi adapté à vos besoins</p>
+                </nz-card> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </nz-content>
+
+    <!-- <nz-footer>
+      <div class="footer-content">
+        <p>SNIH ©2024 - Tous droits réservés</p>
+      </div>
+    </nz-footer> -->
+  </nz-layout>
+</div>

@@ -22,7 +22,7 @@ const routes: Routes = [
     data: {
       breadcrumb: "Administration"
     },
-    children: [
+      children: [
       {
         path: "hospitals", 
         component: HospitalsComponent, 

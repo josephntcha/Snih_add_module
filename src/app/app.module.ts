@@ -15,6 +15,7 @@ import { AuthModule } from './core/auth/auth.module';
 import { BackOfficeModule } from './back-office/back-office.module';
 import { MedecinModule } from './back-office/medecin/medecin.module';
 import { FrontOfficeModule } from './front-office/front-office.module';
+import { MedicalRecordModule } from './back-office/medical-record/medical-record.module';
 
 registerLocaleData(en);
 
@@ -27,6 +28,7 @@ registerLocaleData(en);
     BackOfficeModule,
     MedecinModule,
     FrontOfficeModule,
+    MedicalRecordModule,
     
     BrowserModule,
     AppRoutingModule,
