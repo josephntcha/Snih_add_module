@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BackOfficeComponent } from './back-office.component';
+import { SecretaryComponent } from './components/secretary/secretary.component';
+import { AppointmentsDoctorComponent } from './components/appointments-doctor/appointments-doctor.component';
 import { HospitalsComponent } from './hospitals/hospitals.component';
 import { SpecialitiesComponent } from './specialities/specialities.component';
 import { BuildingsComponent } from './buildings/buildings.component';
@@ -12,7 +14,7 @@ import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.compo
 import { NewPersonalComponent } from './new-personal/new-personal.component';
 import { RolesComponent } from './roles/roles.component';
 import { UpdateUsersComponent } from './update-users/update-users.component';
-import { MedicalRecordComponent } from './medical-record/medical-record/medical-record.component';
+
 
 const routes: Routes = [
   {
@@ -108,6 +110,22 @@ const routes: Routes = [
         data: {
           breadcrumb: 'paramètres',
           title: 'Paramètres | Paramétrage de la plateforme'
+        }
+      },
+      {
+        path: "staff-dashboard",
+        component: SecretaryComponent,
+        data: {
+          breadcrumb: 'Sécretariat',
+          title: 'Docteurs | Rendez-vous'
+        }
+      },
+      {
+        path: "appointmentsDoctors/:hospitalId/:doctorId",
+        component: AppointmentsDoctorComponent,
+        data: {
+          breadcrumb: 'Autorisations',
+          title: 'Docteurs | Rendez-vous'
         }
       },
     ]

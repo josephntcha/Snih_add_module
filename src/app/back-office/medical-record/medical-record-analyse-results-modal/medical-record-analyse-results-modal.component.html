@@ -1,1 +1,106 @@
-<p>medical-record-analyse-results-modal works!</p>
+<nz-modal 
+      [(nzVisible)]="isVisible" 
+      nzTitle="Ajout d'analyses" 
+      (nzOnCancel)="handleCancel()"
+      [nzFooter]="null">
+      <ng-container *nzModalContent>
+        <form nz-form [formGroup]="analysisForm" (ngSubmit)="onSubmit()">
+          <div formArrayName="analyses_resultats">
+            
+            <!-- Toggle button for file upload -->
+            <div style="margin-bottom: 16px;">
+              <nz-space>
+                <button 
+                  *nzSpaceItem
+                  nz-button 
+                  [nzType]="isDataFromFile ? 'default' : 'primary'"
+                  (click)="toggleInputMode()">
+                  <span nz-icon [nzType]="isDataFromFile ? 'form' : 'upload'"></span>
+                  {{ isDataFromFile ? 'Saisie manuelle' : 'Ajouter depuis un fichier' }}
+                </button>
+              </nz-space>
+            </div>
+
+            <!-- Manual input form -->
+            @if (!isDataFromFile) {
+              <nz-space nzDirection="vertical" [nzSize]="16" style="width: 100%">
+                <ng-container *ngFor="let analysis of analysisResults.controls; let i = index" [formGroupName]="i">
+                  <div *nzSpaceItem nz-row [nzGutter]="16">
+                    <div nz-col [nzSpan]="12">
+                      <nz-form-item>
+                        <nz-form-label>Analyse</nz-form-label>
+                        <nz-form-control [nzErrorTip]="'Veuillez sélectionner une analyse'">
+                          <nz-select 
+                            formControlName="analysis" 
+                            nzPlaceHolder="Sélectionnez une analyse">
+                            <nz-option 
+                              *ngFor="let availableAnalysis of getAvailableAnalyses(i)" 
+                              [nzValue]="availableAnalysis.id"
+                              [nzLabel]="availableAnalysis.name">
+                            </nz-option>
+                          </nz-select>
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                    
+                    <div nz-col [nzSpan]="12">
+                      <nz-form-item>
+                        <nz-form-label>Résultat</nz-form-label>
+                        <nz-form-control [nzErrorTip]="'Veuillez entrer un résultat'">
+                          <input nz-input formControlName="result" placeholder="Résultat" />
+                        </nz-form-control>
+                      </nz-form-item>
+                    </div>
+                  </div>
+                </ng-container>
+              </nz-space>
+
+              <!-- Add analysis button -->
+              <div style="margin-top: 16px;">
+                <button 
+                  *ngIf="analysisResults.length < allAnalyses.length"
+                  nz-button 
+                  nzType="dashed"
+                  (click)="addAnalysisResult()"
+                  style="width: 100%">
+                  <span nz-icon nzType="plus"></span>
+                  Ajouter Analyse
+                </button>
+              </div>
+            }
+
+            <!-- File upload -->
+            @if (isDataFromFile) {
+              <!-- <nz-upload
+                nzType="drag"
+                [nzMultiple]="false"
+                [nzBeforeUpload]="beforeUpload"
+                (nzChange)="handleChange($event)"
+                [nzAccept]="'application/pdf'">
+                <p class="ant-upload-drag-icon">
+                  <span nz-icon nzType="inbox"></span>
+                </p>
+                <p class="ant-upload-text">Cliquez ou glissez un fichier dans cette zone</p>
+                <p class="ant-upload-hint">Support uniquement pour les fichiers PDF</p>
+              </nz-upload> -->
+
+              <div>
+                <label for="file">Télécharger le fichier d'analyse :</label>
+                <input nz-input type="file" id="file" (change)="onFileSelected($event)" accept="application/pdf" class="form-control">
+              </div>
+            }
+          </div>
+
+          <!-- Submit button -->
+          <div style="margin-top: 24px;">
+            <button 
+              nz-button 
+              nzType="primary" 
+              [disabled]="!isFormValid()"
+              type="submit">
+              Envoyer
+            </button>
+          </div>
+        </form>
+      </ng-container>
+    </nz-modal> 

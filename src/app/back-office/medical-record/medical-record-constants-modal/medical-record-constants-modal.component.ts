@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { TypeConstant } from '../../../core/models/model';
+import { InfoMedicalRecord, TypeConstant } from '../../../core/models/model';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NZ_MODAL_DATA, NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { ApiServiceService } from '../../services/api-service.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-medical-record-constants-modal',
@@ -14,6 +15,7 @@ export class MedicalRecordConstantsModalComponent implements OnInit{
   recordForm!: FormGroup;
   recordId!: number;
   allTypeConstants: TypeConstant[] = [];
+  infoMedRecord!: InfoMedicalRecord;
   addConstant = false;
   isVisible = false;
 
@@ -40,6 +42,7 @@ export class MedicalRecordConstantsModalComponent implements OnInit{
 
   handleCancel(): void {
     this.isVisible = false;
+    this.modalService.closeAll();
   }
 
   getTypeConstants(): void {
@@ -99,15 +102,56 @@ export class MedicalRecordConstantsModalComponent implements OnInit{
   onSubmit(): void {
     if (this.recordForm.valid) {
       const formValue = this.recordForm.value;
-      // Traiter les données du formulaire ici
-      console.log(formValue);
-      this.handleCancel();
+      // Transformation des constants
+      formValue.constants = formValue.constants.map((item: any) => ({
+        typeConstant: { id: item.typeConstant },
+        valeur: item.valeur
+      }));
+      formValue.analyses_resultats = null;
+      formValue.traitement = null;
+
+      this.infoMedRecord = formValue;
+      
+
+      this.apiService.addConstant(this.infoMedRecord, this.recordId).subscribe({
+        next: (response) => {
+          if (response.success) {
+            Swal.fire({
+              title: 'Succès',
+              text: "Données ajoutées avec succès",
+              icon: 'success',
+              timer:4000,
+              showConfirmButton:false,
+              timerProgressBar:true
+            });
+            // this.message.success("Données ajoutées avec succès")
+            // this.handleCancel();
+            this.modalService.closeAll();
+          }else{
+            Swal.fire({
+              title: 'Erreur',
+              text: response.errorMessage,
+              icon: 'info',
+              timer: 4000,
+              showConfirmButton: false,
+              timerProgressBar: true
+            });
+            this.modalService.closeAll();
+          }
+        },
+        error: (err) => {
+          Swal.fire({
+            title: 'Erreur',
+            text: "Une erreur inconnue s'est produite",
+            icon: 'error',
+            timer: 4000,
+            showConfirmButton: false,
+            timerProgressBar: true
+          });
+        }
+      }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             );
+    } else {
+      console.log('Formulaire invalide');
     }
   }
-
-  addConstants(medicalRecordId: number): void {
-    this.recordId = medicalRecordId;
-    this.showModal();
-  }
-
 }

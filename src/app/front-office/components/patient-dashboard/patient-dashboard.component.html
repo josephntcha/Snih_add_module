@@ -1,1 +1,66 @@
-<p>patient-dashboard works!</p>
+<nav nz-menu  nzMode="horizontal" class="menu-right">
+  
+
+    <li nz-menu-item class="menu-item-spacing">
+      <button nz-button nzType="link" routerLink="/">ACCUEIL</button>
+    </li>
+  
+
+    <li nz-menu-item class="menu-item-spacing">
+      <button nz-button nzType="link" routerLink="/patient-connexion">Prendre RDV</button>
+    </li>
+
+    <li nz-menu-item class="menu-item-spacing">
+        <button nz-button nzType="link" routerLink="/patient-connexion">Dossier Médical</button>
+    </li>
+  
+   
+    <li nz-menu-item class="menu-item-spacing">
+      <button nz-button nzType="link" routerLink="/patient-connexion">Mes rendez-vous</button>
+    </li>
+  
+    <li nz-menu-item class="menu-item-spacing">
+      <button nz-button nzType="link" (click)="deconnexion()">Deconnexion</button>
+    </li>
+    
+  </nav>
+<br><br><br>
+<div nz-row class="p-5 bg-light">
+    <div nz-col nzSpan="12">
+      <h3>Liste de vos RDV</h3>
+    </div>
+  </div>
+  
+  <br />
+  
+  <nz-table #basicTable [nzData]="appointments" [nzBordered]="true" nzSize="middle" nzShowPagination="false" class="table-striped">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Date</th>
+        <th>Hôpital</th>
+        <th>Statut</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let appointment of appointments; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ appointment.patientLastName }}</td>
+        <td>{{ appointment.patientFirstName }}</td>
+        <td>{{ appointment.patientEmail }}</td>
+        <td>{{ appointment.date | date: 'd MMMM y' }}</td>
+        <td>{{ appointment.hospitalDTO.name }}</td>
+        <td>{{ appointment.status }}</td>
+        <!-- <td>
+          <button nz-button nzType="success" nzSize="small" (click)="showConfirmationDialog(appointment)">Confirmer</button>
+          <button nz-button nzType="warning" nzSize="small" class="ms-2" (click)="showpostponeDialog(appointment)">Reporter</button>
+          <button nz-button nzType="danger" nzSize="small" class="ms-2" (click)="showdeleteDialog(appointment)">Annuler</button>
+          <button nz-button nzType="default" nzSize="small" class="ms-2" (click)="followAppointment(appointment)">Suivi</button>
+        </td> -->
+      </tr>
+    </tbody>
+  </nz-table>
+  

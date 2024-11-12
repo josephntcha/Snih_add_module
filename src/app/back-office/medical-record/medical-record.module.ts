@@ -2,8 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MedicalRecordRoutingModule } from './medical-record-routing.module';
-import { MedicalRecordComponent } from './medical-record/medical-record.component';
-import { InfoMedicalRecordComponent } from './info-medical-record/info-medical-record.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
@@ -24,6 +22,9 @@ import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { MedicalRecordConstantsModalComponent } from './medical-record-constants-modal/medical-record-constants-modal.component';
 import { MedicalRecordAnalyseResultsModalComponent } from './medical-record-analyse-results-modal/medical-record-analyse-results-modal.component';
+import { NzUploadModule } from 'ng-zorro-antd/upload';
+import { InfoMedicalRecordComponent } from './info-medical-record/info-medical-record.component';
+import { MedicalRecordComponent } from './medical-record/medical-record.component';
 
 
 @NgModule({
@@ -53,6 +54,7 @@ import { MedicalRecordAnalyseResultsModalComponent } from './medical-record-anal
     NzModalModule,
     NzDividerModule,
     NzSpaceModule,
+    NzUploadModule,
     FormsModule,
     RouterLink,
   ]
