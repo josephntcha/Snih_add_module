@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiServiceService } from '../../../back-office/services/api-service.service';
+import { ApiServiceService } from '../../back-office/services/api-service.service';
 
 @Component({
   selector: 'app-patient-dashboard',
@@ -18,7 +18,6 @@ export class PatientDashboardComponent implements OnInit{
     this.patientId=this.route.snapshot.paramMap.get('patientId');
     this.apiService.getPatinetAppointments(this.patientId).subscribe(response=>{
       this.appointments=response;
-      console.log(this.appointments);
       
     })
 }

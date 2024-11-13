@@ -1,0 +1,16 @@
+.navclas{
+    background: #066631ee;
+}
+
+
+.menu-item-spacing button {
+    margin-right: 40px; 
+    color: white;
+  }
+
+  .menu-right {
+    display: flex;
+    justify-content: flex-end;
+    padding: 1.2rem;
+    background: #1890ff;
+  }

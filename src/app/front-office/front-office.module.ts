@@ -2,7 +2,7 @@ import { NgModule,CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
 
 import { FrontOfficeRoutingModule } from './front-office-routing.module';
-import { TakeAppointmentComponent } from './components/take-appointment/take-appointment.component';
+import { TakeAppointmentComponent } from './take-appointment/take-appointment.component';
 
 
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
@@ -28,9 +28,10 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzSpaceModule } from 'ng-zorro-antd/space';
-import { PatientConnexionComponent } from './components/patient-connexion/patient-connexion.component';
-import { PatientDashboardComponent } from './components/patient-dashboard/patient-dashboard.component';
-import { KnownDoctorComponent } from './components/known-doctor/known-doctor.component';
+import { PatientConnexionComponent } from './patient-connexion/patient-connexion.component';
+import { PatientDashboardComponent } from './patient-dashboard/patient-dashboard.component';
+import { KnownDoctorComponent } from './known-doctor/known-doctor.component';
+import { PatientMedicalRecordComponent } from './patient-medical-record/patient-medical-record.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { KnownDoctorComponent } from './components/known-doctor/known-doctor.com
     TakeAppointmentComponent,
     PatientConnexionComponent,
     PatientDashboardComponent,
-    KnownDoctorComponent
+    KnownDoctorComponent,
+    PatientMedicalRecordComponent,
   ],
   imports: [
     NgFor,

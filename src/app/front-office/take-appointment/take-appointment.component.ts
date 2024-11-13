@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiServiceService } from '../../../back-office/services/api-service.service';
-import { KkiapayService } from '../../../kkiapay-service.service';
+import { ApiServiceService } from '../../back-office/services/api-service.service';
+import { KkiapayService } from '../../kkiapay-service.service';
 import { firstValueFrom } from 'rxjs';
 import Swal from 'sweetalert2';
 import {

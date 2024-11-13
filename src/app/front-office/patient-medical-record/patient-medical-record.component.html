@@ -1,0 +1,31 @@
+<nav nz-menu  nzMode="horizontal" class="menu-right">
+  
+
+    <li nz-menu-item class="menu-item-spacing">
+      <button nz-button nzType="link" routerLink="/">ACCUEIL</button>
+    </li>
+  
+
+    <li nz-menu-item class="menu-item-spacing">
+      <button nz-button nzType="link" routerLink="/patient-connexion">Prendre RDV</button>
+    </li>
+
+    <li nz-menu-item class="menu-item-spacing">
+        <button nz-button nzType="link"  [routerLink]="['/patient-medical-record',patientId ]">Dossier Médical</button>
+    </li>
+  
+   
+    <li nz-menu-item class="menu-item-spacing">
+      <button nz-button nzType="link" routerLink="/patient-connexion">Mes rendez-vous</button>
+    </li>
+  
+    <li nz-menu-item class="menu-item-spacing">
+
+      <button nz-button nzType="link" (click)="deconnexion()">Deconnexion</button>
+    </li>
+    
+</nav>
+
+
+
+ 

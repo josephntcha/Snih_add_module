@@ -69,6 +69,10 @@ export class ApiServiceService {
     return this.http.get<any>(`${this.apiUrl}/api/users/doctors/${id}/hospitals`);
   }
 
+  getDataMedicalRecordPatient(patientId:number):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/api/medical-records/${patientId}`);
+  }
+
  getAvailabilitiesByDoctorAndHospital(doctorId:number,hospitalid:number):Observable<any>{
     return this.http.get<any>(`${this.apiUrl}/api/hospitals/${doctorId}/${hospitalid}/availabilities`);
   }
