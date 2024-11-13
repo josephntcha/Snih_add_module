@@ -71,6 +71,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
     NzPaginationModule,
     NzModalModule,
     NzSpaceModule,
+    NzDropDownModule,
     FormsModule,
     RouterLink,
     RouterOutlet,

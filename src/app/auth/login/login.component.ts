@@ -38,13 +38,13 @@ export class LoginComponent implements OnInit{
           this.authService.loadProfile(data);
           if(!this.authService.isPatient()){
             if(this.authService.isSuperAdmin()){
-              this.router.navigateByUrl("/Administration/super-admin-dashboard");
+              this.router.navigateByUrl("/back-office/Administration/super-admin-dashboard");
             }else if(this.authService.isAdmin()){
-              this.router.navigateByUrl("/Administration/admin-dashboard");
+              this.router.navigateByUrl("/back-office/Administration/admin-dashboard");
             }else if(this.authService.isDoctor()){
-              this.router.navigateByUrl("/Administration/doctor-dashboard");
+              this.router.navigateByUrl("/back-office/Administration/doctor-dashboard");
             }else{
-              this.router.navigateByUrl("/Administration/staff-dashboard");
+              this.router.navigateByUrl("/back-office/Administration/staff-dashboard");
             }
           }else{
             this.router.navigateByUrl("/patient-interface");
