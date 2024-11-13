@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BackOfficeComponent } from '../back-office.component';
-import { CalendarComponent } from './components/calendar/calendar.component';
-import { AvailabilityComponent } from './components/availability/availability.component';
-import { CreateAvailabilityComponent } from './components/create-availability/create-availability.component';
-import { AppointmentsListComponent } from './components/appointments-list/appointments-list.component';
+import { AppointmentsListComponent } from './appointments-list/appointments-list.component';
+import { AvailabilityComponent } from './availability/availability.component';
+import { CalendarComponent } from './calendar/calendar.component';
+import { CreateAvailabilityComponent } from './create-availability/create-availability.component';
 
 const routes: Routes = [
   {
