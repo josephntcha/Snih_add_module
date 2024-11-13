@@ -42,9 +42,9 @@ export class LoginComponent implements OnInit{
             }else if(this.authService.isAdmin()){
               this.router.navigateByUrl("/back-office/Administration/admin-dashboard");
             }else if(this.authService.isDoctor()){
-              this.router.navigateByUrl("/back-office/medecin-dashboard/calendar");
+              this.router.navigateByUrl("/back-office/medecin/calendar");
             }else{
-              this.router.navigateByUrl("/back-office/Administration/staff-dashboard");
+              this.router.navigateByUrl("/back-office/Administration/secretaire-dashboard");
             }
           }else{
             this.router.navigateByUrl("/patient-interface");

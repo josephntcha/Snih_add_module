@@ -95,11 +95,11 @@
 
                             }
                             @if (authService.isDoctor()) {
-                                <li [nzMatchRouter]="true" nz-menu-item [nzSelected] routerLink="/back-office/Administration/medecin-dashboard/calendar">Calendrier</li>
-                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/Administration/medecin-dashboard/availability">Gestion disponibilité</li>
+                                <li [nzMatchRouter]="true" nz-menu-item [nzSelected] routerLink="/back-office/medecin/calendar">Calendrier</li>
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/medecin/availability">Gestion disponibilité</li>
                             }
                             @if (authService.isSecretary()) {
-                                <li [nzMatchRouter]="true" nz-menu-item [nzSelected] routerLink="/back-office/Administration/staff-dashboard">Gestion</li>
+                                <li [nzMatchRouter]="true" nz-menu-item [nzSelected] routerLink="/back-office/Administration/secretaire-dashboard">Gestion</li>
                             }
                         
                         </ul>
@@ -115,7 +115,7 @@
                                 <li [nzMatchRouter]="true" nz-menu-item routerLink="settings">Settings</li>
                             }
                             @if (authService.isDoctor()) {
-                                <li [nzMatchRouter]="true" nz-menu-item routerLink="medical-records">Dossiers médicaux</li>
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/medecin-dashboard/medical-records">Dossiers médicaux</li>
                             }                    
                         </ul>
                     </li>

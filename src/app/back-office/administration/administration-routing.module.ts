@@ -104,7 +104,7 @@ const routes: Routes = [
     }
   },
   {
-    path: "staff-dashboard",
+    path: "secretaire-dashboard",
     component: SecretaryComponent,
     data: {
       breadcrumb: 'Sécretariat',
@@ -112,7 +112,7 @@ const routes: Routes = [
     }
   },
   {
-    path: "doctor-appointments",
+    path: "doctor-appointments/:hospitalId/:doctorId",
     component: AppointmentsDoctorComponent,
     data: {
       breadcrumb: 'liste des RDV',

@@ -45,7 +45,7 @@ const routes: Routes = [
     loadChildren: () => import('./administration/administration-routing.module').then(module => module.AdministrationRoutingModule)
   },
   {
-    path: "medecin-dashboard",
+    path: "medecin",
     data: {
       breadcrumb: 'Medecin',
     },
@@ -146,14 +146,7 @@ const routes: Routes = [
           title: 'Paramètres | Paramétrage de la plateforme'
         }
       },
-      {
-        path: "appointmentsDoctors/:hospitalId/:doctorId",
-        component: AppointmentsDoctorComponent,
-        data: {
-          breadcrumb: 'Autorisations',
-          title: 'Docteurs | Rendez-vous'
-        }
-      },
+     
     // ]
   // }
 ];

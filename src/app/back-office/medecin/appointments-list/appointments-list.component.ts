@@ -73,19 +73,16 @@ ngOnInit(): void {
     this.day = history.state.date;
     this.hospitalId=history.state.hospitalId;
     this.specialityId=history.state.specialityId;
-    console.log(history.state.hospitalId);
     
     this.loadAppointmentsByAvailability(); 
 
     this.apiService.getAutorities().subscribe(response=>{
 
       this.autorities=response
-      console.log(response);
     })
     
     this.apiService.getSecretary(this.hospitalId,this.specialityId).subscribe(response=>{
      this.secretaries=response;
-
      
     })
 
@@ -109,7 +106,6 @@ allow(autority:any){
   }).then((result) => {
     if (result.isConfirmed) {
       this.apiService.postAutority(this.secretaryId,autority.id,this.doctorId).subscribe(response=>{
-       console.log(response);
        if (response.success) {
         Swal.fire({
           title: 'Droit autorisé',
@@ -177,7 +173,6 @@ confirmAppointment(appointment: any) {
 
   postponeAppointment(id: any,newDate:any) {
     this.apiService.postponeAppointment(id,newDate).subscribe(response=>{
-      console.log(response);
       
       for (let index = 0; index < this.appointments.length; index++) {
         const element = this.appointments[index]['id'];
@@ -286,7 +281,6 @@ deleteAppointment(id: any) {
 }
 
  followAppointment(appointment: any) {
- console.log(appointment);
 
   this.apiService.getAvailabilitiesByDoctorAndHospital(this.doctorId,this.hospitalId).subscribe(response=>{
     this.availabilities=response; 
@@ -349,7 +343,6 @@ deleteAppointment(id: any) {
        
         this.formattedDateFollow = this.datePipe.transform(result.value.selectedDay, 'yyyy/MM/dd');
         this.apiService.followAppointment(appointment.id,this.formattedDateFollow).subscribe(response=>{
-                console.log(response);
                 
          });
 
