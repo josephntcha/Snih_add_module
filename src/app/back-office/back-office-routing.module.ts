@@ -46,6 +46,9 @@ const routes: Routes = [
   },
   {
     path: "medecin-dashboard",
+    data: {
+      breadcrumb: 'Medecin',
+    },
     loadChildren: () => import('./medecin/medecin-routing.module').then(module => module.MedecinRoutingModule)
   },
   // {

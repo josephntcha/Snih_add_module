@@ -1,11 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-<<<<<<< HEAD
-import { SecretaryComponent } from './secretary/secretary.component';
-
-const routes: Routes = [
-  {
-=======
 import { HospitalsComponent } from './hospitals/hospitals.component';
 import { SpecialitiesComponent } from './specialities/specialities.component';
 import { RolesComponent } from './roles/roles.component';
@@ -17,8 +11,8 @@ import { UpdateUsersComponent } from './update-users/update-users.component';
 import { BuildingsComponent } from './buildings/buildings.component';
 import { RoomsComponent } from './rooms/rooms.component';
 import { SettingsComponent } from '../settings/settings.component';
-import { SecretaryComponent } from '../secretary/secretary.component';
-import { AppointmentsDoctorComponent } from '../appointments-doctor/appointments-doctor.component';
+import { SecretaryComponent } from './secretary/secretary.component';
+import { AppointmentsDoctorComponent } from './appointments-doctor/appointments-doctor.component';
 
 const routes: Routes = [
   {
@@ -110,7 +104,6 @@ const routes: Routes = [
     }
   },
   {
->>>>>>> 6876362c79d82faa987c1edaa016392e17ea6907
     path: "staff-dashboard",
     component: SecretaryComponent,
     data: {
@@ -118,17 +111,14 @@ const routes: Routes = [
       title: 'Docteurs | Rendez-vous'
     }
   },
-<<<<<<< HEAD
-=======
   {
-    path: "appointmentsDoctors/:hospitalId/:doctorId",
+    path: "doctor-appointments",
     component: AppointmentsDoctorComponent,
     data: {
-      breadcrumb: 'Autorisations',
+      breadcrumb: 'liste des RDV',
       title: 'Docteurs | Rendez-vous'
     }
   },
->>>>>>> 6876362c79d82faa987c1edaa016392e17ea6907
 ];
 
 @NgModule({
