@@ -32,6 +32,7 @@ import { PatientConnexionComponent } from './patient-connexion/patient-connexion
 import { PatientDashboardComponent } from './patient-dashboard/patient-dashboard.component';
 import { KnownDoctorComponent } from './known-doctor/known-doctor.component';
 import { PatientMedicalRecordComponent } from './patient-medical-record/patient-medical-record.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import { PatientMedicalRecordComponent } from './patient-medical-record/patient-
     PatientDashboardComponent,
     KnownDoctorComponent,
     PatientMedicalRecordComponent,
+    LandingPageComponent
   ],
   imports: [
     NgFor,
@@ -69,6 +71,7 @@ import { PatientMedicalRecordComponent } from './patient-medical-record/patient-
     NzPaginationModule,
     NzModalModule,
     NzSpaceModule,
+    NzDropDownModule,
     FormsModule,
     RouterLink,
     RouterOutlet,

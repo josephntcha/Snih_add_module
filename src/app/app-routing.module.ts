@@ -13,10 +13,10 @@ const routes: Routes = [
     loadChildren: () => import('./auth/auth-routing.module').then(module => module.AuthRoutingModule)
   },
   {
-    path: "Administration",
+    path: "back-office",
     component: BackOfficeComponent,
     data: {
-      breadcrumb: 'Administration',
+      breadcrumb: 'back-office',
     },
     loadChildren: () => import('./back-office/back-office-routing.module').then(module => module.BackOfficeRoutingModule)
   },
