@@ -70,28 +70,33 @@
     <nz-layout >
         <nz-sider nzTheme="light" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="200" [nzCollapsedWidth]="80">
                 <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
-                    @if (authService.isSuperAdmin()) {
-                        <li [nzMatchRouter]="true" [nzSelected]="activeMenu === 'dashboard'" (click)="toggleMenu('dashboard')" nz-menu-item nz-tooltip [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''" [nzTooltipPlacement]="'right'" class="dashboard-icon">
-                            <span nz-icon nzType="dashboard"></span>
-                            <span ac routerLink="super-admin-dashboard">Dashboard</span>
-                        </li>
-                    }
-                    @else if (authService.isAdmin()) {
-                        <li [nzMatchRouter]="true" [nzSelected]="activeMenu === 'dashboard'" (click)="toggleMenu('dashboard')" nz-menu-item nz-tooltip [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''" [nzTooltipPlacement]="'right'" class="dashboard-icon">
-                            <span nz-icon nzType="dashboard"></span>
-                            <span routerLink="admin-dashboard">Dashboard</span>
-                        </li>
-                    }
+                   
                     
-                    <li [nzMatchRouter]="true" [nzSelected]="activeMenu === 'tenants'" (click)="toggleMenu('tenants')" nz-menu-item nz-tooltip [nzTooltipTitle]="isCollapsed ? 'Tenants' : ''" [nzTooltipPlacement]="'right'" class="meni-cion">
+                    <!-- <li [nzMatchRouter]="true" [nzSelected]="activeMenu === 'tenants'" (click)="toggleMenu('tenants')" nz-menu-item nz-tooltip [nzTooltipTitle]="isCollapsed ? 'Tenants' : ''" [nzTooltipPlacement]="'right'" class="meni-cion">
                         <span nz-icon nzType="menu"></span>
                         <span>Tenants</span>
-                    </li>
+                    </li> -->
                     <li nz-submenu [nzOpen]="activeMenu ==='Administration'" (nzOpenChange)="toggleMenu('Administration')" nzTitle="Administration" nzIcon="windows">
                         <ul>
                             @if (authService.isAdmin() || authService.isSuperAdmin()) {
-                                <li [nzMatchRouter]="true" nz-menu-item routerLink="roles">Roles</li>
-                                <li [nzMatchRouter]="true" nz-menu-item routerLink="users">Users</li>
+                                @if (authService.isSuperAdmin()) {
+                                    <!-- <li [nzMatchRouter]="true" [nzSelected]="activeMenu === 'dashboard'" (click)="toggleMenu('dashboard')" nz-menu-item nz-tooltip [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''" [nzTooltipPlacement]="'right'" class="dashboard-icon">
+                                        <span nz-icon nzType="dashboard"></span>
+                                        <span ac routerLink="super-admin-dashboard">Dashboard</span>
+                                    </li> -->
+
+                                    <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/Administration/super-admin-dashboard">Dashboard</li>
+                                }
+                                @else if (authService.isAdmin()) {
+                                    <!-- <li [nzMatchRouter]="true" [nzSelected]="activeMenu === 'dashboard'" (click)="toggleMenu('dashboard')" nz-menu-item nz-tooltip [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''" [nzTooltipPlacement]="'right'" class="dashboard-icon">
+                                        <span nz-icon nzType="dashboard"></span>
+                                        <span routerLink="admin-dashboard">Dashboard</span>
+                                    </li> -->
+                                    
+                                    <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/Administration/admin-dashboard">Dashboard</li>
+                                }
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/Administration/roles">Roles</li>
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/Administration/users">Users</li>
 
                             }
                             @if (authService.isDoctor()) {
@@ -108,14 +113,14 @@
                     <li nz-submenu [nzOpen]="activeMenu === 'settings'" (nzOpenChange)="toggleMenu('settings')" nzTitle="Paramétrage" nzIcon="setting">
                         <ul>
                             @if (authService.isAdmin() || authService.isSuperAdmin()) {
-                                <li [nzMatchRouter]="true" nz-menu-item routerLink="hospitals">Hospitals</li>
-                                <li [nzMatchRouter]="true" nz-menu-item routerLink="specialities">Specalities</li>
-                                <li [nzMatchRouter]="true" nz-menu-item routerLink="buildings">Bâtiments</li>
-                                <!-- <li [nzMatchRouter]="true" nz-menu-item routerLink="rooms">Salles</li> -->
-                                <li [nzMatchRouter]="true" nz-menu-item routerLink="settings">Settings</li>
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/settings/hospitals">Hospitals</li>
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/settings/specialities">Specalities</li>
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/settings/buildings">Bâtiments</li>
+                                <!-- <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/settings/rooms">Salles</li> -->
+                                <!-- <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/settings">Settings</li> -->
                             }
                             @if (authService.isDoctor()) {
-                                <li [nzMatchRouter]="true" nz-menu-item routerLink="medical-records">Dossiers médicaux</li>
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/medecin/medical-records">Dossiers médicaux</li>
                             }                    
                         </ul>
                     </li>

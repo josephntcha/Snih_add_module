@@ -29,6 +29,11 @@ import { AppointmentsListComponent } from './appointments-list/appointments-list
 import { AvailabilityComponent } from './availability/availability.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { CreateAvailabilityComponent } from './create-availability/create-availability.component';
+import { MedicalRecordComponent } from './medical-record/medical-record.component';
+import { MedicalRecordAnalyseResultsModalComponent } from './medical-record-analyse-results-modal/medical-record-analyse-results-modal.component';
+import { MedicalRecordConstantsModalComponent } from './medical-record-constants-modal/medical-record-constants-modal.component';
+import { InfoMedicalRecordComponent } from './info-medical-record/info-medical-record.component';
+import { NzSpaceModule } from 'ng-zorro-antd/space';
 
 
 @NgModule({
@@ -36,7 +41,11 @@ import { CreateAvailabilityComponent } from './create-availability/create-availa
     CalendarComponent,
     AppointmentsListComponent,
     AvailabilityComponent,
-    CreateAvailabilityComponent
+    CreateAvailabilityComponent,
+    MedicalRecordComponent,
+    MedicalRecordAnalyseResultsModalComponent,
+    MedicalRecordConstantsModalComponent,
+    InfoMedicalRecordComponent
   ],
   imports: [
     RouterLink,
@@ -66,6 +75,7 @@ import { CreateAvailabilityComponent } from './create-availability/create-availa
     NzToolTipModule,
     NzModalModule,
     NzFormModule,
+    NzSpaceModule
   ]
 })
 export class MedecinModule {}

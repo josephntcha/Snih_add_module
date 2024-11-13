@@ -1,36 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HospitalsComponent } from './hospitals/hospitals.component';
-import { SpecialitiesComponent } from './specialities/specialities.component';
 import { RolesComponent } from './roles/roles.component';
 import { NewPersonalComponent } from './new-personal/new-personal.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
 import { SuperAdminDashboardComponent } from './super-admin-dashboard/super-admin-dashboard.component';
 import { UsersComponent } from './users/users.component';
 import { UpdateUsersComponent } from './update-users/update-users.component';
-import { BuildingsComponent } from './buildings/buildings.component';
-import { RoomsComponent } from './rooms/rooms.component';
-import { SettingsComponent } from '../settings/settings.component';
 import { SecretaryComponent } from './secretary/secretary.component';
 import { AppointmentsDoctorComponent } from './appointments-doctor/appointments-doctor.component';
 
 const routes: Routes = [
-  {
-    path: "hospitals", 
-    component: HospitalsComponent, 
-    data: {
-      breadcrumb: 'hôpitaux',
-      title: 'Hôpitaux | Gestion des hôpitaux'
-    }
-  },
-  {
-    path: "specialities",
-    component: SpecialitiesComponent,
-    data: {
-      breadcrumb: 'spécialités',
-      title: 'Spécialités | Gestion des spécialités'
-    }
-  },
   {
     path: "roles", 
     component: RolesComponent,
@@ -77,30 +56,6 @@ const routes: Routes = [
     data: {
       breadcrumb: 'Utilistateurs',
       title: 'Utilistateurs | Mise à jour de compte utilistateur'
-    }
-  },
-  {
-    path: "buildings",
-    component: BuildingsComponent,
-    data: {
-      breadcrumb: 'disponibilités',
-      title: 'Disponibilités | Liste des disponibilités'
-    }
-  },
-  {
-    path: "buildings/:buildingId/rooms",
-    component: RoomsComponent,
-    data: {
-      breadcrumb: 'salles',
-      title: 'Salles | Gestion des salles des bâtiments'
-    }
-  },
-  {
-    path: "settings",
-    component: SettingsComponent,
-    data: {
-      breadcrumb: 'paramètres',
-      title: 'Paramètres | Paramétrage de la plateforme'
     }
   },
   {

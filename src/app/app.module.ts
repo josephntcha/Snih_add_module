@@ -13,7 +13,6 @@ import { provideHttpClient } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
 import { AuthModule } from './auth/auth.module';
 import { BackOfficeModule } from './back-office/back-office.module';
-import { MedicalRecordModule } from './back-office/medical-record/medical-record.module';
 import { MedecinModule } from './back-office/medecin/medecin.module';
 import { FrontOfficeModule } from './front-office/front-office.module';
 
@@ -28,7 +27,6 @@ registerLocaleData(en);
     BackOfficeModule,
     MedecinModule,
     FrontOfficeModule,
-    MedicalRecordModule,
     
     BrowserModule,
     AppRoutingModule,

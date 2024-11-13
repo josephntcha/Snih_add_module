@@ -50,4 +50,7 @@
     font-weight: bolder !important;
   }
   
+  nz-form-item button {
+    margin-left: 8px;
+  }
     
