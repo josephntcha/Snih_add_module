@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TakeAppointmentComponent } from './components/take-appointment/take-appointment.component';
-import { PatientConnexionComponent } from './components/patient-connexion/patient-connexion.component';
-import { KnownDoctorComponent } from './components/known-doctor/known-doctor.component';
-import { PatientDashboardComponent } from './components/patient-dashboard/patient-dashboard.component';
+import { TakeAppointmentComponent } from './take-appointment/take-appointment.component';
+import { PatientConnexionComponent } from './patient-connexion/patient-connexion.component';
+import { PatientDashboardComponent } from './patient-dashboard/patient-dashboard.component';
+import { KnownDoctorComponent } from './known-doctor/known-doctor.component';
+import { PatientMedicalRecordComponent } from './patient-medical-record/patient-medical-record.component';
 
 const routes: Routes = [
     {
@@ -21,8 +22,12 @@ const routes: Routes = [
       component: KnownDoctorComponent,
     },
     {
-      path: "patient-dashboard",
+      path: "patient-dashboard/:patientId",
       component: PatientDashboardComponent,
+    },
+    {
+      path: "patient-medical-record/:patientId",
+      component: PatientMedicalRecordComponent,
     },
   
 ];

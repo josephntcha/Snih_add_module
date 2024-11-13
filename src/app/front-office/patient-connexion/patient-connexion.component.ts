@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { ApiServiceService } from '../../../back-office/services/api-service.service';
-import { AuthService } from '../../../core/services/auth.service';
+import { ApiServiceService } from '../../back-office/services/api-service.service';
+import { AuthService } from '../../core/services/auth.service';
+import { log } from 'ng-zorro-antd/core/logger';
 
 @Component({
   selector: 'app-patient-connexion',
@@ -67,6 +68,7 @@ if (this.form1.valid) {
    if (this.form2.valid) {
     this.apiService.postLogin(this.username,this.form2.get("code2")?.value).subscribe({
       next: (response)=>{
+        console.log(response);
         const patientId=this.authService.userId;           
         this.route.navigate(['/patient-dashboard',patientId]);   
       },
