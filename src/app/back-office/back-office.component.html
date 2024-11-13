@@ -95,7 +95,7 @@
 
                             }
                             @if (authService.isDoctor()) {
-                                <li [nzMatchRouter]="true" nz-menu-item [nzSelected] routerLink="/Administration/doctor-dashboard">Calendrier</li>
+                                <li [nzMatchRouter]="true" nz-menu-item [nzSelected] routerLink="/Administration/medecin-dashboard/calendar">Calendrier</li>
                                 <li [nzMatchRouter]="true" nz-menu-item routerLink="availability">Gestion disponibilité</li>
                             }
                             @if (authService.isSecretary()) {

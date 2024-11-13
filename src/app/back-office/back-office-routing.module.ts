@@ -12,18 +12,21 @@ import { AdminDashboardComponent } from './administration/admin-dashboard/admin-
 import { NewPersonalComponent } from './administration/new-personal/new-personal.component';
 import { RolesComponent } from './administration/roles/roles.component';
 import { UpdateUsersComponent } from './administration/update-users/update-users.component';
-import { SecretaryComponent } from './secretary/secretary.component';
-import { AppointmentsDoctorComponent } from './appointments-doctor/appointments-doctor.component';
+import { AppointmentsDoctorComponent } from './administration/appointments-doctor/appointments-doctor.component';
 
 
 const routes: Routes = [
   {
-    path: "Administration", 
-    component: BackOfficeComponent,
-    data: {
-      breadcrumb: "Administration"
-    },
-      children: [
+    path: "medecin-dashboard",
+    loadChildren: () => import('./medecin/medecin-routing.module').then(module => module.MedecinRoutingModule)
+  },
+  // {
+  //   path: "Administration", 
+  //   component: BackOfficeComponent,
+  //   data: {
+  //     breadcrumb: "Administration"
+  //   },
+  //     children: [
       {
         path: "hospitals", 
         component: HospitalsComponent, 
@@ -113,14 +116,6 @@ const routes: Routes = [
         }
       },
       {
-        path: "staff-dashboard",
-        component: SecretaryComponent,
-        data: {
-          breadcrumb: 'Sécretariat',
-          title: 'Docteurs | Rendez-vous'
-        }
-      },
-      {
         path: "appointmentsDoctors/:hospitalId/:doctorId",
         component: AppointmentsDoctorComponent,
         data: {
@@ -128,8 +123,8 @@ const routes: Routes = [
           title: 'Docteurs | Rendez-vous'
         }
       },
-    ]
-  }
+    // ]
+  // }
 ];
 
 @NgModule({

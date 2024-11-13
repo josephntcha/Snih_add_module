@@ -7,15 +7,15 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { CreateAvailabilityComponent } from './create-availability/create-availability.component';
 
 const routes: Routes = [
-  {
-    path: "Administration", 
-    component: BackOfficeComponent,
-    data: {
-      breadcrumb: "Administration"
-    },
-    children:[
+  //{
+    // path: "Administration", 
+    // component: BackOfficeComponent,
+    // data: {
+    //   breadcrumb: "Administration"
+    // },
+    // children:[
       {
-        path: "doctor-dashboard", 
+        path: "calendar", 
         component: CalendarComponent,
         data: {
           breadcrumb: 'Tableau de bard',
@@ -47,8 +47,8 @@ const routes: Routes = [
         }
       },
     ]
-  }
-];
+ // }
+//];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

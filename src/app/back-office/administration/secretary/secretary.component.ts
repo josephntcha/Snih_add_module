@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiServiceService } from '../../services/api-service.service';
-import { AuthService } from '../../services/auth.service';
+import { ApiServiceService } from '../../../services/api-service.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-secretary',

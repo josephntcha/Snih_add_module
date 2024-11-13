@@ -5,30 +5,35 @@ import { PatientConnexionComponent } from './patient-connexion/patient-connexion
 import { PatientDashboardComponent } from './patient-dashboard/patient-dashboard.component';
 import { KnownDoctorComponent } from './known-doctor/known-doctor.component';
 import { PatientMedicalRecordComponent } from './patient-medical-record/patient-medical-record.component';
+import { LandingPageComponent } from './landing-page/landing-page.component';
 
 const routes: Routes = [
-    {
-      path: "rdv",
-      component: TakeAppointmentComponent,
-      
-    },
-    {
-      path: "patient-connexion",
-      component: PatientConnexionComponent,
-      
-    },
-    {
-      path: "je_connais_mon_medecin",
-      component: KnownDoctorComponent,
-    },
-    {
-      path: "patient-dashboard/:patientId",
-      component: PatientDashboardComponent,
-    },
-    {
-      path: "patient-medical-record/:patientId",
-      component: PatientMedicalRecordComponent,
-    },
+  {
+    path: "",
+    component: LandingPageComponent
+  },
+  {
+    path: "rdv",
+    component: TakeAppointmentComponent,
+    
+  },
+  {
+    path: "patient-connexion",
+    component: PatientConnexionComponent,
+    
+  },
+  {
+    path: "je_connais_mon_medecin",
+    component: KnownDoctorComponent,
+  },
+  {
+    path: "patient-dashboard/:patientId",
+    component: PatientDashboardComponent,
+  },
+  {
+    path: "patient-medical-record/:patientId",
+    component: PatientMedicalRecordComponent,
+  },
   
 ];
 
