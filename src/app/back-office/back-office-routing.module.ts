@@ -17,13 +17,13 @@ import { AppointmentsDoctorComponent } from './appointments-doctor/appointments-
 
 
 const routes: Routes = [
-  {
-    path: "Administration", 
-    component: BackOfficeComponent,
-    data: {
-      breadcrumb: "Administration"
-    },
-      children: [
+  // {
+  //   path: "Administration", 
+  //   component: BackOfficeComponent,
+  //   data: {
+  //     breadcrumb: "Administration"
+  //   },
+  //     children: [
       {
         path: "hospitals", 
         component: HospitalsComponent, 
@@ -128,8 +128,8 @@ const routes: Routes = [
           title: 'Docteurs | Rendez-vous'
         }
       },
-    ]
-  }
+    // ]
+  // }
 ];
 
 @NgModule({
