@@ -4,8 +4,8 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import moment from 'moment';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../core/services/auth.service';
-import { ApiServiceService } from '../../services/api-service.service';
+import { AuthService } from '../../../services/auth.service';
+import { ApiServiceService } from '../../../services/api-service.service';
 
 @Component({
   selector: 'app-calendar',

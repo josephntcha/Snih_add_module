@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
-import { ApiServiceService } from '../../services/api-service.service';
+import { ApiServiceService } from '../../../services/api-service.service';
 
 @Component({
   selector: 'app-availability',

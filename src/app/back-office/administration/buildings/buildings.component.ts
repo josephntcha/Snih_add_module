@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Building } from '../../core/models/model';
-import { ApiServiceService } from '../services/api-service.service';
+import { Building } from '../../../models/model';
+import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
-import { FileExportService } from '../../core/services/file-export.service';
+import { AuthService } from '../../../services/auth.service';
+import { FileExportService } from '../../../services/file-export.service';
 import Swal from 'sweetalert2';
 
 @Component({

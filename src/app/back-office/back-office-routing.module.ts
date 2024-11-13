@@ -1,17 +1,17 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BackOfficeComponent } from './back-office.component';
-import { HospitalsComponent } from './hospitals/hospitals.component';
-import { SpecialitiesComponent } from './specialities/specialities.component';
-import { BuildingsComponent } from './buildings/buildings.component';
-import { RoomsComponent } from './rooms/rooms.component';
+import { HospitalsComponent } from './administration/hospitals/hospitals.component';
+import { SpecialitiesComponent } from './administration/specialities/specialities.component';
+import { BuildingsComponent } from './administration/buildings/buildings.component';
+import { RoomsComponent } from './administration/rooms/rooms.component';
 import { SettingsComponent } from './settings/settings.component';
-import { UsersComponent } from './users/users.component';
-import { SuperAdminDashboardComponent } from './super-admin-dashboard/super-admin-dashboard.component';
-import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
-import { NewPersonalComponent } from './new-personal/new-personal.component';
-import { RolesComponent } from './roles/roles.component';
-import { UpdateUsersComponent } from './update-users/update-users.component';
+import { UsersComponent } from './administration/users/users.component';
+import { SuperAdminDashboardComponent } from './administration/super-admin-dashboard/super-admin-dashboard.component';
+import { AdminDashboardComponent } from './administration/admin-dashboard/admin-dashboard.component';
+import { NewPersonalComponent } from './administration/new-personal/new-personal.component';
+import { RolesComponent } from './administration/roles/roles.component';
+import { UpdateUsersComponent } from './administration/update-users/update-users.component';
 import { SecretaryComponent } from './secretary/secretary.component';
 import { AppointmentsDoctorComponent } from './appointments-doctor/appointments-doctor.component';
 

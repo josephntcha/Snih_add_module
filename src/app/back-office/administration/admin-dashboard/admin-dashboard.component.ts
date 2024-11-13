@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Building, Room } from '../../core/models/model';
-import { ApiServiceService } from '../services/api-service.service';
-import { AuthService } from '../../core/services/auth.service';
+import { Building, Room } from '../../../models/model';
+import { ApiServiceService } from '../../../services/api-service.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-admin-dashboard',

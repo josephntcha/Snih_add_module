@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { Room } from '../../core/models/model';
+import { Room } from '../../../models/model';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiServiceService } from '../services/api-service.service';
+import { ApiServiceService } from '../../../services/api-service.service';
 import { ActivatedRoute } from '@angular/router';
-import { FileExportService } from '../../core/services/file-export.service';
-import { AuthService } from '../../core/services/auth.service';
+import { FileExportService } from '../../../services/file-export.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-rooms',

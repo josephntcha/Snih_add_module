@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
-import { AuthModule } from './core/auth/auth.module';
+import { AuthModule } from './auth/auth.module';
 import { BackOfficeModule } from './back-office/back-office.module';
 import { MedicalRecordModule } from './back-office/medical-record/medical-record.module';
 import { MedecinModule } from './back-office/medecin/medecin.module';

@@ -6,7 +6,6 @@ import { LoginComponent } from './core/auth/login/login.component';
 const routes: Routes = [
   {path: "", component: LandingPageComponent},
   { path: 'front-office', loadChildren: () => import('./front-office/front-office.module').then(m => m.FrontOfficeModule) },
-
   // {path: "login", component: LoginComponent}
 ];
 
