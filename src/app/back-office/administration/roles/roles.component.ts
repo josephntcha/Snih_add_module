@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { Role } from '../../core/models/model';
+import { Role } from '../../../models/model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiServiceService } from '../services/api-service.service';
+import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
 
 @Component({

@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
-import { ApiServiceService } from '../../back-office/services/api-service.service';
-import { AuthService } from '../../core/services/auth.service';
+import { ApiServiceService } from '../../services/api-service.service';
+import { AuthService } from '../../services/auth.service';
 import { log } from 'ng-zorro-antd/core/logger';
 
 @Component({

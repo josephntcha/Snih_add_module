@@ -5,8 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import moment from 'moment';
 import Swal from 'sweetalert2';
-import { AuthService } from '../../../core/services/auth.service';
-import { ApiServiceService } from '../../services/api-service.service';
+import { AuthService } from '../../../services/auth.service';
+import { ApiServiceService } from '../../../services/api-service.service';
 
 @Component({
   selector: 'app-appointments-list',

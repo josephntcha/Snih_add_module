@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { ApiServiceService } from '../services/api-service.service';
+import { ApiServiceService } from '../../../services/api-service.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AuthService } from '../../core/services/auth.service';
-import { Speciality, User } from '../../core/models/model';
+import { AuthService } from '../../../services/auth.service';
+import { Speciality, User } from '../../../models/model';
 
 @Component({
   selector: 'app-update-users',

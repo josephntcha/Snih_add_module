@@ -1,9 +1,9 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { InfoMedicalRecord, TypeConstant } from '../../../core/models/model';
+import { InfoMedicalRecord, TypeConstant } from '../../../models/model';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NZ_MODAL_DATA, NzModalService } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { ApiServiceService } from '../../services/api-service.service';
+import { ApiServiceService } from '../../../services/api-service.service';
 import Swal from 'sweetalert2';
 
 @Component({

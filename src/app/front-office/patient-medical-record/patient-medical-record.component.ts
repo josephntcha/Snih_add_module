@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiServiceService } from '../../back-office/services/api-service.service';
+import { ApiServiceService } from '../../services/api-service.service';
 
 @Component({
   selector: 'app-patient-medical-record',

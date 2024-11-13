@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { AuthService } from '../../../core/services/auth.service';
-import { ApiServiceService } from '../../services/api-service.service';
+import { AuthService } from '../../../services/auth.service';
+import { ApiServiceService } from '../../../services/api-service.service';
 
 @Component({
   selector: 'app-create-availability',

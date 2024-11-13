@@ -1,63 +1,101 @@
 import { Component, OnInit } from '@angular/core';
-import { Hospital } from '../../core/models/model';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ApiServiceService } from '../services/api-service.service';
-import { Router } from '@angular/router';
-import { FileExportService } from '../../core/services/file-export.service';
 import Swal from 'sweetalert2';
+import { Speciality } from '../../../models/model';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ApiServiceService } from '../../../services/api-service.service';
+import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { FileExportService } from '../../../services/file-export.service';
 
 @Component({
-  selector: 'app-hospitals',
-  templateUrl: './hospitals.component.html',
-  styleUrl: './hospitals.component.css'
+  selector: 'app-specialities',
+  templateUrl: './specialities.component.html',
+  styleUrl: './specialities.component.css'
 })
-export class HospitalsComponent implements OnInit{
-  listOfData!: Hospital[];
+export class SpecialitiesComponent implements OnInit{
+  listOfData!: Speciality[];
 
   checked = false;
   indeterminate = false;
   setOfCheckedId = new Set<number>();
-  listOfCurrentPageData: readonly Hospital[] = [];
+  listOfCurrentPageData: readonly Speciality[] = [];
 
+  hospitalId!: number;
+  isToFilterByHospital: boolean = false;
+  filterForm!: FormGroup
 
-  hospitalForm!: FormGroup;
+  specialityForm!: FormGroup;
   isVisible = false;
-  hospital: any;
+  speciality: any;
 
 
-  constructor(private apiService: ApiServiceService, 
-              private router: Router, 
-              private fileExport: FileExportService,
-              private fb: FormBuilder){}
+  constructor(
+    private apiService: ApiServiceService, 
+    private router: Router, 
+    private authService: AuthService,
+    private fb: FormBuilder, 
+    private fileExport: FileExportService){}
+
 
 
   ngOnInit(): void {
-    this.getHospitals()
+    this.getConnectedAdminHospital();
+    this.getAllSpecialities()
+    this.filterForm = this.fb.group({
+      filterInput: [null, Validators.required]
+    });
   }
 
+  getConnectedAdminHospital(){
+    this.apiService.getUserById(this.authService.userId).subscribe({
+      next: (response) => {
+        if(response.success){
+          this.hospitalId = response.data.id;
+          // this.getHospitalSpecialities(this.hospitalId);
+        }
+      },error: (err) => {
+        console.log(err.message);
+      }
+    });
+  }
 
-  getHospitals(){
-    this.apiService.getDataHospitals().subscribe({
+  getAllSpecialities(){
+    this.apiService.getDataSpecialities().subscribe({
       next: (data) => {
         this.listOfData = data;
       },error: (err) => {
         console.log(err.message);        
       }
-    })
-  }
-
-
-  initializeForm(){
-    this.hospitalForm = this.fb.group({
-      name: ['', Validators.required],
-      location: ['', Validators.required]
     });
   }
 
-  patchForm(hospital: Hospital){
-    this.hospitalForm.patchValue({
-      name: hospital.name,
-      location: hospital.location
+
+  getHospitalSpecialities(hospitalId: number){
+    if(this.hospitalId){
+      this.apiService.getSpecialitiesByHospital(this.hospitalId).subscribe({
+        next: (data) => {
+          if(data.success){
+            this.listOfData = data.data;
+          }          
+        },error: (err) => {
+          console.log(err.message);        
+        }
+      });
+    }
+    
+  }
+
+
+
+  initializeForm(){
+    this.specialityForm = this.fb.group({
+      name: ['', Validators.required],
+    });
+  }
+
+  patchForm(speciality: Speciality){
+    this.specialityForm.patchValue({
+      name: speciality.name
     });
   }
 
@@ -71,21 +109,20 @@ export class HospitalsComponent implements OnInit{
     this.isVisible = false;
   }
 
-  editHospital(existedHospital: Hospital){
-    this.hospital = existedHospital;
+  editSpeciality(existedSpeciality: Speciality){
+    this.speciality = existedSpeciality;
     this.showModal()
-    this.patchForm(existedHospital);
+    this.patchForm(existedSpeciality);
   }
 
 
   onSubmit() {
-    if (this.hospitalForm.valid) {
+    if (this.specialityForm.valid) {
       const data = {
-        name: this.hospitalForm.value.name,
-        location: this.hospitalForm.value.location
+        name: this.specialityForm.value.name
       }
-      if(this.hospital){
-        this.apiService.updateHospital(this.hospital.id, data).subscribe({
+      if(this.speciality){
+        this.apiService.updateSpeciality(this.speciality.id, data).subscribe({
           next: (response) => {
             if(response.success){
               Swal.fire({
@@ -97,9 +134,9 @@ export class HospitalsComponent implements OnInit{
                 timerProgressBar: true 
               });
               this.isVisible = false;
-              this.hospital = null;
-              this.getHospitals()
-              this.router.navigateByUrl("/Administration/hospitals");
+              this.speciality = null;
+              this.getAllSpecialities();
+              this.router.navigateByUrl("/Administration/specialities");
             }else{
               Swal.fire({
                 title: response.errorMessage,
@@ -115,11 +152,11 @@ export class HospitalsComponent implements OnInit{
           }
         })
       }else{
-        this.apiService.postHospital(data).subscribe({
+        this.apiService.postSpeciality(data).subscribe({
           next: response => {
             if (response.success) {
               Swal.fire({
-                title: 'H$opital créé avec succès',
+                title: 'Spécialité créée avec succès',
                 text: '',
                 icon: 'success',
                 timer: 3500,
@@ -127,7 +164,7 @@ export class HospitalsComponent implements OnInit{
                 timerProgressBar: true 
               });
               this.isVisible = false;
-              this.getHospitals()
+              this.getAllSpecialities();
             }else{
               Swal.fire({
                 title: response.errorMessage,
@@ -156,12 +193,11 @@ export class HospitalsComponent implements OnInit{
 
   resetForm(event: Event){
     event.preventDefault();
-    this.hospitalForm.reset();
+    this.specialityForm.reset();
   }
 
 
-
-  onCurrentPageDataChange($event: readonly Hospital[]): void {
+  onCurrentPageDataChange($event: readonly Speciality[]): void {
     this.listOfCurrentPageData = $event;
     this.refreshCheckedStatus();
   }
@@ -193,16 +229,26 @@ export class HospitalsComponent implements OnInit{
   }
 
 
-  exportToFile(){
-    this.fileExport.exportToExcel('hospitals', this.listOfData);
+  filterSpecialities(){
+    if(this.filterForm.controls['filterInput'].value == true){
+      this.isToFilterByHospital = true
+      this.getHospitalSpecialities(this.hospitalId);
+    }else if(this.filterForm.controls['filterInput'].value == false){
+      this.isToFilterByHospital = false;
+      this.getAllSpecialities();
+    }
   }
 
 
+  exportToFile(){
+    this.fileExport.exportToExcel('specialities', this.listOfData);
+  }
+  
 
-  deleteHospital(hospitalId: number){
+  deleteSpeciality(specialityId: number){
     Swal.fire({
       title: 'Suppression',
-      text: "Voulez-vous vraiment supprimer cet hôpital ?",
+      text: "Voulez-vous vraiment supprimer cette spécialité ?",
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
@@ -211,17 +257,16 @@ export class HospitalsComponent implements OnInit{
       cancelButtonText: 'Annuler'
     }).then((result) => {
       if (result.isConfirmed) {
-        this.apiService.deleteHospital(hospitalId).subscribe(response => {
+        this.apiService.deleteSpeciality(specialityId).subscribe( response =>{
           Swal.fire({
-            title: "Hôpital supprimé avec succès !",
+            title: "Spécialité supprimée avec succès !",
             text: '',
             icon: 'success',
             timer: 3500,
             showConfirmButton: false,
             timerProgressBar: true 
           });
-          this.getHospitals()
-          this.router.navigateByUrl("/Administration/hospitals");
+          this.getAllSpecialities();
         });
       }
     });

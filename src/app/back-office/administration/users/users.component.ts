@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { User } from '../../core/models/model';
-import { ApiServiceService } from '../services/api-service.service';
+import { User } from '../../../models/model';
+import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
-import { FileExportService } from '../../core/services/file-export.service';
+import { FileExportService } from '../../../services/file-export.service';
 
 @Component({
   selector: 'app-users',
