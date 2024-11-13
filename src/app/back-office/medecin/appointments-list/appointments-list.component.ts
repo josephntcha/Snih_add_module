@@ -2,11 +2,11 @@ import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ApiServiceService } from '../../../services/api-service.service';
 import { jwtDecode } from 'jwt-decode';
 import moment from 'moment';
 import Swal from 'sweetalert2';
-import { AuthService } from '../../../../core/services/auth.service';
+import { AuthService } from '../../../core/services/auth.service';
+import { ApiServiceService } from '../../services/api-service.service';
 
 @Component({
   selector: 'app-appointments-list',

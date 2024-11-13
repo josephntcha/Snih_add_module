@@ -2,10 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule, NgFor, NgIf } from '@angular/common';
 
 import { MedecinRoutingModule } from './medecin-routing.module';
-import { CalendarComponent } from './components/calendar/calendar.component';
-import { AppointmentsListComponent } from './components/appointments-list/appointments-list.component';
-import { AvailabilityComponent } from './components/availability/availability.component';
-import { CreateAvailabilityComponent } from './components/create-availability/create-availability.component';
 
 import { NzAvatarModule } from 'ng-zorro-antd/avatar';
 import { NzBadgeModule } from 'ng-zorro-antd/badge';
@@ -29,6 +25,10 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { AppointmentsListComponent } from './appointments-list/appointments-list.component';
+import { AvailabilityComponent } from './availability/availability.component';
+import { CalendarComponent } from './calendar/calendar.component';
+import { CreateAvailabilityComponent } from './create-availability/create-availability.component';
 
 
 @NgModule({

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ApiServiceService } from '../../../services/api-service.service';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
+import { ApiServiceService } from '../../services/api-service.service';
 
 @Component({
   selector: 'app-availability',

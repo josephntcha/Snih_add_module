@@ -35,9 +35,9 @@ import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzModalModule } from 'ng-zorro-antd/modal';
-import { SecretaryComponent } from './components/secretary/secretary.component';
-import { AppointmentsDoctorComponent } from './components/appointments-doctor/appointments-doctor.component';
 import { UpdateUsersComponent } from './update-users/update-users.component';
+import { AppointmentsDoctorComponent } from './appointments-doctor/appointments-doctor.component';
+import { SecretaryComponent } from './secretary/secretary.component';
 
 
 @NgModule({

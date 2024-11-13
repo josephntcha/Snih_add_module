@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
-import { ApiServiceService } from '../../services/api-service.service';
-import { AuthService } from '../../../core/services/auth.service';
+import { AuthService } from '../../core/services/auth.service';
+import { ApiServiceService } from '../services/api-service.service';
 
 @Component({
   selector: 'app-appointments-doctor',
