@@ -1,19 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BackOfficeComponent } from './back-office.component';
-import { HospitalsComponent } from './components/hospitals/hospitals.component';
-import { SpecialitiesComponent } from './components/specialities/specialities.component';
-import { BuildingsComponent } from './components/buildings/buildings.component';
-import { RoomsComponent } from './components/rooms/rooms.component';
-import { SettingsComponent } from './components/settings/settings.component';
-import { UsersComponent } from './components/users/users.component';
-import { SuperAdminDashboardComponent } from './components/super-admin-dashboard/super-admin-dashboard.component';
-import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
-import { NewPersonalComponent } from './components/new-personal/new-personal.component';
-import { RolesComponent } from './components/roles/roles.component';
-import { UpdateUsersComponent } from './components/update-users/update-users.component';
 import { SecretaryComponent } from './components/secretary/secretary.component';
 import { AppointmentsDoctorComponent } from './components/appointments-doctor/appointments-doctor.component';
+import { HospitalsComponent } from './hospitals/hospitals.component';
+import { SpecialitiesComponent } from './specialities/specialities.component';
+import { BuildingsComponent } from './buildings/buildings.component';
+import { RoomsComponent } from './rooms/rooms.component';
+import { SettingsComponent } from './settings/settings.component';
+import { UsersComponent } from './users/users.component';
+import { SuperAdminDashboardComponent } from './super-admin-dashboard/super-admin-dashboard.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { NewPersonalComponent } from './new-personal/new-personal.component';
+import { RolesComponent } from './roles/roles.component';
+import { UpdateUsersComponent } from './update-users/update-users.component';
+
 
 const routes: Routes = [
   {

@@ -3,11 +3,11 @@ import { CommonModule } from '@angular/common';
 
 import { BackOfficeRoutingModule } from './back-office-routing.module';
 import { BackOfficeComponent } from './back-office.component';
-import { HospitalsComponent } from './components/hospitals/hospitals.component';
-import { SpecialitiesComponent } from './components/specialities/specialities.component';
-import { RoomsComponent } from './components/rooms/rooms.component';
-import { BuildingsComponent } from './components/buildings/buildings.component';
-import { SettingsComponent } from './components/settings/settings.component';
+import { HospitalsComponent } from './hospitals/hospitals.component';
+import { SpecialitiesComponent } from './specialities/specialities.component';
+import { RoomsComponent } from './rooms/rooms.component';
+import { BuildingsComponent } from './buildings/buildings.component';
+import { SettingsComponent } from './settings/settings.component';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
 import { NzIconModule } from 'ng-zorro-antd/icon';
@@ -24,20 +24,20 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink, RouterOutlet } from '@angular/router';
-import { UsersComponent } from './components/users/users.component';
-import { RolesComponent } from './components/roles/roles.component';
-import { SuperAdminDashboardComponent } from './components/super-admin-dashboard/super-admin-dashboard.component';
-import { AdminDashboardComponent } from './components/admin-dashboard/admin-dashboard.component';
-import { NewPersonalComponent } from './components/new-personal/new-personal.component';
+import { UsersComponent } from './users/users.component';
+import { RolesComponent } from './roles/roles.component';
+import { SuperAdminDashboardComponent } from './super-admin-dashboard/super-admin-dashboard.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { NewPersonalComponent } from './new-personal/new-personal.component';
 import { NzFormModule } from 'ng-zorro-antd/form';
 import { NzTableModule } from 'ng-zorro-antd/table';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzTagModule } from 'ng-zorro-antd/tag';
 import { NzPaginationModule } from 'ng-zorro-antd/pagination';
 import { NzModalModule } from 'ng-zorro-antd/modal';
-import { UpdateUsersComponent } from './components/update-users/update-users.component';
 import { SecretaryComponent } from './components/secretary/secretary.component';
 import { AppointmentsDoctorComponent } from './components/appointments-doctor/appointments-doctor.component';
+import { UpdateUsersComponent } from './update-users/update-users.component';
 
 
 @NgModule({

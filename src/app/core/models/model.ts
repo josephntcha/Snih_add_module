@@ -12,6 +12,7 @@ export interface Analysis_Result {
 export interface TypeConstant {
   id: number;
   name: string;
+  unit: string;
   constant: any;
 }
 
@@ -72,5 +73,11 @@ export interface Building {
   id: number;
   name: string;
   roomDTO: Room[]
+}
+
+export interface MedicalRecord {
+  id: number;
+  code_dossier: string;
+  date_creation: Date
 }
   

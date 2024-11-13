@@ -448,6 +448,21 @@ export class ApiServiceService {
   }
 
   /**
+     * Find a medical record by the patient firstName and lastName
+     * @param firstName 
+     * @param lastName 
+     * @returns 
+     */
+  searchMedicalRecordByCode(code: string): Observable<any>{
+    const headers = this.createAuthorization();
+    if (headers) {
+      return this.http.get<any>(`${this.apiUrl}/api/medical-records?code=${code}`, {headers})
+    }else{
+      return throwError(()=>new Error("Autorization non accordée"));
+    }
+  }
+
+  /**
    * Get all type of constants
    * @returns 
    */

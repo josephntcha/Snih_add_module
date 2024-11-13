@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MedicalRecordComponent } from './components/medical-record/medical-record.component';
+import { MedicalRecordComponent } from './medical-record/medical-record.component';
 import { BackOfficeComponent } from '../back-office.component';
-import { InfoMedicalRecordComponent } from './components/info-medical-record/info-medical-record.component';
+import { InfoMedicalRecordComponent } from './info-medical-record/info-medical-record.component';
 
 const routes: Routes = [
   {

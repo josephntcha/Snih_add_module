@@ -1,0 +1,61 @@
+<nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Prise de constantes" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+      <form nz-form [formGroup]="recordForm" (ngSubmit)="onSubmit()">
+        <div formArrayName="constants">
+          <nz-space nzDirection="vertical" [nzSize]="16" style="width: 100%">
+            <ng-container *ngFor="let constantCtrl of constant.controls; let i = index" [formGroupName]="i">
+              <div *nzSpaceItem nz-row [nzGutter]="16">
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label>Type de Constante</nz-form-label>
+                    <nz-form-control [nzErrorTip]="'Veuillez sélectionner une constante'">
+                      <nz-select formControlName="typeConstant" nzPlaceHolder="Sélectionnez une constante">
+                        <nz-option 
+                          *ngFor="let typeConstant of getAvailableConstants(i)" 
+                          [nzValue]="typeConstant.id" 
+                          [nzLabel]="typeConstant.name">
+                        </nz-option>
+                      </nz-select>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+                
+                <div nz-col [nzSpan]="12">
+                  <nz-form-item>
+                    <nz-form-label>Valeur</nz-form-label>
+                    <nz-form-control [nzErrorTip]="'Veuillez entrer une valeur'">
+                      <nz-input-group [nzAddOnAfter]="getSelectedConstantUnit(i)">
+                        <input nz-input formControlName="valeur" placeholder="Valeur" />
+                      </nz-input-group>
+                    </nz-form-control>
+                  </nz-form-item>
+                </div>
+              </div>
+            </ng-container>
+          </nz-space>
+
+          <div style="margin-top: 16px;">
+            <button 
+              *ngIf="constant.length < allTypeConstants.length"
+              nz-button 
+              nzType="dashed"
+              (click)="addAnotherConstant()"
+              style="width: 100%">
+              <span nz-icon nzType="plus"></span>
+              Ajouter Constante
+            </button>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <button 
+            nz-button 
+            nzType="primary" 
+            [disabled]="recordForm.invalid"
+            type="submit">
+            Envoyer
+          </button>
+        </div>
+      </form>
+    </ng-container>
+  </nz-modal>
