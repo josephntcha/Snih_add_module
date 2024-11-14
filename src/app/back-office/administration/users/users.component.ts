@@ -93,7 +93,7 @@ export class UsersComponent implements OnInit{
 
 
   editUser(userId: number){
-    this.router.navigateByUrl("/Administration/users/" + userId);
+    this.router.navigateByUrl("/back-office/Administration/users/" + userId);
   }
 
 

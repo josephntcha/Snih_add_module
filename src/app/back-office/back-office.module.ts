@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { BackOfficeRoutingModule } from './back-office-routing.module';
 import { BackOfficeComponent } from './back-office.component';
-import { HospitalsComponent } from './administration/hospitals/hospitals.component';
-import { SpecialitiesComponent } from './administration/specialities/specialities.component';
-import { RoomsComponent } from './administration/rooms/rooms.component';
-import { BuildingsComponent } from './administration/buildings/buildings.component';
+import { HospitalsComponent } from './settings/hospitals/hospitals.component';
+import { SpecialitiesComponent } from './settings/specialities/specialities.component';
+import { RoomsComponent } from './settings/rooms/rooms.component';
+import { BuildingsComponent } from './settings/buildings/buildings.component';
 import { SettingsComponent } from './settings/settings.component';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzMenuModule } from 'ng-zorro-antd/menu';

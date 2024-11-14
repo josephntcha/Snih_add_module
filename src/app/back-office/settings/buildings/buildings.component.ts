@@ -99,7 +99,7 @@ export class BuildingsComponent implements OnInit{
   }
 
   viewRooms(buildingId: number){
-    this.router.navigateByUrl(`/Administration/buildings/${buildingId}/rooms`);
+    this.router.navigateByUrl(`/back-office/settings/buildings/${buildingId}/rooms`);
   }
 
 
