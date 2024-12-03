@@ -27,8 +27,8 @@ const routes: Routes = [
     path: "buildings",
     component: BuildingsComponent,
     data: {
-      breadcrumb: 'disponibilités',
-      title: 'Disponibilités | Liste des disponibilités'
+      breadcrumb: 'bâtiments',
+      title: 'Bâtiments | Liste des bâtiments'
     }
   },
   {

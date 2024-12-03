@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { Role } from '../../../models/model';
+import { Permission, Role } from '../../../models/model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-roles',
@@ -12,6 +13,10 @@ import { Router } from '@angular/router';
 })
 export class RolesComponent implements OnInit{
   listOfData!: Role[];
+  canViewList = false;
+  canCreateRole = false;
+  canEditeRole = false;
+  canDeleteRole = false;
 
   checked = false;
   indeterminate = false;
@@ -23,10 +28,11 @@ export class RolesComponent implements OnInit{
   roleId!: number;
 
 
-  constructor(private apiService: ApiServiceService, private router: Router, private fb: FormBuilder){}
+  constructor(private apiService: ApiServiceService, private router: Router, private fb: FormBuilder, private authService: AuthService){}
 
 
   ngOnInit(): void {
+    this.getConnectedUserPermissionsOnComponent();
     this.getRoles()
   }
 
@@ -40,6 +46,42 @@ export class RolesComponent implements OnInit{
       }
     });
   }
+
+
+  getConnectedUserPermissionsOnComponent(){
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Rôles").subscribe({
+      next: (response) => {
+        if(response.success){
+          const currentUserPermissions: Permission[] = response.data;
+          const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+          
+          if(permissionsCodeNames.includes("CREATE_ROLE")){
+            this.canCreateRole = true;
+          }else{
+            this.canCreateRole = false;
+          }
+          if(permissionsCodeNames.includes("VIEW_LIST_ROLES")){
+            this.canViewList = true;
+          }else{
+            this.canViewList = false;
+          }
+          if(permissionsCodeNames.includes("UPDATE_ROLE")){
+            this.canEditeRole = true;
+          }else{
+            this.canEditeRole = false;
+          }
+          if(permissionsCodeNames.includes("DELETE_ROLE")){
+            this.canDeleteRole = true;
+          }else{
+            this.canDeleteRole = false;
+          }
+        }
+      },error: (err) => {
+        console.log(err.message);        
+      }
+    })
+  }
+
 
   initializeForm(){
     this.roleForm = this.fb.group({

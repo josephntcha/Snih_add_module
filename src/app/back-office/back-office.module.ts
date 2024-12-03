@@ -38,6 +38,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { UpdateUsersComponent } from './administration/update-users/update-users.component';
 import { AppointmentsDoctorComponent } from './administration/appointments-doctor/appointments-doctor.component';
 import { SecretaryComponent } from './administration/secretary/secretary.component';
+import { AdministrationModule } from './administration/administration.module';
+import { SettingsModule } from './settings/settings.module';
 
 
 @NgModule({
@@ -56,6 +58,10 @@ import { SecretaryComponent } from './administration/secretary/secretary.compone
     UpdateUsersComponent,
     SecretaryComponent,
     AppointmentsDoctorComponent
+  ],
+  exports: [
+    AdministrationModule,
+    SettingsModule
   ],
   imports: [
     CommonModule,

@@ -7,15 +7,14 @@
     </ng-template>
 </div> -->
 <div class="table-operations">
-    <button (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer une salle</button>
-    <!-- <button routerLink="/Administration/new-room" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer une salle</button> -->
-    <button nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
+    <button *ngIf="canCreateRoom" (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer une salle</button>
+    <button *ngIf="canViewList" nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
 </div>
-<div class="selected-items">
+<div *ngIf="canViewList" class="selected-items">
     {{ setOfCheckedId.size }} éléments sélectionnés
     <a (click)="refreshCheckedStatus()">Rafraîchir</a>
 </div>
-<nz-table 
+<nz-table *ngIf="canViewList"
     #basicTable 
     nzShowSizeChanger
     [nzData]="listOfData"
@@ -30,7 +29,7 @@
             ></th>
             <th>#ID</th>
             <th>Nom</th>
-            <th>Actions</th>
+            <th *ngIf="canEditRoom || canDeleteRoom">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -39,9 +38,9 @@
             <td>{{ data.id }}</td>
             <td>{{ data.room }}</td>
             <td>
-                <a (click)="editRoom(data)">Editer</a>
-                <nz-divider nzType="vertical"></nz-divider>
-                <a (click)="deleteRoom(data.id)">Supprimer</a>
+                <a *ngIf="canEditRoom" (click)="editRoom(data)">Editer</a>
+                <nz-divider *ngIf="canEditRoom" nzType="vertical"></nz-divider>
+                <a *ngIf="canDeleteRoom" (click)="deleteRoom(data.id)">Supprimer</a>
             </td>
         </tr>
     </tbody>
@@ -50,22 +49,20 @@
 
 <nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout de salle" (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
-        <!-- <nz-card> -->
-            <form [formGroup]="roomRorm" (ngSubmit)="onSubmit()">
-                <nz-form-item>
-                    <nz-form-label nzSpan="7" nzRequired>Nom</nz-form-label>
-                    <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                        <input nz-input formControlName="room" placeholder="Nom de la salle">
-                    </nz-form-control>
-                </nz-form-item>
-        
-                <nz-form-item>
-                    <nz-form-control nzOffset="7" nzSpan="12">
-                        <button nz-button nzType="primary" [disabled]="roomRorm.invalid">Soumettre</button>
-                        <button nz-button (click)="resetForm($event)">Réinitialiser</button>
-                    </nz-form-control>
-                </nz-form-item>
-            </form>
-        <!-- </nz-card> -->
+        <form [formGroup]="roomRorm" (ngSubmit)="onSubmit()">
+            <nz-form-item>
+                <nz-form-label nzSpan="7" nzRequired>Nom</nz-form-label>
+                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                    <input nz-input formControlName="room" placeholder="Nom de la salle">
+                </nz-form-control>
+            </nz-form-item>
+    
+            <nz-form-item>
+                <nz-form-control nzOffset="7" nzSpan="12">
+                    <button nz-button nzType="primary" [disabled]="roomRorm.invalid">Soumettre</button>
+                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
     </ng-container>
 </nz-modal>

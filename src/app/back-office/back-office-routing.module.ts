@@ -32,11 +32,11 @@ const routes: Routes = [
     loadChildren: () => import('./administration/administration-routing.module').then(module => module.AdministrationRoutingModule)
   },
   {
-    path: "medecin-dashboard",
+    path: "medecin",
     data: {
       breadcrumb: 'Medecin',
     },
-    loadChildren: () => import('./medecin/medecin-routing.module').then(module => module.MedecinRoutingModule)
+    loadChildren: () => import('./medecin/medecin-routing.module').then(module => module.MedecinRoutingModule)
   },
   {
     path: "settings",

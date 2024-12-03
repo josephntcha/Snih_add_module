@@ -1,13 +1,18 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { Analysis, Building, InfoMedicalRecord, TypeConstant } from '../models/model';
+import { BehaviorSubject, Observable, tap, throwError } from 'rxjs';
+import { Analysis, Building, InfoMedicalRecord, Module, Permission, TypeConstant } from '../models/model';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiServiceService {
   private apiUrl = 'http://127.0.0.1:8080';
+
+  private modulesSubject = new BehaviorSubject<Module[]>([]);
+  public modules$ = this.modulesSubject.asObservable();
+
   constructor(private http: HttpClient) {}
 
 
@@ -719,6 +724,110 @@ export class ApiServiceService {
     const headers = this.createAuthorization();
     if (headers) {
       return this.http.get<any>(`${this.apiUrl}/api/hospitals/${hospitalId}`, {headers});
+    }else{
+      return throwError(()=>new Error("Autorization non accordée"));
+    }
+  }
+
+  /**
+   * Get all accessible module for the connected user
+   * @returns 
+   */
+  loadAccessibleModules(username: string): Observable<any> {
+    const headers = this.createAuthorization();    
+    if (headers != null) {
+      return this.http.get<any>(`${this.apiUrl}/api/modules/hierarchy?username=${username}`, {headers})
+      .pipe(
+        tap(modules => this.modulesSubject.next(modules))
+      );
+    }else{
+      return throwError(()=>new Error("Autorization non accordée"));
+    }
+  }
+
+  /**
+   * Get all permissions
+   * @returns 
+   */
+  getAllPermissions(): Observable<Permission[]> {
+    const headers = this.createAuthorization();
+    if (headers) {
+      return this.http.get<any>(`${this.apiUrl}/api/permissions`, {headers});
+    }else{
+      return throwError(()=>new Error("Autorization non accordée"));
+    }
+  }
+
+  /**
+   * Get permissions a user has on a component
+   * @param userId 
+   * @param componentName 
+   * @returns 
+   */
+  getUserPermissionsOnComponent(userId: number, componentName: string): Observable<any> {
+    const headers = this.createAuthorization();
+    if(headers != null){
+      return this.http.get<any>(`${this.apiUrl}/api/permissions/users/${userId}?componentName=${componentName}`, {headers});
+    }else{
+      return throwError(()=>new Error("Autorization non accordée"));
+    }
+  }
+
+  /**
+   * Grant a permission to a user
+   * @param userId 
+   * @param permissionId 
+   * @returns 
+   */
+  grantPermissionToUser(userId: number, permissionId: number){
+    const headers = this.createAuthorization();
+    if(headers != null){
+      return this.http.post<any>(`${this.apiUrl}/api/permissions/${permissionId}/users/${userId}/grant`, null, {headers});
+    }else{
+      return throwError(()=>new Error("Autorization non accordée"));
+    }
+  }
+
+  /**
+   * Remove a permission from a user
+   * @param userId 
+   * @param permissionId 
+   * @returns 
+   */
+  removeUserPermission(userId: number, permissionId: number){
+    const headers = this.createAuthorization();
+    if(headers != null){
+      return this.http.post<any>(`${this.apiUrl}/api/permissions/${permissionId}/users/${userId}/remove`, null, {headers});
+    }else{
+      return throwError(()=>new Error("Autorization non accordée"));
+    }
+  }
+
+  /**
+   * Grant a permission to a role
+   * @param roleId 
+   * @param permissionId 
+   * @returns 
+   */
+  setPermissionToRole(roleId: number, permissionId: number){
+    const headers = this.createAuthorization();
+    if(headers != null){
+      return this.http.post<any>(`${this.apiUrl}/api/permissions/${permissionId}/roles/${roleId}/grant`, null, {headers});
+    }else{
+      return throwError(()=>new Error("Autorization non accordée"));
+    }
+  }
+
+  /**
+   * remove a permission from a role
+   * @param roleId 
+   * @param permissionId 
+   * @returns 
+   */
+  removePermissionFromRole(roleId: number, permissionId: number){
+    const headers = this.createAuthorization();
+    if(headers != null){
+      return this.http.post<any>(`${this.apiUrl}/api/permissions/${permissionId}/roles/${roleId}/remove`, null, {headers});
     }else{
       return throwError(()=>new Error("Autorization non accordée"));
     }

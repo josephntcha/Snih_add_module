@@ -1,4 +1,4 @@
-<div class="search-box">
+<div *ngIf="canViewList" class="search-box">
     <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
         <input type="text" nz-input placeholder="Recherche..." />
     </nz-input-group>
@@ -7,15 +7,15 @@
     </ng-template>
 </div>
 <div class="table-operations">
-    <button routerLink="/back-office/Administration/new-personal" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un utilisateur</button>
-    <button nz-button (click)="exportFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
-    <a class="advanced-filter">Options avancées de filtres  <span class="advanced-filter-icon2" nz-icon nzType="down"></span><span class="advanced-filter-icon" nz-icon nzType="setting"></span> </a>
+    <button *ngIf="canCreateUser" routerLink="/back-office/Administration/new-personal" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un utilisateur</button>
+    <button *ngIf="canViewList" nz-button (click)="exportFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
+    <a *ngIf="canViewList"  class="advanced-filter">Options avancées de filtres  <span class="advanced-filter-icon2" nz-icon nzType="down"></span><span class="advanced-filter-icon" nz-icon nzType="setting"></span> </a>
 </div>
-<div class="selected-items">
+<div *ngIf="canViewList" class="selected-items">
     {{ setOfCheckedId.size }} éléments selectionnés
     <a (click)="refreshCheckedStatus()">Rafraîchir</a>
 </div>
-<nz-table 
+<nz-table *ngIf="canViewList" 
     #rowSelectionTable
     nzShowSizeChanger 
     [nzData]="listOfData"
@@ -51,10 +51,10 @@
                 </td>
                 <td>{{ data.email }}</td>
                 <td>
-                    <a *ngIf="data.userType != 'Patient'" (click)="editUser(data.id)">Editer</a>
-                    <nz-divider nzType="vertical"></nz-divider>
-                    <a *ngIf="!data.active" (click)="manageUsers(data.id, 'ACTIVATE')">Activer</a>
-                    <a *ngIf="data.active" (click)="manageUsers(data.id, 'SUSPEND')">Desactiver</a>
+                    <a *ngIf="canEditeUser && data.userType != 'Patient'" (click)="editUser(data.id)">Editer</a>
+                    <nz-divider *ngIf="canEditeUser" nzType="vertical"></nz-divider>
+                    <a *ngIf="canManageUser && !data.active" (click)="manageUsers(data.id, 'ACTIVATE')">Activer</a>
+                    <a *ngIf="canManageUser && data.active" (click)="manageUsers(data.id, 'SUSPEND')">Desactiver</a>
                 </td>
             </tr>
         }

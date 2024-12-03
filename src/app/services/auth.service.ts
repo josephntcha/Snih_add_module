@@ -5,6 +5,7 @@ import { catchError, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { UrlStorageService } from './url-storage.service';
 import { environment } from '../../environments/environment';
+import { ApiServiceService } from './api-service.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,10 +17,11 @@ export class AuthService {
   roles: any;
   username: any;
   userId: any;
+  userModules: any[] = [];
   accessToken: any;
   tokenExpirationTimer: any
 
-  constructor(private http: HttpClient, private router: Router, public urlStorage: UrlStorageService) { }
+  constructor(private http: HttpClient, private router: Router, public urlStorage: UrlStorageService, private apiService: ApiServiceService) { }
 
   login(username: string, password: string){
     const params = new HttpParams().set("username", username).set("password", password);
@@ -38,7 +40,12 @@ export class AuthService {
     this.username = jwtDecoded.sub.split(" ")[0];
     this.userId = jwtDecoded.sub.split(" ")[1];
     this.roles = jwtDecoded.scope;
+
     window.localStorage.setItem("jwt-token", this.accessToken);
+
+    this.apiService.loadAccessibleModules(this.username).subscribe(modules => {
+      this.userModules = modules;      
+    });
 
     this.setExpirationTimer(jwtDecoded.exp);
   }

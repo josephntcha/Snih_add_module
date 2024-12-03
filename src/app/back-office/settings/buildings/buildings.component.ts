@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Building } from '../../../models/model';
+import { Building, Permission } from '../../../models/model';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
@@ -15,6 +15,11 @@ import Swal from 'sweetalert2';
 export class BuildingsComponent implements OnInit{
   listOfData!: Building[];
   hospitalId!: number;
+  canViewList = false;
+  canCreateBuilding = false;
+  canEditBuilding = false;
+  canDeleteBuilding = false;
+  canViewRooms = false;
 
   checked = false;
   indeterminate = false;
@@ -34,6 +39,7 @@ export class BuildingsComponent implements OnInit{
 
 
   ngOnInit(): void {
+    this.getConnectedUserPermissionsOnComponent();
     this.getBuildings()
   }
 
@@ -58,6 +64,46 @@ export class BuildingsComponent implements OnInit{
       }
     });
     
+  }
+
+
+  getConnectedUserPermissionsOnComponent(){
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Bâtiments").subscribe({
+      next: (response) => {
+        if(response.success){
+          const currentUserPermissions: Permission[] = response.data;
+          const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+          
+          if(permissionsCodeNames.includes("VIEW_LIST_BUILDING")){
+            this.canViewList = true;
+          }else{
+            this.canViewList = false;
+          }
+          if(permissionsCodeNames.includes("CREATE_BUILDING")){
+            this.canCreateBuilding = true;
+          }else{
+            this.canCreateBuilding = false;
+          }
+          if(permissionsCodeNames.includes("UPDATE_BUILDING")){
+            this.canEditBuilding = true;
+          }else{
+            this.canEditBuilding = false;
+          }
+          if(permissionsCodeNames.includes("DELETE_BUILDING")){
+            this.canDeleteBuilding = true;
+          }else{
+            this.canDeleteBuilding = false;
+          }
+          if(permissionsCodeNames.includes("VIEW_LIST_ROOMS")){
+            this.canViewRooms = true;
+          }else{
+            this.canViewRooms = false;
+          }
+        }
+      },error: (err) => {
+        console.log(err.message);        
+      }
+    })
   }
 
 

@@ -46,6 +46,7 @@ export interface User {
   speciality: Speciality;
   userType: string;
   active: boolean;
+  permissions: Permission[];
 }
 
 export interface Hospital {
@@ -62,6 +63,7 @@ export interface Speciality {
 export interface Role {
   id: number;
   name: string;
+  // permissions: Permission[];
 }
 
 export interface Room {
@@ -79,5 +81,24 @@ export interface MedicalRecord {
   id: number;
   code_dossier: string;
   date_creation: Date
+}
+
+export interface Module {
+  id: number;
+  name: string;
+  code: string;
+  description: string;
+  route: string;
+  icon: string;
+  displayOrder: string;
+  parentId: number;
+  subModules: Module[];
+}
+
+export interface Permission {
+  id: number;
+  codeName: string
+  name: string;
+  description: string;
 }
   

@@ -39,7 +39,6 @@ export class CalendarComponent implements OnInit{
      this.hospitalId=selectedHospital;
      this.apiService.getAvailabilitiesByDoctorAndHospital(this.DoctorId,selectedHospital).subscribe(response=>{
          this.availabilities=response;
-         console.log(this.availabilities);
      })
 
     })
@@ -64,7 +63,6 @@ loadAppointments() {
 
     this.apiService.getAvailabilitiesByDoctorAndHospital(this.DoctorId,this.hospitals[0].id).subscribe(response=>{
       this.availabilities=response;
-      console.log(this.availabilities);
     });
     
    });
@@ -256,7 +254,7 @@ onAppointmentClick(day: Date) {
   });
 
    if (availability) {
-    this.route.navigate(['/Administration/list-appointment'],{state: { availability: availability, date: day, hospitalId:this.hospitalId,specialityId:this.specialityId}})
+    this.route.navigate(['/back-office/medecin/list-appointment'],{state: { availability: availability, date: day, hospitalId:this.hospitalId,specialityId:this.specialityId}})
   }
 
 }

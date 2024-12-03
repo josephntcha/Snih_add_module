@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Building, Room } from '../../../models/model';
+import { Building, Permission, Room } from '../../../models/model';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { AuthService } from '../../../services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -15,11 +16,17 @@ export class AdminDashboardComponent implements OnInit{
   rooms: Room[] = [];
   doctors: any;
 
-  constructor(private apiService: ApiServiceService, private authService: AuthService){}
+
+  canViewListUsers = false;
+  canViewListBuildings = false;
+  canViewListRoomss = false;
+
+  constructor(private apiService: ApiServiceService, private authService: AuthService, private router: Router){}
 
   ngOnInit(): void {
     this.userId = this.authService.userId;
     if(this.userId){
+      this.getConnectedUserPermissionsOnComponent();
       this.getData();
       
     }
@@ -71,9 +78,39 @@ export class AdminDashboardComponent implements OnInit{
       next: (data) => {
         this.doctors = data;
       },error: (err) => {
-        console.log(err.message);        
+        console.log(err.message);   
       }
     });
+  }
+
+
+  getConnectedUserPermissionsOnComponent(){
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Tableau de bord").subscribe({
+      next: (response) => {
+        if(response.success){
+          const currentUserPermissions: Permission[] = response.data;
+          const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+          
+          if(permissionsCodeNames.includes("VIEW_LIST_BUILDINGS")){
+            this.canViewListBuildings = true;
+          }else{
+            this.canViewListBuildings = false;
+          }
+          if(permissionsCodeNames.includes("VIEW_LIST_USERS")){
+            this.canViewListUsers = true;
+          }else{
+            this.canViewListUsers = false;
+          }
+          if(permissionsCodeNames.includes("VIEW_LIST_ROOMS")){
+            this.canViewListRoomss = true;
+          }else{
+            this.canViewListRoomss = false;
+          }
+        }
+      },error: (err) => {
+        console.log(err.message);        
+      }
+    })
   }
 
 }

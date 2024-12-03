@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { User } from '../../../models/model';
+import { Permission, User } from '../../../models/model';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
 import { FileExportService } from '../../../services/file-export.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -12,6 +13,10 @@ import { FileExportService } from '../../../services/file-export.service';
 })
 export class UsersComponent implements OnInit{
   listOfData!: User[];
+  canViewList = false;
+  canCreateUser = false;
+  canEditeUser = false;
+  canManageUser = false;
 
   checked = false;
   indeterminate = false;
@@ -43,10 +48,14 @@ export class UsersComponent implements OnInit{
   listOfCurrentPageData: readonly User[] = [];
 
 
-  constructor(private apiService: ApiServiceService, private router: Router, private fileExport: FileExportService){}
+  constructor(private apiService: ApiServiceService, 
+              private router: Router, 
+              private fileExport: FileExportService,
+              private authService: AuthService){}
 
 
   ngOnInit(): void {
+    this.getConnectedUserPermissionsOnComponent();
     this.getUsers();
   }
 
@@ -57,6 +66,41 @@ export class UsersComponent implements OnInit{
         this.listOfData = data;        
       },error: (err) => {
         console.log(err.message);
+      }
+    })
+  }
+
+
+  getConnectedUserPermissionsOnComponent(){
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Utilisateurs").subscribe({
+      next: (response) => {
+        if(response.success){
+          const currentUserPermissions: Permission[] = response.data;
+          const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+          
+          if(permissionsCodeNames.includes("CREATE_USER")){
+            this.canCreateUser = true;
+          }else{
+            this.canCreateUser = false;
+          }
+          if(permissionsCodeNames.includes("VIEW_LIST_USERS")){
+            this.canViewList = true;
+          }else{
+            this.canViewList = false;
+          }
+          if(permissionsCodeNames.includes("UPDATE_USER")){
+            this.canEditeUser = true;
+          }else{
+            this.canEditeUser = false;
+          }
+          if(permissionsCodeNames.includes("MANAGE_USER")){
+            this.canManageUser = true;
+          }else{
+            this.canManageUser = false;
+          }
+        }
+      },error: (err) => {
+        console.log(err.message);        
       }
     })
   }

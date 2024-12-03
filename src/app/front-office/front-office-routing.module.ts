@@ -13,7 +13,7 @@ const routes: Routes = [
     component: LandingPageComponent
   },
   {
-    path: "rdv",
+    path: "prendre-rdv",
     component: TakeAppointmentComponent,
     
   },

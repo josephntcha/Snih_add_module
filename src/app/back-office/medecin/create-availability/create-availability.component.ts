@@ -151,7 +151,7 @@ loadAppointments() {
                  timerProgressBar:true 
                });
 
-               this.route.navigateByUrl("/Administration/availability");
+               this.route.navigateByUrl("/back-office/medecin/availability/availability");
            },
            error:error=>{
              console.log(error);

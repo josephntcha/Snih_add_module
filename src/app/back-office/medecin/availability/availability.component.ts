@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import { ApiServiceService } from '../../../services/api-service.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-availability',
@@ -27,7 +28,7 @@ export class AvailabilityComponent implements  OnInit{
   isVisible = false;
   availability:any;
 
-  constructor(private apiService:ApiServiceService, private route:Router, private formBuilder:FormBuilder ){}
+  constructor(private apiService:ApiServiceService, private route:Router, private formBuilder:FormBuilder, private authService:AuthService ){}
 
 
 
@@ -49,23 +50,18 @@ export class AvailabilityComponent implements  OnInit{
         orderOfDay:[''],
        });
 
-
-    const token=localStorage.getItem('token');
-    if (token) {
-      const decodedToken:any = jwtDecode(token);
-     const user_id=decodedToken.sub.split(" ")[1];
-     this.doctorId=user_id
+ 
+     this.doctorId=this.authService.userId;
      this.apiService.getDataHospitalsByDoctor(this.doctorId).subscribe(response=>{
       this.hospitals=response;
      });
      this.apiService.getUserById(this.doctorId).subscribe(response=>{
       this.doctor=response.data;
     })
-    }
+    
 
      this.apiService.getDoctorAvailabilities(this.doctorId).subscribe(response=>{
       this.availabilities=response.data;
-      console.log(this.availabilities);
       
       });
 
@@ -100,7 +96,6 @@ export class AvailabilityComponent implements  OnInit{
 
             this.apiService.getBuildings(selectedHospitalId).subscribe(response=>{
               this.buildings=response;
-              console.log(this.buildings);
               
             })
     
@@ -144,7 +139,6 @@ export class AvailabilityComponent implements  OnInit{
     const dayId=availability.day.id;
     const hospitalId=availability.hospitalDTO.id;
     const frq=availability.frequency;
-    console.log(frq);
     
     this.availabiltyForm.patchValue({
         day:dayId,
@@ -158,7 +152,6 @@ export class AvailabilityComponent implements  OnInit{
         period: availability.period
       });
     this.isVisible = true;
-    console.log(availability);
     
    
 }
@@ -168,7 +161,6 @@ handleOk(): void {
   }
 
   handleCancel(): void {
-    console.log('Button cancel clicked!');
     this.isVisible = false;
   }
 
@@ -208,7 +200,6 @@ handleOk(): void {
              this.isVisible = false;
          },
          error:error=>{
-             console.log(error);
         
              Swal.fire({
                  title: 'Error',
