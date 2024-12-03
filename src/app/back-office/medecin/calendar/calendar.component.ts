@@ -21,7 +21,7 @@ export class CalendarComponent implements OnInit{
   DoctorId:any;
   specialityId:any;
   Doctor_name: any;
-  constructor(private apiService: ApiServiceService, private authService: AuthService,private formBuilder:FormBuilder,private route:Router){}
+  constructor(private apiService: ApiServiceService, public authService: AuthService,private formBuilder:FormBuilder,private route:Router){}
 
   currentDate = moment(); 
   currentMonth: Date = this.currentDate.toDate(); 

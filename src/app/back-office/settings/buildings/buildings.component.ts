@@ -28,7 +28,7 @@ export class BuildingsComponent implements OnInit{
 
   constructor(private apiService: ApiServiceService, 
               private router: Router, 
-              private authService: AuthService,
+              public authService: AuthService,
               private exportService: FileExportService,
               private fb: FormBuilder){}
 

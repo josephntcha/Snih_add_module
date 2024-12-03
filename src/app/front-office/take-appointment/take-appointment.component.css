@@ -11,6 +11,94 @@
   .menu-right {
     display: flex;
     justify-content: flex-end;
-    padding: 1.2rem;
+    padding: 10px;
     background: #1890ff;
   }
+
+ 
+  /* code css sur mobile*/
+
+.menu-right {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.menu-item-spacing {
+  margin: 0 10px;
+}
+
+@media (max-width: 768px) {
+  .menu-right {
+    justify-content: center;
+  }
+
+  .menu-item-spacing {
+    margin: 5px;
+  }
+}
+
+div[nz-row] {
+  margin-top: 20px;
+}
+
+div[nz-col] {
+  padding: 10px;
+}
+
+@media (max-width: 1024px) {
+  div[nz-col] {
+    width: 100%; 
+    margin: 0; 
+  }
+}
+
+@media (max-width: 768px) {
+  div[nz-col][nzSpan="24"] {
+    width: 100%;
+    margin-bottom: 15px; 
+  }
+
+  div[nz-col][nzSpan="24"] nz-form-item {
+    margin-bottom: 15px;
+  }
+
+  div[nz-row] button {
+    width: 100%;
+  }
+}
+
+
+.float-left {
+  display: block;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .float-left {
+    text-align: center;
+  }
+}
+
+form nz-form-item {
+  margin-bottom: 20px;
+}
+
+form nz-form-item input,
+form nz-form-item nz-select {
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  nz-form-item nz-form-label {
+    display: block;
+    margin-bottom: 5px;
+    text-align: left;
+  }
+
+  nz-form-item nz-form-control {
+    width: 100%;
+  }
+}
+  /* fin  */

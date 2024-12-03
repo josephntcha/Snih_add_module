@@ -5,6 +5,7 @@ import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
 import { FileExportService } from '../../../services/file-export.service';
 import Swal from 'sweetalert2';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-hospitals',
@@ -25,7 +26,7 @@ export class HospitalsComponent implements OnInit{
   hospital: any;
 
 
-  constructor(private apiService: ApiServiceService, 
+  constructor(private apiService: ApiServiceService, public authService:AuthService,
               private router: Router, 
               private fileExport: FileExportService,
               private fb: FormBuilder){}

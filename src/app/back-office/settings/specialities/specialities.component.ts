@@ -31,6 +31,7 @@ export class SpecialitiesComponent implements OnInit{
 
   constructor(
     private apiService: ApiServiceService, 
+    public autService:AuthService,
     private router: Router, 
     private authService: AuthService,
     private fb: FormBuilder, 

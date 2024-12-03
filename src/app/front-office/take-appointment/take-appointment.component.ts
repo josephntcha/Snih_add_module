@@ -68,14 +68,16 @@ export class TakeAppointmentComponent {
       this.apiService.getSpecialitiesByHospital(selectedHospitalId).subscribe(response => {
         this.specialities = response.data;
         this.hospitalId = selectedHospitalId;
+        
       });
     });
 
     this.Hospitalform.get('speciality')?.valueChanges.subscribe(selectedSpecialityId => {
       this.specialityId = selectedSpecialityId;
       this.apiService.getAvailabilitiesByHospitalAndSpeciality(this.hospitalId, selectedSpecialityId).subscribe(response => {
+        
         this.availabilities = response;
-
+      
         this.apiService.getPriceByHospitalAndSpeciality(this.hospitalId, selectedSpecialityId).subscribe(response => {
           this.priceBySpeciality = response.data;
         });
@@ -93,13 +95,16 @@ export class TakeAppointmentComponent {
 
   async loadDays(selectedAvailabilityId: any) {
     try {
-      const response = await firstValueFrom(this.apiService.getMaxNumberForAvaillability(selectedAvailabilityId.id, this.hospitalId, this.specialityId)) ;
+      
+      const response = await firstValueFrom(this.apiService.getMaxNumberForAvaillability(selectedAvailabilityId.id, this.hospitalId, this.specialityId));
+      console.log(response);
+      
       const totalMaxNumber = response.reduce((sum: number, availability: any) => sum + availability.maxNumberOfAppointments, 0);
       const period = response.reduce((sum: number, availability: any) => {
                 
         return sum + availability.period;
       }, 0);
-
+       
       let requestsCompleted = 0;
 
       if (response.length==1 && (response[0]['frequency']['name']=="HEBDOMADAIRE")) {

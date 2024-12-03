@@ -195,6 +195,24 @@ export class ApiServiceService {
       return throwError(()=>new Error("Authorization not allow."));
     }
   }
+  getPermissions():Observable<any>{
+    const headers=this.createAuthorization();
+    if (headers) {
+      return this.http.get<any>(`${this.apiUrl}/api/permission`,{headers}); 
+    }else{
+      return throwError(()=>new Error("Authorization not allow."));
+    }
+  }
+  addPermissionsToUser(userId:any,permissionId:any):Observable<any>{
+   
+      return this.http.post<any>(`${this.apiUrl}/api/users/add_permission/user/${userId}/permission/${permissionId}`,{}); 
+  }
+
+  removePermissionsToUser(userId:any,permissionId:any):Observable<any>{
+   
+    return this.http.post<any>(`${this.apiUrl}/api/users/remove_permission/user/${userId}/permission/${permissionId}`,{}); 
+  }
+
   
   getUserById(id:number):Observable<any>{
     const headers=this.createAuthorization();

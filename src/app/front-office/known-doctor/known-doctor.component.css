@@ -7,11 +7,10 @@
     margin-right: 40px; 
     color: white;
   }
-
   .menu-right {
     display: flex;
     justify-content: flex-end;
-    padding: 1.1rem;
+    padding: 10px;
     background: #1890ff;
   }
   .right{

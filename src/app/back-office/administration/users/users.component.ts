@@ -4,6 +4,9 @@ import { User } from '../../../models/model';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
 import { FileExportService } from '../../../services/file-export.service';
+import { AuthService } from '../../../services/auth.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 
 @Component({
   selector: 'app-users',
@@ -12,6 +15,15 @@ import { FileExportService } from '../../../services/file-export.service';
 })
 export class UsersComponent implements OnInit{
   listOfData!: User[];
+  isVisible = false;
+  isVisible2 = false;
+  permissionForm!:FormGroup<{
+    user:FormControl<any>;
+    permission:FormControl<any>;
+  }>;
+  retirerPermissionForm!:FormGroup;
+  permissions:any;
+  userPermissions:any;
 
   checked = false;
   indeterminate = false;
@@ -43,11 +55,112 @@ export class UsersComponent implements OnInit{
   listOfCurrentPageData: readonly User[] = [];
 
 
-  constructor(private apiService: ApiServiceService, private router: Router, private fileExport: FileExportService){}
+  constructor(private apiService: ApiServiceService,public authService:AuthService, private router: Router, private fileExport: FileExportService,private formBuilder:FormBuilder){}
 
+  showModal(): void {
+    this.isVisible = true;
+  }
+
+  showModal2(): void {
+    this.isVisible2 = true;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
+  handleCancel2(): void {
+    this.isVisible2 = false;
+  }
 
   ngOnInit(): void {
     this.getUsers();
+    this.getPermissions();
+
+    this.permissionForm=this.formBuilder.group({
+      user:[null,Validators.required],
+      permission:[null,Validators.required]
+    });
+
+    this.retirerPermissionForm=this.formBuilder.group({
+      user:[null,Validators.required],
+      permission:[[]]
+    });
+
+    this.retirerPermissionForm.get("user")?.valueChanges.subscribe(userSelected=>{
+       this.apiService.getUserById(userSelected).subscribe(response=>{
+        this.userPermissions=response.data.permissions;
+       });
+       
+    })
+  }
+
+  onSubmitForm(){
+    if(this.permissionForm.valid){
+     for (let index = 0; index < this.permissionForm.get("permission")?.value.length; index++) {
+      this.apiService.addPermissionsToUser(this.permissionForm.get("user")?.value,this.permissionForm.get("permission")?.value[index]).subscribe({
+        next:(response)=>{
+      console.log(response);
+      
+        },
+        error:(err)=>{
+
+        }
+      })       
+     }
+        Swal.fire({
+          text: 'Permission ajouté avec succès',
+          icon: 'success',
+          timer: 3500,
+          showConfirmButton: false,
+          timerProgressBar: true 
+        });
+        
+      this.isVisible = false;
+    }    
+  }
+
+  onPermissionChange(event: Event, permissionId: number) {
+    const checked = (event.target as HTMLInputElement).checked;
+    const currentPermissions = this.retirerPermissionForm.get('permission')?.value || [];
+
+    if (checked) {
+      // Ajouter l'ID si la case est cochée
+      this.retirerPermissionForm.get('permission')?.setValue([...currentPermissions, permissionId]);
+    } else {
+      // Retirer l'ID si la case est décochée
+      this.retirerPermissionForm.get('permission')?.setValue(currentPermissions.filter((id: number) => id !== permissionId));
+    }
+  }
+
+  isChecked(permissionId: number): boolean {
+    return this.retirerPermissionForm.get('permission')?.value.includes(permissionId);
+  }
+
+  retirerPermissionSubmitForm(){
+    console.log(this.retirerPermissionForm.value)
+    if(this.retirerPermissionForm.valid){
+    //  for (let index = 0; index < this.retirerPermissionForm.get("permission")?.value.length; index++) {
+    //   this.apiService.removePermissionsToUser(this.retirerPermissionForm.get("user")?.value,this.retirerPermissionForm.get("permission")?.value[index]).subscribe({
+    //     next:(response)=>{
+    //   console.log(response);
+      
+    //     },
+    //     error:(err)=>{
+
+    //     }
+    //   })       
+    //  }
+    //     Swal.fire({
+    //       text: 'Permission retiré avec succès',
+    //       icon: 'success',
+    //       timer: 3500,
+    //       showConfirmButton: false,
+    //       timerProgressBar: true 
+    //     });
+        
+    //   this.isVisible2 = false;
+    }    
   }
 
 
@@ -57,6 +170,18 @@ export class UsersComponent implements OnInit{
         this.listOfData = data;        
       },error: (err) => {
         console.log(err.message);
+      }
+    })
+  }
+
+  getPermissions(){
+    this.apiService.getPermissions().subscribe({
+      next:(response)=>{
+       this.permissions=response;
+       
+      },
+      error:(err)=>{
+
       }
     })
   }

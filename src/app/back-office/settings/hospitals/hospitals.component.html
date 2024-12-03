@@ -7,7 +7,9 @@
     </ng-template>
 </div>
 <div class="table-operations">
-    <button (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un hôpital</button>
+    @if (authService.isAdmin() || authService.isSuperAdmin() || authService.createHospital()) {
+        <button (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un hôpital</button>
+    }
     <button nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
 </div>
 <div class="selected-items">
@@ -38,9 +40,15 @@
             <td>{{ data.name }}</td>
             <td>{{ data.location }}</td>
             <td>
-                <a (click)="editHospital(data)">Editer</a>
+         @if (authService.isAdmin() || authService.isSuperAdmin() || authService.editHospital()) {
+            <a (click)="editHospital(data)">Editer</a>
+           
+         }
                 <nz-divider nzType="vertical"></nz-divider>
-                <a (click)="deleteHospital(data.id)">Supprimer</a>
+         @if (authService.isAdmin() || authService.isSuperAdmin() || authService.deleteHospital()) {
+            <a (click)="deleteHospital(data.id)">Supprimer</a>
+         }
+                
             </td>
         </tr>
     </tbody>

@@ -4,6 +4,7 @@ import { Role } from '../../../models/model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-roles',
@@ -23,7 +24,7 @@ export class RolesComponent implements OnInit{
   roleId!: number;
 
 
-  constructor(private apiService: ApiServiceService, private router: Router, private fb: FormBuilder){}
+  constructor(private apiService: ApiServiceService,public authService:AuthService, private router: Router, private fb: FormBuilder){}
 
 
   ngOnInit(): void {

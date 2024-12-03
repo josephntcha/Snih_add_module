@@ -1,5 +1,7 @@
 <div class="table-operations">
+    @if (authService.isAdmin() || authService.isSuperAdmin() || authService.createBuilding()) {
     <button (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer nouveau bâtiment</button>
+    }
     <button nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
 </div>
 <div class="selected-items">
@@ -30,11 +32,20 @@
             <td>{{ data.id }}</td>
             <td>{{ data.name }}</td>
             <td>
-                <a (click)="editBuilding(data)">Editer</a>
+    @if (authService.isAdmin() || authService.isSuperAdmin() ||  authService.editBuilding()) {
+        <a (click)="editBuilding(data)">Editer</a>
+
+    }
                 <nz-divider nzType="vertical"></nz-divider>
-                <a (click)="viewRooms(data.id)">Voir salles</a>
+    @if (authService.isAdmin() || authService.isSuperAdmin() || authService.showBuilding()) {
+        <a (click)="viewRooms(data.id)">Voir salles</a>
+  
+    }
                 <nz-divider nzType="vertical"></nz-divider>
-                <a (click)="deleteBuilding(data.id)">Supprimer</a>
+    @if (authService.isAdmin() || authService.isSuperAdmin() ||  authService.deleteBuilding()) {
+        <a (click)="deleteBuilding(data.id)">Supprimer</a>
+    
+    }
             </td>
         </tr>
     </tbody>

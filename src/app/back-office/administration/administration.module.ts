@@ -4,11 +4,13 @@ import { CommonModule } from '@angular/common';
 import { AdministrationRoutingModule } from './administration-routing.module';
 
 
+
 @NgModule({
   declarations: [],
   imports: [
     CommonModule,
-    AdministrationRoutingModule
-  ]
+    AdministrationRoutingModule,
+   
+  ],
 })
 export class AdministrationModule { }

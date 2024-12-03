@@ -1,4 +1,6 @@
+
 <div class="calendar-container">
+  @if (authService.showCalendar()) {
     <div class="calendar-header">
       <button nz-button nzShape="circle" (click)="previousMonth()" class="prev-month">
         <i nz-icon nzType="left"></i>
@@ -62,5 +64,6 @@
         </tr>
       </tbody>
     </nz-table>
+  }
+    
   </div>
-  

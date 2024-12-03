@@ -78,7 +78,6 @@
                     </li> -->
                     <li nz-submenu [nzOpen]="activeMenu ==='Administration'" (nzOpenChange)="toggleMenu('Administration')" nzTitle="Administration" nzIcon="windows">
                         <ul>
-                            @if (authService.isAdmin() || authService.isSuperAdmin()) {
                                 @if (authService.isSuperAdmin()) {
                                     <!-- <li [nzMatchRouter]="true" [nzSelected]="activeMenu === 'dashboard'" (click)="toggleMenu('dashboard')" nz-menu-item nz-tooltip [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''" [nzTooltipPlacement]="'right'" class="dashboard-icon">
                                         <span nz-icon nzType="dashboard"></span>
@@ -87,7 +86,7 @@
 
                                     <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/Administration/super-admin-dashboard">Dashboard</li>
                                 }
-                                @else if (authService.isAdmin()) {
+                                @if (authService.isAdmin()) {
                                     <!-- <li [nzMatchRouter]="true" [nzSelected]="activeMenu === 'dashboard'" (click)="toggleMenu('dashboard')" nz-menu-item nz-tooltip [nzTooltipTitle]="isCollapsed ? 'Dashboard' : ''" [nzTooltipPlacement]="'right'" class="dashboard-icon">
                                         <span nz-icon nzType="dashboard"></span>
                                         <span routerLink="admin-dashboard">Dashboard</span>
@@ -95,14 +94,23 @@
                                     
                                     <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/Administration/admin-dashboard">Dashboard</li>
                                 }
-                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/Administration/roles">Roles</li>
-                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/Administration/users">Users</li>
 
-                            }
-                            @if (authService.isDoctor()) {
+                                @if(authService.isAdmin() || authService.isSuperAdmin() || authService.createRole() || authService.editRole() || authService.deleteRole()){ 
+                                    <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/Administration/roles">Roles</li> 
+                                } 
+                                @if (authService.isAdmin() || authService.isSuperAdmin() || authService.editUser() || authService.createUser() || authService.desactiverUser()) { 
+
+                                <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/Administration/users">Users</li>
+                                }
+                            
+                            @if (authService.isDoctor() && authService.showCalendar()) {
                                 <li [nzMatchRouter]="true" nz-menu-item [nzSelected] routerLink="/back-office/medecin/calendar">Calendrier</li>
+                            }
+
+                            @if (authService.isDoctor() && authService.showAvaibility()) {
                                 <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/medecin/availability">Gestion disponibilité</li>
                             }
+
                             @if (authService.isSecretary()) {
                                 <li [nzMatchRouter]="true" nz-menu-item [nzSelected] routerLink="/back-office/Administration/secretaire-dashboard">Gestion</li>
                             }
@@ -112,14 +120,23 @@
 
                     <li nz-submenu [nzOpen]="activeMenu === 'settings'" (nzOpenChange)="toggleMenu('settings')" nzTitle="Paramétrage" nzIcon="setting">
                         <ul>
-                            @if (authService.isAdmin() || authService.isSuperAdmin()) {
+                            
+                            @if (authService.isAdmin() || authService.isSuperAdmin() || authService.createHospital() || authService.editHospital() || authService.deleteHospital()) {
+
                                 <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/settings/hospitals">Hospitals</li>
+                            }
+                            @if (authService.isAdmin() || authService.isSuperAdmin() || authService.createSpeciality() || authService.editSpeciality() || authService.deleteSpeciality()) {
+
                                 <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/settings/specialities">Specalities</li>
+                            }
+                            @if (authService.isAdmin() || authService.isSuperAdmin() || authService.createBuilding() || authService.editBuilding() || authService.deleteBuilding()) {
+
                                 <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/settings/buildings">Bâtiments</li>
+                            }
                                 <!-- <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/settings/rooms">Salles</li> -->
                                 <!-- <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/settings">Settings</li> -->
-                            }
-                            @if (authService.isDoctor()) {
+                           
+                            @if (authService.createMedicalRecord() || authService.showMedicalRecord()) {
                                 <li [nzMatchRouter]="true" nz-menu-item routerLink="/back-office/medecin/medical-records">Dossiers médicaux</li>
                             }                    
                         </ul>

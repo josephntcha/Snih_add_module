@@ -7,12 +7,132 @@
     </ng-template>
 </div>
 <div class="table-operations">
-    <button routerLink="/back-office/Administration/new-personal" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un utilisateur</button>
+    @if(authService.isAdmin() || authService.isSuperAdmin() || authService.createUser()){
+        <button routerLink="/back-office/Administration/new-personal" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un utilisateur</button>
+    }
     <button nz-button (click)="exportFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
+    @if(authService.isAdmin() || authService.isSuperAdmin()){
+        <button  nz-button nzType="primary" (click)="showModal()"><span nz-icon nzType="user" nzTheme="outline"></span>Donner des permissions</button>
+    }
+    @if(authService.isAdmin() || authService.isSuperAdmin()){
+        <button  nz-button nzType="default" nzDanger (click)="showModal2()"><span nz-icon nzType="user-switch" nzTheme="outline"></span>Retirer des permissions</button>
+    }
+
+    <nz-modal
+    [(nzVisible)]="isVisible2"
+    nzTitle="Retirer de Permission à un utilisateur"
+     [nzWidth]="800"
+    (nzOnCancel)="handleCancel2()"
+    [nzFooter]="null"
+  >
+  
+  <ng-container *nzModalContent>
+   
+      <form [formGroup]="retirerPermissionForm" (ngSubmit)="retirerPermissionSubmitForm()">
+         <div nz-row class="row">
+            <div nz-col nzSpan="9"  class="col-4">
+                <label nz-col [nzSpan]="6" nz-form-label>utilisateurs</label>
+                <nz-form-control [nzSpan]="18" class="ms-4 mt-md-1">
+                  <nz-select formControlName="user" nzPlaceHolder="Sélectionner un utilisateur">
+                    <nz-option *ngFor="let user of listOfData" [nzValue]="user.id" [nzLabel]="user.firstName + ' ' + user.lastName"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+            </div>
+            <!-- <span nz-col nzSpan="1" class="col-1 barre">|</span> -->
+             <!-- <div nz-col nzSpan="9" class="col-4">
+                <label nz-col [nzSpan]="10" nz-form-label>permissions</label>
+                <nz-form-control [nzSpan]="18" class="ms-4 mt-md-1">
+                  <nz-select nzMode="tags" formControlName="permission" nzPlaceHolder="Sélectionner une permission">
+                    <nz-option  *ngFor="let permission of userPermissions" [nzValue]="permission.id" [nzLabel]="permission.name"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+            </div>  -->
+
+            <div nz-col nzSpan="9" class="col-4">
+                <label nz-col [nzSpan]="10" nz-form-label>Permissions</label>
+                <nz-form-control [nzSpan]="18" class="ms-4 mt-md-1">
+                    <div *ngFor="let permission of userPermissions">
+                        <label>
+                            <input type="checkbox" 
+                                   [value]="permission.id" 
+                                   (change)="onPermissionChange($event, permission.id)" 
+                                   [checked]="isChecked(permission.id)">
+                            {{ permission.name }}
+                        </label>
+                    </div>
+                </nz-form-control>
+            </div>
+            
+              
+            <div nz-col nzSpan="2"  class="butt">
+                <button nz-button nzType="primary" nzDanger type="submit">Retirer permission</button>
+            </div>        
+         </div>
+         <br><br>
+      </form>          
+  </ng-container>
+  </nz-modal>
+
+    <nz-modal
+    [(nzVisible)]="isVisible"
+    nzTitle="Donner de Permission à un utilisateur"
+     [nzWidth]="800"
+    (nzOnCancel)="handleCancel()"
+    [nzFooter]="null"
+  >
+  
+  <ng-container *nzModalContent>
+   
+      <form [formGroup]="permissionForm" (ngSubmit)="onSubmitForm()">
+         <div nz-row class="row">
+            <div nz-col nzSpan="9"  class="col-4">
+                <label nz-col [nzSpan]="6" nz-form-label>utilisateurs</label>
+                <nz-form-control [nzSpan]="18" class="ms-4 mt-md-1">
+                  <nz-select formControlName="user" nzPlaceHolder="Sélectionner un utilisateur">
+                    <nz-option *ngFor="let user of listOfData" [nzValue]="user.id" [nzLabel]="user.firstName + ' ' + user.lastName"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+            </div>
+            <!-- <span nz-col nzSpan="1" class="col-1 barre">|</span> -->
+            <!-- <div nz-col nzSpan="9" class="col-4">
+                <label nz-col [nzSpan]="10" nz-form-label>Permissions</label>
+                <nz-form-control [nzSpan]="18" class="ms-4 mt-md-1">
+                    <div *ngFor="let permission of permissions">
+                        <label>
+                            <input type="checkbox" 
+                                   [value]="permission.id" 
+                                   (change)="onPermissionChange2($event, permission.id)" 
+                                   [checked]="isChecked2(permission.id)">
+                            {{ permission.name }}
+                        </label>
+                    </div>
+                </nz-form-control>
+            </div> -->
+            <div nz-col nzSpan="9" class="col-4">
+                <label nz-col [nzSpan]="10" nz-form-label>permissions</label>
+                <nz-form-control [nzSpan]="18" class="ms-4 mt-md-1">
+                  <nz-select nzMode="tags" formControlName="permission" nzPlaceHolder="Sélectionner une permission">
+                    <nz-option  *ngFor="let permission of permissions" [nzValue]="permission.id" [nzLabel]="permission.name"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+            </div>  
+          
+            <div nz-col nzSpan="2"  class="butt">
+                <button nz-button nzType="primary" type="submit">Donner permission</button>
+            </div>
+        
+         </div>
+         <br><br>
+      </form>
+      
+    
+  </ng-container>
+  </nz-modal>
+
     <a class="advanced-filter">Options avancées de filtres  <span class="advanced-filter-icon2" nz-icon nzType="down"></span><span class="advanced-filter-icon" nz-icon nzType="setting"></span> </a>
 </div>
 <div class="selected-items">
-    {{ setOfCheckedId.size }} éléments selectionnés
+    {{ setOfCheckedId.size }} éléments selectionnés 
     <a (click)="refreshCheckedStatus()">Rafraîchir</a>
 </div>
 <nz-table 
@@ -51,11 +171,16 @@
                 </td>
                 <td>{{ data.email }}</td>
                 <td>
+                    @if(authService.isAdmin() || authService.isSuperAdmin() || authService.editUser()){
                     <a *ngIf="data.userType != 'Patient'" (click)="editUser(data.id)">Editer</a>
+                        
+                    }
                     <nz-divider nzType="vertical"></nz-divider>
+                    @if(authService.isAdmin() || authService.isSuperAdmin() || authService.desactiverUser()){
                     <a *ngIf="!data.active" (click)="manageUsers(data.id, 'ACTIVATE')">Activer</a>
                     <a *ngIf="data.active" (click)="manageUsers(data.id, 'SUSPEND')">Desactiver</a>
-                </td>
+                    }
+                </td> 
             </tr>
         }
     </tbody>
