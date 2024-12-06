@@ -247,15 +247,15 @@ export class TakeAppointmentComponent {
     this.apiService.postAppointment(this.availabilityId, this.hospitalId, this.appointmentData).subscribe({
       next: response => {
         if (response.success) {
-          this.route.navigateByUrl("operation-success")
-          // Swal.fire({
-          //   title: 'RDV pris',
-          //   text: 'Opération réussie',
-          //   icon: 'success',
-          //   timer: 3500,
-          //   showConfirmButton: false,
-          //   timerProgressBar: true 
-          // });
+          Swal.fire({
+            title: 'Rendez-vous pris avec succès',
+            text: '',
+            icon: 'success',
+            timer: 3500,
+            showConfirmButton: false,
+            timerProgressBar: true 
+          });
+          this.route.navigateByUrl("");
         } else {
           this.ngOnInit()
           Swal.fire({
