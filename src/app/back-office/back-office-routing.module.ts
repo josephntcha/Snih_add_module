@@ -36,7 +36,7 @@ const routes: Routes = [
     data: {
       breadcrumb: 'Medecin',
     },
-    loadChildren: () => import('./medecin/medecin-routing.module').then(module => module.MedecinRoutingModule)
+    loadChildren: () => import('./medecin/medecin-routing.module').then(module => module.MedecinRoutingModule)
   },
   {
     path: "settings",

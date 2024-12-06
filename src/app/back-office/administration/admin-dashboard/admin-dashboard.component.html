@@ -1,6 +1,6 @@
 <div class="container">
     <div nz-row [nzGutter]="8">
-        <div nz-col [nzSpan]="8">
+        <div *ngIf="canViewListBuildings" nz-col [nzSpan]="8">
             <nz-card>
                 <p class="element" >Bâtiments</p>
                 <span class="value" *ngIf="buildings">{{buildings.length}}</span>
@@ -8,7 +8,7 @@
                 <button routerLink="/Administration/buildings" nz-button nzType="primary" class="button"> Consulter</button>
             </nz-card>
         </div>
-        <div nz-col [nzSpan]="8">
+        <div *ngIf="canViewListRoomss" nz-col [nzSpan]="8">
             <nz-card>
                 <p class="element" >Salle</p>
                 <span class="value" *ngIf="rooms">{{rooms.length}}</span>
@@ -16,7 +16,7 @@
                 <button routerLink="/Administration/buildings" nz-button nzType="primary" class="button"> Consulter</button>
             </nz-card>
         </div>
-        <div nz-col [nzSpan]="8">
+        <div *ngIf="canViewListUsers" nz-col [nzSpan]="8">
             <nz-card>
                 <p class="element" >Médecin</p>
                 <span class="value" *ngIf="doctors">{{doctors.length}}</span>

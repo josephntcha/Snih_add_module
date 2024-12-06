@@ -12,13 +12,19 @@ import { log } from 'ng-zorro-antd/core/logger';
   styleUrl: './patient-connexion.component.css'
 })
 export class PatientConnexionComponent implements OnInit{
-
   form1!:FormGroup;
   form2!:FormGroup;
   currentStep:boolean=true;
   currentStep2:boolean=false;
   username:any;
   password:any;
+
+  images: string[] = [
+    'assets/téléchargement1.jpeg', 
+    'assets/téléchargement2.jpeg', 
+    'assets/téléchargement3.jpeg', 
+    'assets/téléchargement4.jpeg',  
+  ];
 
   constructor(private apiService:ApiServiceService, private fromBuilder:FormBuilder, private route:Router,private authService:AuthService){}
 
@@ -59,7 +65,15 @@ if (this.form1.valid) {
     }
   })
   
+}else {
+  Object.values(this.form1.controls).forEach(control => {
+    if (control.invalid) {
+      control.markAsDirty();
+      control.updateValueAndValidity({ onlySelf: true });
+    }
+  });
 }
+
 }
 
   submitForm2() {
@@ -69,8 +83,7 @@ if (this.form1.valid) {
     this.apiService.postLogin(this.username,this.form2.get("code2")?.value).subscribe({
       next: (response)=>{
         console.log(response);
-        const patientId=this.authService.userId;           
-        this.route.navigate(['/patient-dashboard',patientId]);   
+        this.route.navigate(['/patient-dashboard']);   
       },
       error:(error)=>{
        console.log(error.error);    

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Hospital } from '../../../models/model';
+import { Hospital, Permission } from '../../../models/model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
@@ -14,6 +14,10 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class HospitalsComponent implements OnInit{
   listOfData!: Hospital[];
+  canViewList = false;
+  canCreateHospital = false;
+  canEditHospital = false;
+  canDeleteHospital = false;
 
   checked = false;
   indeterminate = false;
@@ -26,13 +30,15 @@ export class HospitalsComponent implements OnInit{
   hospital: any;
 
 
-  constructor(private apiService: ApiServiceService, public authService:AuthService,
+  constructor(private apiService: ApiServiceService,
               private router: Router, 
               private fileExport: FileExportService,
-              private fb: FormBuilder){}
+              private fb: FormBuilder,
+              private authService: AuthService){}
 
 
   ngOnInit(): void {
+    this.getConnectedUserPermissionsOnComponent();
     this.getHospitals()
   }
 
@@ -41,6 +47,41 @@ export class HospitalsComponent implements OnInit{
     this.apiService.getDataHospitals().subscribe({
       next: (data) => {
         this.listOfData = data;
+      },error: (err) => {
+        console.log(err.message);        
+      }
+    })
+  }
+
+
+  getConnectedUserPermissionsOnComponent(){
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Hôpitaux").subscribe({
+      next: (response) => {
+        if(response.success){
+          const currentUserPermissions: Permission[] = response.data;
+          const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+          
+          if(permissionsCodeNames.includes("VIEW_LIST_HOSPITAL")){
+            this.canViewList = true;
+          }else{
+            this.canViewList = false;
+          }
+          if(permissionsCodeNames.includes("CREATE_HOSPITAL")){
+            this.canCreateHospital = true;
+          }else{
+            this.canCreateHospital = false;
+          }
+          if(permissionsCodeNames.includes("UPDATE_HOSPITAL")){
+            this.canEditHospital = true;
+          }else{
+            this.canEditHospital = false;
+          }
+          if(permissionsCodeNames.includes("DELETE_HOSPITAL")){
+            this.canDeleteHospital = true;
+          }else{
+            this.canDeleteHospital = false;
+          }
+        }
       },error: (err) => {
         console.log(err.message);        
       }

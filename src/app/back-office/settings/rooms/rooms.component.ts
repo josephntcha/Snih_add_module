@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Room } from '../../../models/model';
+import { Permission, Room } from '../../../models/model';
 import Swal from 'sweetalert2';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiServiceService } from '../../../services/api-service.service';
@@ -19,6 +19,11 @@ export class RoomsComponent implements OnInit{
   listOfData: readonly Room[] = [];
   setOfCheckedId = new Set<number>();
 
+  canViewList = false;
+  canCreateRoom = false;
+  canEditRoom = false;
+  canDeleteRoom = false;
+
   buildingId!: number;
   roomRorm!: FormGroup;
 
@@ -34,6 +39,7 @@ export class RoomsComponent implements OnInit{
 
 
   ngOnInit(): void {
+    this.getConnectedUserPermissionsOnComponent();
     this.buildingId = this.route.snapshot.params['buildingId'];
     this.getRooms();
   }
@@ -51,6 +57,40 @@ export class RoomsComponent implements OnInit{
     }
   }
 
+
+  getConnectedUserPermissionsOnComponent(){
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Salles").subscribe({
+      next: (response) => {
+        if(response.success){
+          const currentUserPermissions: Permission[] = response.data;
+          const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+          
+          if(permissionsCodeNames.includes("VIEW_LIST_ROOMS")){
+            this.canViewList = true;
+          }else{
+            this.canViewList = false;
+          }
+          if(permissionsCodeNames.includes("CREATE_ROOM")){
+            this.canCreateRoom = true;
+          }else{
+            this.canCreateRoom = false;
+          }
+          if(permissionsCodeNames.includes("UPDATE_ROOM")){
+            this.canEditRoom = true;
+          }else{
+            this.canEditRoom = false;
+          }
+          if(permissionsCodeNames.includes("DELETE_ROOM")){
+            this.canDeleteRoom = true;
+          }else{
+            this.canDeleteRoom = false;
+          }
+        }
+      },error: (err) => {
+        console.log(err.message);        
+      }
+    })
+  }
   
 
   initializeForm(){

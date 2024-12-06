@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { AuthService } from '../../../services/auth.service';
+import { Permission } from '../../../models/model';
 
 @Component({
   selector: 'app-availability',
@@ -27,6 +28,9 @@ export class AvailabilityComponent implements  OnInit{
   buildings: any;
   isVisible = false;
   availability:any;
+  canCreateAvailibility=false;
+  canEditAvailibility=false;
+  canViewListAvailibility=false;
 
   constructor(private apiService:ApiServiceService, private route:Router, private formBuilder:FormBuilder, private authService:AuthService ){}
 
@@ -35,7 +39,7 @@ export class AvailabilityComponent implements  OnInit{
   
   ngOnInit(): void {
     
-    
+    this.getConnectedUserPermissionsOnComponent();
 
     this.availabiltyForm=this.formBuilder.group({
         day:['',Validators.required],
@@ -133,6 +137,36 @@ export class AvailabilityComponent implements  OnInit{
 
   }
   
+  getConnectedUserPermissionsOnComponent(){
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Disponibilités").subscribe({
+      next: (response) => {
+        if(response.success){
+          const currentUserPermissions: Permission[] = response.data;
+          const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+          
+          if(permissionsCodeNames.includes("CREATE_AVAILABILITY")){
+            this.canCreateAvailibility = true;
+          }else{
+            this.canCreateAvailibility = false;
+          }
+          if(permissionsCodeNames.includes("UPDATE_AVAILABILITY")){
+            this.canEditAvailibility = true;
+          }else{
+            this.canEditAvailibility = false;
+          }
+          if(permissionsCodeNames.includes("VIEW_LIST_AVAILABILITIES")){
+            this.canViewListAvailibility = true;
+          }else{
+            this.canViewListAvailibility = false;
+          }
+        }
+      },error: (err) => {
+        console.log(err.message);        
+      }
+    })
+  }
+
+
   updateAvailability1(availability: any) { 
     this.availability=availability;
     
@@ -146,7 +180,7 @@ export class AvailabilityComponent implements  OnInit{
         endTime: availability.endTime,
         frequency: [frq],
         orderOfDay: availability.orderOfDay,
-        hospital: hospitalId,
+        Availibility: hospitalId,
         maxNumberOfAppointments: availability.maxNumberOfAppointments,
         room: availability.room,
         period: availability.period

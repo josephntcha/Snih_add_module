@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiServiceService } from '../../services/api-service.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-patient-dashboard',
@@ -11,12 +12,11 @@ export class PatientDashboardComponent implements OnInit{
   patientId:any;
   appointments:any;
 
-  constructor(private route:ActivatedRoute,private apiService:ApiServiceService,private router:Router){}
+  constructor(private route:ActivatedRoute,private apiService:ApiServiceService,private authService:AuthService,private router:Router){}
 
   ngOnInit(): void {
 
-    this.patientId=this.route.snapshot.paramMap.get('patientId');
-    this.apiService.getPatinetAppointments(this.patientId).subscribe(response=>{
+    this.apiService.getPatinetAppointments(this.authService.userId).subscribe(response=>{
       this.appointments=response;
       
     })

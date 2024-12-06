@@ -27,7 +27,7 @@ const routes: Routes = [
     component: KnownDoctorComponent,
   },
   {
-    path: "patient-dashboard/:patientId",
+    path: "patient-dashboard",
     component: PatientDashboardComponent,
   },
   {

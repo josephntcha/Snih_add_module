@@ -18,7 +18,7 @@
                     <nz-select formControlName="userType" (nzOpenChange)="chooseUserType()" nzPlaceHolder="Choisir le type de compte utilisateur">
                         @for (type of userTypes; track type) {
                             <nz-option [nzLabel]="type" [nzValue]="type"></nz-option>
-                        }
+                        }q
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>

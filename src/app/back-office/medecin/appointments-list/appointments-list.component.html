@@ -1,8 +1,8 @@
-<div class="container">
+<div class="container" *ngIf="canViewListAppointment">
     <div nz-row>
   
       <div nz-col [nzSpan]="12" class="h3">Liste des RDV pour le {{ appointments[0]?.date | date:'fullDate' }}</div>
-      <button nz-button nzType="primary" (click)="showModal()" class="availability">Donner des autorisations au service Sécretariat</button>
+      <button *ngIf="canGiveRightToSecretaire" nz-button nzType="primary" (click)="showModal()" class="availability">Donner des autorisations au service Sécretariat</button>
  
   
   <nz-modal

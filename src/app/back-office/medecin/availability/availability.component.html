@@ -1,9 +1,9 @@
 <div nz-row>
     <div nz-col nzSpan="24">
-        <button nz-button nzType="primary" routerLink="/back-office/medecin/create-availability" class="float-left">Créer une
+        <button *ngIf="canCreateAvailibility" nz-button nzType="primary" routerLink="/back-office/medecin/create-availability" class="float-left">Créer une
             disponibilité pour les RDV</button>
         <br><br>
-        <nz-table #basicTable [nzData]="availabilities" [nzBordered]="true" [nzSize]="'middle'" class="table">
+        <nz-table  #basicTable [nzData]="availabilities" *ngIf="canViewListAvailibility" [nzBordered]="true" [nzSize]="'middle'" class="table">
             <thead>
                 <tr>
                     <th nzColumnKey="id">Id</th>
@@ -26,7 +26,7 @@
                     <td>{{ availability . period }}</td>
                     <td>{{ availability . hospitalDTO . name }}</td>
                     <td>
-                        <button nz-button nzType="default" nzDanger
+                        <button *ngIf="canEditAvailibility" nz-button nzType="default" nzDanger
                             (click)="updateAvailability1(availability)">Modifier</button>
 
                     </td>

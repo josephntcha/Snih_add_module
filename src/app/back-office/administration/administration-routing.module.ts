@@ -8,9 +8,7 @@ import { UsersComponent } from './users/users.component';
 import { UpdateUsersComponent } from './update-users/update-users.component';
 import { SecretaryComponent } from './secretary/secretary.component';
 import { AppointmentsDoctorComponent } from './appointments-doctor/appointments-doctor.component';
-import { BuildingsComponent } from '../settings/buildings/buildings.component';
-import { RoomsComponent } from '../settings/rooms/rooms.component';
-import { SettingsComponent } from '../settings/settings.component';
+import { PermissionsComponent } from './permissions/permissions.component';
 
 const routes: Routes = [
   {
@@ -19,6 +17,21 @@ const routes: Routes = [
     data: {
       breadcrumb: 'roles',
       title: 'Rôles | Gestion des rôles ou privilèges'
+    }
+  },{
+    path: "roles", 
+    component: RolesComponent,
+    data: {
+      breadcrumb: 'roles',
+      title: 'Rôles | Gestion des rôles ou privilèges'
+    }
+  },
+  {
+    path: "permissions", 
+    component: PermissionsComponent,
+    data: {
+      breadcrumb: 'permissions',
+      title: 'Permissions | Gestion des permissions'
     }
   },
   {
@@ -33,16 +46,16 @@ const routes: Routes = [
     path: "admin-dashboard", 
     component: AdminDashboardComponent,
     data: {
-      breadcrumb: 'Tableau de bard',
-      title: 'Administrateur | Tableau de bard'
+      breadcrumb: 'Tableau de bord',
+      title: 'Administrateur | Tableau de bord'
     }
   },
   {
     path: "super-admin-dashboard", 
     component: SuperAdminDashboardComponent,
     data: {
-      breadcrumb: 'tableau de bard',
-      title: 'Super-administrateur | Tableau de bard'
+      breadcrumb: 'tableau de bord',
+      title: 'Super-administrateur | Tableau de bord'
     }
   },
   {

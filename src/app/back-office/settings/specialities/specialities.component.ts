@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { Speciality } from '../../../models/model';
+import { Permission, Speciality } from '../../../models/model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
@@ -14,6 +14,10 @@ import { FileExportService } from '../../../services/file-export.service';
 })
 export class SpecialitiesComponent implements OnInit{
   listOfData!: Speciality[];
+  canViewList = false;
+  canCreateSpeciality = false;
+  canEditSpeciality = false;
+  canDeleteSpeciality = false;
 
   checked = false;
   indeterminate = false;
@@ -40,12 +44,49 @@ export class SpecialitiesComponent implements OnInit{
 
 
   ngOnInit(): void {
+    this.getConnectedUserPermissionsOnComponent();
     this.getConnectedAdminHospital();
-    this.getAllSpecialities()
+    this.getAllSpecialities();
     this.filterForm = this.fb.group({
       filterInput: [null, Validators.required]
     });
   }
+
+
+  getConnectedUserPermissionsOnComponent(){
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Spécialités").subscribe({
+      next: (response) => {
+        if(response.success){
+          const currentUserPermissions: Permission[] = response.data;
+          const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+          
+          if(permissionsCodeNames.includes("VIEW_LIST_SPECIALITY")){
+            this.canViewList = true;
+          }else{
+            this.canViewList = false;
+          }
+          if(permissionsCodeNames.includes("CREATE_SPECIALITY")){
+            this.canCreateSpeciality = true;
+          }else{
+            this.canCreateSpeciality = false;
+          }
+          if(permissionsCodeNames.includes("UPDATE_SPECIALITY")){
+            this.canEditSpeciality = true;
+          }else{
+            this.canEditSpeciality = false;
+          }
+          if(permissionsCodeNames.includes("DELETE_SPECIALITY")){
+            this.canDeleteSpeciality = true;
+          }else{
+            this.canDeleteSpeciality = false;
+          }
+        }
+      },error: (err) => {
+        console.log(err.message);        
+      }
+    })
+  }
+  
 
   getConnectedAdminHospital(){
     this.apiService.getUserById(this.authService.userId).subscribe({

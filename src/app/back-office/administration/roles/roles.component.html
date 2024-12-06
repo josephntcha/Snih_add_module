@@ -1,15 +1,12 @@
 <div class="table-operations">
-    @if (authService.isAdmin() || authService.isSuperAdmin() ||authService.createRole()) {
-
-        <button (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer nouveau rôle</button>
-    }
-    <button nz-button><i nz-icon nzType="export"></i>Exporter en Excel</button>
+    <button *ngIf="canViewList" (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer nouveau rôle</button>
+    <button *ngIf="canViewList" nz-button><i nz-icon nzType="export"></i>Exporter en Excel</button>
 </div>
-<div class="selected-items">
+<div *ngIf="canViewList" class="selected-items">
     {{ setOfCheckedId.size }} éléments sélectionnés
     <a (click)="refreshCheckedStatus()">Rafraîchir</a>
 </div>
-<nz-table 
+<nz-table *ngIf="canViewList" 
     #basicTable 
     [nzData]="listOfData"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
@@ -28,15 +25,9 @@
             <td>{{ data.id }}</td>
             <td>{{ data.name }}</td>
             <td>
-                @if (authService.isAdmin() || authService.isSuperAdmin() ||authService.editRole()) {
-
-                    <a (click)="editRole(data)">Editer</a>
-                }
-                <nz-divider nzType="vertical"></nz-divider>
-                @if (authService.isAdmin() || authService.isSuperAdmin() ||authService.deleteRole()) {
-
-                    <a (click)="deleteRole(data.id)">Supprimer</a>
-                }
+                <a *ngIf="canEditeRole" (click)="editRole(data)">Editer</a>
+                <nz-divider *ngIf="canEditeRole" nzType="vertical"></nz-divider>
+                <a *ngIf="canDeleteRole" (click)="deleteRole(data.id)">Supprimer</a>
             </td>
         </tr>
     </tbody>
