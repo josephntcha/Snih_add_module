@@ -779,10 +779,10 @@ export class ApiServiceService {
    * @param permissionId 
    * @returns 
    */
-  grantPermissionToUser(userId: number, permissionId: number){
+  grantPermissionToUser(userId: number, permissionIds: number[]){
     const headers = this.createAuthorization();
     if(headers != null){
-      return this.http.post<any>(`${this.apiUrl}/api/permissions/${permissionId}/users/${userId}/grant`, null, {headers});
+      return this.http.post<any>(`${this.apiUrl}/api/permissions/users/${userId}/grant`, permissionIds, {headers});
     }else{
       return throwError(()=>new Error("Autorization non accordée"));
     }
@@ -794,10 +794,10 @@ export class ApiServiceService {
    * @param permissionId 
    * @returns 
    */
-  removeUserPermission(userId: number, permissionId: number){
+  removeUserPermission(userId: number, permissionIds: number[]){
     const headers = this.createAuthorization();
     if(headers != null){
-      return this.http.post<any>(`${this.apiUrl}/api/permissions/${permissionId}/users/${userId}/remove`, null, {headers});
+      return this.http.post<any>(`${this.apiUrl}/api/permissions/users/${userId}/remove`, permissionIds, {headers});
     }else{
       return throwError(()=>new Error("Autorization non accordée"));
     }
@@ -809,10 +809,10 @@ export class ApiServiceService {
    * @param permissionId 
    * @returns 
    */
-  setPermissionToRole(roleId: number, permissionId: number){
+  setPermissionToRole(roleId: number, permissionIds: number[]){
     const headers = this.createAuthorization();
     if(headers != null){
-      return this.http.post<any>(`${this.apiUrl}/api/permissions/${permissionId}/roles/${roleId}/grant`, null, {headers});
+      return this.http.post<any>(`${this.apiUrl}/api/permissions/roles/${roleId}/grant`, permissionIds, {headers});
     }else{
       return throwError(()=>new Error("Autorization non accordée"));
     }
@@ -824,10 +824,10 @@ export class ApiServiceService {
    * @param permissionId 
    * @returns 
    */
-  removePermissionFromRole(roleId: number, permissionId: number){
+  removePermissionFromRole(roleId: number, permissionIds: number[]){
     const headers = this.createAuthorization();
     if(headers != null){
-      return this.http.post<any>(`${this.apiUrl}/api/permissions/${permissionId}/roles/${roleId}/remove`, null, {headers});
+      return this.http.post<any>(`${this.apiUrl}/api/permissions/roles/${roleId}/remove`, permissionIds, {headers});
     }else{
       return throwError(()=>new Error("Autorization non accordée"));
     }

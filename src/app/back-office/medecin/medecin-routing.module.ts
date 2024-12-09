@@ -6,6 +6,7 @@ import { CalendarComponent } from './calendar/calendar.component';
 import { CreateAvailabilityComponent } from './create-availability/create-availability.component';
 import { MedicalRecordComponent } from './medical-record/medical-record.component';
 import { InfoMedicalRecordComponent } from './info-medical-record/info-medical-record.component';
+import { ViewMedicalRecordComponent } from './view-medical-record/view-medical-record.component';
 
 const routes: Routes = [
   {
@@ -49,8 +50,16 @@ const routes: Routes = [
     }
   },
   {
-    path: "info-medical-records",
+    path: "info-medical-records/:id",
     component: InfoMedicalRecordComponent,
+    data: {
+      breadcrumb: 'dossier médical',
+      title: 'Dossier médical | Remplissage du dossier médical'
+    }
+  },
+  {
+    path: "view-medical-record/:id",
+    component: ViewMedicalRecordComponent,
     data: {
       breadcrumb: 'dossier médical',
       title: 'Dossier médical | Remplissage du dossier médical'

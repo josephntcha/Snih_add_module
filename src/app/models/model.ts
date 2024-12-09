@@ -63,7 +63,7 @@ export interface Speciality {
 export interface Role {
   id: number;
   name: string;
-  // permissions: Permission[];
+  permissions: Permission[];
 }
 
 export interface Room {

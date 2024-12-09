@@ -61,7 +61,10 @@
 
 <nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout de spécialité" (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
-        <form [formGroup]="specialityForm" (ngSubmit)="onSubmit()">
+        <button nz-button nzType="primary" (click)="addSpecialityToHospital()" >{{buttonText }}</button>
+        <br><br>
+
+        <form *ngIf="!isToAddSpecialityToHospital" [formGroup]="specialityForm" (ngSubmit)="onSubmit()">
             <nz-form-item>
                 <nz-form-label nzSpan="7" nzRequired>Nom</nz-form-label>
                 <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
@@ -72,6 +75,46 @@
             <nz-form-item>
                 <nz-form-control nzOffset="7" nzSpan="12">
                     <button nz-button nzType="primary" [disabled]="specialityForm.invalid">Soumettre</button>
+                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+
+        
+
+        <form *ngIf="isToAddSpecialityToHospital" [formGroup]="addSpecialityform" (ngSubmit)="addSpeciality()">
+            <nz-form-item>
+                <nz-form-label nzSpan="7" nzRequired>Hôpital</nz-form-label>
+                <nz-form-control nzSpan="12">
+                    <nz-select formControlName="hospital" nzPlaceHolder="Sélectionner l'hôpital">
+                        @for (hosp of hospitals; track hosp) {
+                            <nz-option [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
+                        }
+                    </nz-select>
+                </nz-form-control>
+
+            </nz-form-item>
+            <nz-form-item>
+                <nz-form-label nzSpan="7" nzRequired>Spécialité</nz-form-label>
+                <nz-form-control nzSpan="12">
+                    <nz-select formControlName="speciality" nzPlaceHolder="Sélectionner la spécialité">
+                        @for (sp of listOfData; track sp) {
+                            <nz-option [nzLabel]="sp.name" [nzValue]="sp.id"></nz-option>
+                        }
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzSpan="7" nzRequired>Coût des consultations</nz-form-label>
+                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                    <input nz-input formControlName="price" placeholder="Coût des consultaions">
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-control nzOffset="7" nzSpan="12">
+                    <button nz-button nzType="primary" [disabled]="addSpecialityform.invalid">Soumettre</button>
                     <button nz-button (click)="resetForm($event)">Réinitialiser</button>
                 </nz-form-control>
             </nz-form-item>

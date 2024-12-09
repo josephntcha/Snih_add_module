@@ -27,11 +27,11 @@ const routes: Routes = [
     component: KnownDoctorComponent,
   },
   {
-    path: "patient-dashboard/:patientId",
+    path: "patient-dashboard",
     component: PatientDashboardComponent,
   },
   {
-    path: "patient-medical-record/:patientId",
+    path: "patient-medical-record",
     component: PatientMedicalRecordComponent,
   },
   

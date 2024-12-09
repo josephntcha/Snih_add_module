@@ -61,7 +61,7 @@ export class HospitalsComponent implements OnInit{
           const currentUserPermissions: Permission[] = response.data;
           const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
           
-          if(permissionsCodeNames.includes("VIEW_LIST_HOSPITAL")){
+          if(permissionsCodeNames.includes("VIEW_LIST_HOSPITALS")){
             this.canViewList = true;
           }else{
             this.canViewList = false;

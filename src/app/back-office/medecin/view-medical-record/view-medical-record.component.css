@@ -1,21 +1,4 @@
-.navclas{
-    background: #066631ee;
-}
-
-.menu-item-spacing button {
-    margin-right: 40px; 
-    color: white;
-  }
-
-  .menu-right {
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px;
-    background: #1890ff;
-  }
-
-
-  /* Container principal */
+/* Container principal */
 .container.medical-record {
     background-color: #f9f9f9;
     padding: 30px;

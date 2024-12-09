@@ -34,7 +34,7 @@ registerLocaleData(en);
     RouterOutlet
   ],
   providers: [
-    { provide: NZ_I18N, useValue: en_US },
+    { provide: NZ_I18N, useValue: fr_FR },
     provideAnimationsAsync(),
     provideHttpClient()
   ],

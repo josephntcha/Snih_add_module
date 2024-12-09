@@ -4,10 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { FileExportService } from '../../../services/file-export.service';
-import { InfoMedicalRecord, TypeConstant } from '../../../models/model';
+import { InfoMedicalRecord, Permission, TypeConstant } from '../../../models/model';
 import { MedicalRecordConstantsModalComponent } from '../medical-record-constants-modal/medical-record-constants-modal.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { MedicalRecordAnalyseResultsModalComponent } from '../medical-record-analyse-results-modal/medical-record-analyse-results-modal.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-medical-record',
@@ -30,18 +31,25 @@ export class MedicalRecordComponent implements OnInit{
   listOfCurrentPageData: readonly any[] = [];
   isVisible = false;
 
-  /************** Setion of constant adding ****************/
   recordId: any
   typeConstants: TypeConstant[] = [];
   allTypeConstants: TypeConstant[] = [];
 
-  /************** Section of analyses adding ***************/
+  canViewListRecords = false;
+  canViewRecord = false;
+  canSearchRecords = false;
+  canAddAnalyses = false;
+  canAddConstants = false;
+  canFillRecord = false;
+  canCreateRecord = false;
+
   constructor(private route: ActivatedRoute, 
               private apiService: ApiServiceService, 
               private fb: FormBuilder, 
               private router: Router, 
               private exportService: FileExportService,
-              private modalService: NzModalService){}
+              private modalService: NzModalService,
+              private authService: AuthService){}
   
  
   ngOnInit(): void {
@@ -146,12 +154,12 @@ export class MedicalRecordComponent implements OnInit{
 
 
   addInfoMedRecord(medicalRecordId: number) {
-    this.router.navigateByUrl("/create-info-medical-record/" + medicalRecordId);
+    this.router.navigateByUrl("/back-office/medecin/info-medical-records/" + medicalRecordId);
   }
 
 
   consulter(medicalRecordId: number){
-    this.router.navigateByUrl("/medical-record-details/" + medicalRecordId);
+    this.router.navigateByUrl("/back-office/medecin/view-medical-record/" + medicalRecordId);
   }
   
   addConstants(medicalRecordId: number) {
@@ -250,7 +258,7 @@ export class MedicalRecordComponent implements OnInit{
             });
             this.listOfData = [response.data];
             this.isVisible = false;
-            this.router.navigateByUrl('/Administration/medical-records');
+            this.router.navigateByUrl('/back-office/medecin/medical-records');
           }else{
             Swal.fire({
               title: 'Dossier existant',
@@ -282,154 +290,24 @@ export class MedicalRecordComponent implements OnInit{
   }
 
 
-  /************** Setion of constant adding ****************/
 
-
-// Récupérer les types de constantes depuis le serveur
-  // getTypeConstants(): void{
-  //   this.apiService.getTypeConstants().subscribe(data => {
-  //     this.allTypeConstants = data;
-  //     if (this.constant.length === 0) {
-  //       this.addAnotherConstant();
-  //     }
-  //   });
-  // }
-
-
-  // get constant(): FormArray {
-  //   return this.recordForm.get('constants') as FormArray;
-  // }
-
-  // createConstant(): FormGroup {
-  //   return this.fb.group({
-  //     typeConstant: [null, Validators.required],
-  //     valeur: ['', Validators.required]
-  //   });
-  // }
-
-  // addAnotherConstant(): void {
-  //   const selectedConstants = this.constant.controls
-  //     .map(control => control.get('typeConstant')?.value)
-  //     .filter(value => value !== null && value !== undefined);
-
-  //   if (selectedConstants.length < this.allTypeConstants.length) {
-  //     this.constant.push(this.createConstant());
-  //   } else {
-  //     Swal.fire({
-  //       title: 'Info',
-  //       text: 'Toutes les constantes disponibles ont déjà été ajoutées.',
-  //       icon: 'info',
-  //       timer: 4500,
-  //       showConfirmButton: false,
-  //       timerProgressBar: true
-  //     });
-  //   }
-  // }
-
-  // // Mettre à jour les constantes disponibles en fonction des éléments déjà sélectionnés
-  // updateAvailableConstants() {
-  //   const selectedConstants = this.constant.controls
-  //     .map(control => control.get('typeConstant')?.value)
-  //     .filter(value => value !== null && value !== undefined);
-
-  //   this.typeConstants = this.allTypeConstants.filter(constant => 
-  //     !selectedConstants.includes(constant.id) || 
-  //     this.constant.controls.some(control => control.get('typeConstant')?.value === constant.id)
-  //   );
-  // }
-
-  // // Récupérer les constantes disponibles en excluant celles déjà sélectionnées
-  // getAvailableConstants(index: number): TypeConstant[] {
-  //   const currentValue = this.constant.at(index).get('typeConstant')?.value;
-  //   const otherSelectedConstants = this.constant.controls
-  //     .filter((_, i) => i !== index) // Exclure la constante courante
-  //     .map(control => control.get('typeConstant')?.value)
-  //     .filter(value => value !== null && value !== undefined);
-
-  //   return this.allTypeConstants.filter(constant => 
-  //     !otherSelectedConstants.includes(constant.id) || 
-  //     constant.id === currentValue
-  //   );
-  // }
-
-  // getSelectedConstantUnit(index: number): string | undefined {
-  //   const typeConstantId = this.constant.at(index).get('typeConstant')?.value;
-  //   if (typeConstantId) {
-  //     const selectedConstant = this.allTypeConstants.find(c => c.id === typeConstantId);
-  //     return selectedConstant?.unit;
-  //   }
-  //   return undefined;
-  // }
-
-  // onSubmitForm(): void {
-  //   if (this.recordForm.valid) {
-  //     const formValue = this.recordForm.value;
-
-  //     // Transformation des constants
-  //     formValue.constants = formValue.constants.map((item: any) => ({
-  //       typeConstant: { id: item.typeConstant },
-  //       valeur: item.valeur
-  //     }));
-  //     formValue.analyses_resultats = null;
-  //     formValue.traitement = null;
-
-  //     this.infoMedRecord = formValue;
-      
-
-  //   this.apiService.addConstant(this.infoMedRecord, this.recordId).subscribe({
-  //     next:response=>{
-  //       if (response.success==true) {
-  //         console.log(response.data);
-  //         this.ngOnInit()
-  //        Swal.fire({
-  //          title: 'Succès',
-  //          text: "Données ajoutées avec succès",
-  //          icon: 'success',
-  //          timer:4000,
-  //          showConfirmButton:false,
-  //          timerProgressBar:true
-  //        });
-  //       //  this.router.navigateByUrl('/MedicalRecord/' + this.medicalRec.patient.id);
-  //       }else{
-  //         this.ngOnInit()
-  //         Swal.fire({
-  //           title: 'Erreur',
-  //           text: response.errorMessage,
-  //           icon: 'info',
-  //           timer:4000,
-  //           showConfirmButton:false,
-  //           timerProgressBar:true
-  //         });
-  //       }
-  //      },
-  //     error: err=>{
-  //       Swal.fire({
-  //         title: 'Erreur',
-  //         text: "Une erreur inconnue s'est produite",
-  //         icon: 'error',
-  //         timer:4000,
-  //         showConfirmButton:false,
-  //         timerProgressBar:true
-  //       });
-  //      }
-  //   });
-  //   } else {
-  //     console.log('Formulaire invalide');
-  //   }
-  // }
-
-
-
-  // getMedicalRecordById(medId: number){
-  //   this.apiService.getMedicalRecord(medId).subscribe({
-  //     next: (data) => {
-  //       if(data.success == true){
-  //         this.medicalRec = data.data
+  getConnectedUserPermissionsOnComponent(){
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Dossiers médicaux").subscribe({
+      next: (response) => {
+        if(response.success){
+          const currentUserPermissions: Permission[] = response.data;
+          const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
           
-  //       }
-  //     },error: (err) => {
-  //       console.log(err.message);
-  //     }
-  //   });
-  // }
+          if(permissionsCodeNames.includes("VIEW_RECORD")){
+            this.canViewRecord = true;
+          }else{
+            this.canViewRecord = false;
+            this.router.navigateByUrl("/login");
+          }
+        }
+      },error: (err) => {
+        console.log(err.message);
+      }
+    })
+  }
 }

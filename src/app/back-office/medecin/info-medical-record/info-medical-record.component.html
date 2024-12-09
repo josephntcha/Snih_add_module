@@ -1,1 +1,141 @@
-<p>it works</p>
+<form nz-form [formGroup]="medicalRecordForm" (ngSubmit)="onSubmit()">
+    <!-- Titre du dossier médical -->
+    <nz-page-header *ngIf="medicalRec" 
+      [nzTitle]="'Dossier médical : ' + medicalRec.code_dossier">
+    </nz-page-header>
+  
+    <!-- Constantes existantes -->
+    <ng-container *ngIf="existingInfoMedRecord?.constants?.length; else constantsForm">
+      <nz-card nzTitle="Constantes prises">
+        <nz-list [nzDataSource]="existingInfoMedRecord.constants" nzBordered>
+          <nz-list-item *ngFor="let const of existingInfoMedRecord.constants">
+            {{const.typeConstant.name}} : {{const.valeur}}
+          </nz-list-item>
+        </nz-list>
+      </nz-card>
+    </ng-container>
+  
+    <!-- Formulaire des constantes -->
+    <ng-template #constantsForm>
+      <nz-card nzTitle="Constantes">
+        <div formArrayName="constants">
+          <div *ngFor="let constantCtrl of constant.controls; let i = index" 
+               [formGroupName]="i" nz-row nzGutter="16">
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label>Type de Constante</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="typeConstant" nzPlaceHolder="Sélectionnez une constante">
+                    <nz-option 
+                      *ngFor="let typeConstant of getAvailableConstants(i)" 
+                      [nzValue]="typeConstant.id" 
+                      [nzLabel]="typeConstant.name">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label>Valeur</nz-form-label>
+                <nz-form-control>
+                  <input nz-input formControlName="valeur" placeholder="Valeur" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+  
+          <nz-form-item *ngIf="constant.length < allTypeConstants.length">
+            <nz-form-control>
+              <button nz-button nzType="dashed" (click)="addConstant()">
+                <i nz-icon nzType="plus"></i>Ajouter Constante
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </nz-card>
+    </ng-template>
+  
+    <!-- Diagnostique -->
+    <nz-form-item>
+      <nz-form-label>Diagnostique</nz-form-label>
+      <nz-form-control>
+        <textarea nz-input formControlName="diagnostique" rows="4"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  
+    <!-- Analyses et Résultats -->
+    <ng-container *ngIf="existingInfoMedRecord?.analyses_resultats?.length && !addAnalysis; else analysisForm">
+      <nz-card nzTitle="Analyses et examens existants">
+        <nz-list [nzDataSource]="existingInfoMedRecord.analyses_resultats" nzBordered>
+          <nz-list-item *ngFor="let ana of existingInfoMedRecord.analyses_resultats">
+            {{ana.analysis.name}} : {{ana.result}}
+          </nz-list-item>
+        </nz-list>
+        <br><button nz-button nzType="primary" (click)="addAnalysisAndResults()">
+          Ajouter des analyses ou examens
+        </button>
+      </nz-card>
+    </ng-container>
+  
+    <!-- Formulaire des analyses -->
+    <ng-template #analysisForm>
+      <nz-card nzTitle="Analyses et Résultats">
+        <div formArrayName="analyses_resultats">
+          <div *ngFor="let analys of analysisResults.controls; let i = index" 
+               [formGroupName]="i" nz-row nzGutter="16">
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label>Analyse</nz-form-label>
+                <nz-form-control>
+                  <nz-select formControlName="analysis" nzPlaceHolder="Sélectionnez une analyse">
+                    <nz-option 
+                      *ngFor="let availableAnalysis of getAvailableAnalyses(i)" 
+                      [nzValue]="availableAnalysis.id" 
+                      [nzLabel]="availableAnalysis.name">
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="12">
+              <nz-form-item>
+                <nz-form-label>Résultat</nz-form-label>
+                <nz-form-control>
+                  <input nz-input formControlName="result" placeholder="Résultat" />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+  
+          <nz-form-item *ngIf="analysisResults.length < allAnalyses.length">
+            <nz-form-control>
+              <button nz-button nzType="dashed" (click)="addAnalysisResult()">
+                <i nz-icon nzType="plus"></i>Ajouter Analyse
+              </button>
+            </nz-form-control>
+          </nz-form-item>
+        </div>
+      </nz-card>
+    </ng-template>
+  
+    <!-- Traitement -->
+    <nz-form-item>
+      <nz-form-label>Traitement prescrit</nz-form-label>
+      <nz-form-control>
+        <textarea nz-input formControlName="traitement" rows="4"></textarea>
+      </nz-form-control>
+    </nz-form-item>
+  
+    <!-- Bouton de soumission -->
+    <nz-form-item>
+      <nz-form-control>
+        <button 
+          nz-button 
+          nzType="primary" 
+          [disabled]="medicalRecordForm.invalid">
+          Envoyer
+        </button>
+      </nz-form-control>
+    </nz-form-item>
+  </form>

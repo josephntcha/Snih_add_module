@@ -171,7 +171,7 @@ export class UsersComponent implements OnInit{
                 timerProgressBar: true 
               });
               this.getUsers();
-              this.router.navigateByUrl("/Administration/users");
+              this.router.navigateByUrl("/back-office/Administration/users");
             }else{
               Swal.fire({
                 title: response.errorMessage,

@@ -11,6 +11,6 @@
   .menu-right {
     display: flex;
     justify-content: flex-end;
-    padding: 1.2rem;
+    padding: 10px;
     background: #1890ff;
   }

@@ -59,7 +59,7 @@ export class RoomsComponent implements OnInit{
 
 
   getConnectedUserPermissionsOnComponent(){
-    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Salles").subscribe({
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Bâtiments").subscribe({
       next: (response) => {
         if(response.success){
           const currentUserPermissions: Permission[] = response.data;

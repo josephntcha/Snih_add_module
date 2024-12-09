@@ -133,6 +133,17 @@
                 </nz-form-control>
             </nz-form-item>
 
+            <nz-form-item *ngIf="canAddDoctorToAnotherHospital">
+                <nz-form-label nzSpan="7">Selectionner l'hôpital</nz-form-label>
+                <nz-form-control nzSpan="12" nzHasFeedback >
+                    <nz-select formControlName="hospital" nzPlaceHolder="Veuillez selectionner l'hôpital">
+                        @for (hosp of hospitals; track hosp) {
+                            <nz-option [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
+                        }
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
             <nz-form-item>
                 <nz-form-control nzOffset="9" nzSpan="12">
                     <button nz-button nzType="primary" [disabled]="addDoctorToHospitalform.invalid">Soumettre</button>

@@ -7,16 +7,16 @@
   
 
     <li nz-menu-item class="menu-item-spacing">
-      <button nz-button nzType="link" routerLink="/patient-connexion">Prendre RDV</button>
+      <button nz-button nzType="link" routerLink="/prendre-rdv">Prendre RDV</button>
     </li>
 
     <li nz-menu-item class="menu-item-spacing">
-        <button nz-button nzType="link"  [routerLink]="['/patient-medical-record',patientId ]">Dossier Médical</button>
+        <button nz-button nzType="link"  [routerLink]="['/patient-medical-record']">Dossier Médical</button>
     </li>
   
    
     <li nz-menu-item class="menu-item-spacing">
-      <button nz-button nzType="link" routerLink="/patient-connexion">Mes rendez-vous</button>
+      <button nz-button nzType="link" routerLink="/patient-dashboard">Mes rendez-vous</button>
     </li>
   
     <li nz-menu-item class="menu-item-spacing">
@@ -38,9 +38,9 @@
         <thead>
           <tr>
             <th>#</th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Email</th>
+            <!-- <th>Nom</th> -->
+            <!-- <th>Prénom</th> -->
+            <!-- <th>Email</th> -->
             <th>Date</th>
             <th>Hôpital</th>
             <th>Statut</th>
@@ -49,18 +49,12 @@
         <tbody>
           <tr *ngFor="let appointment of appointments; let i = index">
             <td>{{ i + 1 }}</td>
-            <td>{{ appointment.patientLastName }}</td>
-            <td>{{ appointment.patientFirstName }}</td>
-            <td>{{ appointment.patientEmail }}</td>
+            <!-- <td>{{ appointment.patientLastName }}</td> -->
+            <!-- <td>{{ appointment.patientFirstName }}</td> -->
+            <!-- <td>{{ appointment.patientEmail }}</td> -->
             <td>{{ appointment.date | date: 'd MMMM y' }}</td>
             <td>{{ appointment.hospitalDTO.name }}</td>
             <td>{{ appointment.status }}</td>
-            <!-- <td>
-              <button nz-button nzType="success" nzSize="small" (click)="showConfirmationDialog(appointment)">Confirmer</button>
-              <button nz-button nzType="warning" nzSize="small" class="ms-2" (click)="showpostponeDialog(appointment)">Reporter</button>
-              <button nz-button nzType="danger" nzSize="small" class="ms-2" (click)="showdeleteDialog(appointment)">Annuler</button>
-              <button nz-button nzType="default" nzSize="small" class="ms-2" (click)="followAppointment(appointment)">Suivi</button>
-            </td> -->
           </tr>
         </tbody>
       </nz-table>

@@ -35,7 +35,7 @@
             <th>Roles</th>
             <th>Email address</th>
             <!-- <th>Email confirmation</th> -->
-            <th>Actions</th>
+            <th *ngIf="canEditeUser || canManageUser">Actions</th>
         </tr>
     </thead>
     <tbody>
