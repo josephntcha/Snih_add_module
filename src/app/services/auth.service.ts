@@ -49,6 +49,8 @@ export class AuthService {
     this.userId = jwtDecoded.sub.split(" ")[1];
     this.roles = jwtDecoded.scope;
 
+    
+
     window.localStorage.setItem("jwt-token", this.accessToken);
 
     this.apiService.loadAccessibleModules(this.username).subscribe(modules => {

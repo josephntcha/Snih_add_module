@@ -1,10 +1,10 @@
 <div class="container">
 
     @if (!listOfData || listOfData && listOfData.length == 0) {
-        <button (click)="createRecord()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un dossier</button>
+        <button *ngIf="canCreateRecord" (click)="createRecord()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un dossier</button>
 
         <!-- Seacch mode form -->
-        <form [formGroup]="selectForm">
+        <form *ngIf="canSearchRecords" [formGroup]="selectForm">
             <nz-form-item>
                 <nz-form-label nzSpan="7" nzRequired>Mode de recherche</nz-form-label>
                 <nz-form-control nzSpan="12" nzErrorTip="Ce champ est obligatoire">
@@ -17,7 +17,7 @@
         </form>
 
         <!-- Search form -->
-        <form [formGroup]="searcbForm" (ngSubmit)="onSubmitSearchForm()">
+        <form *ngIf="canSearchRecords" [formGroup]="searcbForm" (ngSubmit)="onSubmitSearchForm()">
             @if (isByCode) {
                 <nz-form-item>
                     <nz-form-label nzSpan="7" nzRequired>Code</nz-form-label>
@@ -49,17 +49,17 @@
         </form>
     }
     @else if(listOfData.length != 0){
-        <h1>Resultat de la recherche</h1>
+        <h1>Dossiers méédicaux</h1>
         
         <div class="table-operations">
-            <button (click)="createRecord()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un dossier</button>
-            <button nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
+            <button *ngIf="canCreateRecord" (click)="createRecord()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un dossier</button>
+            <button *ngIf="canSearchRecords || canViewListRecords" nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
         </div>
-        <div class="selected-items">
+        <div *ngIf="canSearchRecords || canViewListRecords" class="selected-items">
             {{ setOfCheckedId.size }} éléments selectionnés
             <a (click)="refreshCheckedStatus()">Refraîchir</a>
         </div>
-        <nz-table 
+        <nz-table *ngIf="canSearchRecords || canViewListRecords"
             #basicTable 
             nzShowSizeChanger
             [nzData]="listOfData"
@@ -82,40 +82,64 @@
                     <td>{{ data.code_dossier }}</td>
                     <td>{{ data.patient.lastName + ' ' + data.patient.firstName}}</td>
                     <td>
-                        <a (click)="consulter(data.id)">Consulter</a>
-                        <nz-divider nzType="vertical"></nz-divider>
-                        <a (click)="addInfoMedRecord(data.id)">Ajouter Info</a>
-                        <nz-divider nzType="vertical"></nz-divider>
-                        <a (click)="addConstants(data.id)">Constanteo</a>
-                        <nz-divider nzType="vertical"></nz-divider>
-                        <a (click)="addAnalisis(data.id)">Analyse</a>
+                        <a *ngIf="canViewRecord" (click)="consulter(data.id)">Consulter</a>
+                        <nz-divider *ngIf="canViewRecord" nzType="vertical"></nz-divider>
+                        <a *ngIf="canFillRecord" (click)="addInfoMedRecord(data.id)">Ajouter Info</a>
+                        <nz-divider *ngIf="canFillRecord" nzType="vertical"></nz-divider>
+                        <a *ngIf="canAddConstants" (click)="addConstants(data.id)">Constantes</a>
+                        <nz-divider *ngIf="canAddConstants" nzType="vertical"></nz-divider>
+                        <a *ngIf="canAddAnalyses" (click)="addAnalisis(data.id)">Analyse</a>
+                        <nz-divider *ngIf="canAddAnalyses" nzType="vertical"></nz-divider>
+                        <a *ngIf="canTransferRecord" (click)="transfer(data)">Trasférer</a>
                     </td>
                 </tr>
             </tbody>
         </nz-table>
     }
 
-    <nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Création de dossier médical" (nzOnCancel)="handleCancel()">
+    <nz-modal nzFooter=" " [(nzVisible)]="isVisible" [nzTitle]="newRecord ? 'Création de dossier médical': 'Transfert de dossier médical'" (nzOnCancel)="handleCancel()">
         <ng-container *nzModalContent>
-            <form [formGroup]="recordForm" (ngSubmit)="onSubmit()">
-                <nz-form-item>
-                    <nz-form-label nzSpan="7" nzRequired>Patient</nz-form-label>
-                    <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                        <nz-select formControlName="patientId" nzPlaceHolder="Choisir un patient">
-                            @for (p of patients; track p.id) {
-                                <nz-option [nzLabel]="p.firstName + p.lastName" [nzValue]="p.id"></nz-option>
-                            }
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
-        
-                <nz-form-item>
-                    <nz-form-control nzOffset="7" nzSpan="12">
-                        <button nz-button nzType="primary" [disabled]="recordForm.invalid">Soumettre</button>
-                        <button nz-button (click)="resetForm($event, recordForm)">Réinitialiser</button>
-                    </nz-form-control>
-                </nz-form-item>
-            </form>
+            @if (newRecord) {
+                <form [formGroup]="recordForm" (ngSubmit)="onSubmit()">
+                    <nz-form-item>
+                        <nz-form-label nzSpan="7" nzRequired>Patient</nz-form-label>
+                        <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                            <nz-select formControlName="patientId" nzPlaceHolder="Choisir un patient">
+                                @for (p of patients; track p.id) {
+                                    <nz-option [nzLabel]="p.firstName + p.lastName" [nzValue]="p.id"></nz-option>
+                                }
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+            
+                    <nz-form-item>
+                        <nz-form-control nzOffset="7" nzSpan="12">
+                            <button nz-button nzType="primary" [disabled]="recordForm.invalid">Soumettre</button>
+                            <button nz-button (click)="resetForm($event, recordForm)">Réinitialiser</button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </form>
+            }@else {
+                <form [formGroup]="transferForm" (ngSubmit)="onSubmit()">
+                    <nz-form-item>
+                        <nz-form-label nzSpan="7" nzRequired>Spécialité</nz-form-label>
+                        <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                            <nz-select formControlName="speciality" nzPlaceHolder="Choisir la spécialité">
+                                @for (sp of specialities; track sp.id) {
+                                    <nz-option [nzLabel]="sp.name" [nzValue]="sp.id"></nz-option>
+                                }
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+            
+                    <nz-form-item>
+                        <nz-form-control nzOffset="7" nzSpan="12">
+                            <button nz-button nzType="primary" [disabled]="transferForm.invalid">Soumettre</button>
+                            <button nz-button (click)="resetForm($event, transferForm)">Réinitialiser</button>
+                        </nz-form-control>
+                    </nz-form-item>
+                </form>
+            }
         </ng-container>
     </nz-modal>
         

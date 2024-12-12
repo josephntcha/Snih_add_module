@@ -30,7 +30,7 @@ export class HospitalsComponent implements OnInit{
   hospital: any;
 
 
-  constructor(private apiService: ApiServiceService, 
+  constructor(private apiService: ApiServiceService,
               private router: Router, 
               private fileExport: FileExportService,
               private fb: FormBuilder,

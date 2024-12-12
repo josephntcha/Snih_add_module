@@ -68,14 +68,16 @@ export class TakeAppointmentComponent {
       this.apiService.getSpecialitiesByHospital(selectedHospitalId).subscribe(response => {
         this.specialities = response.data;
         this.hospitalId = selectedHospitalId;
+        
       });
     });
 
     this.Hospitalform.get('speciality')?.valueChanges.subscribe(selectedSpecialityId => {
       this.specialityId = selectedSpecialityId;
       this.apiService.getAvailabilitiesByHospitalAndSpeciality(this.hospitalId, selectedSpecialityId).subscribe(response => {
+        
         this.availabilities = response;
-
+      
         this.apiService.getPriceByHospitalAndSpeciality(this.hospitalId, selectedSpecialityId).subscribe(response => {
           this.priceBySpeciality = response.data;
         });
@@ -93,13 +95,18 @@ export class TakeAppointmentComponent {
 
   async loadDays(selectedAvailabilityId: any) {
     try {
-      const response = await firstValueFrom(this.apiService.getMaxNumberForAvaillability(selectedAvailabilityId.id, this.hospitalId, this.specialityId)) ;
+      console.log(selectedAvailabilityId.id, this.hospitalId, this.specialityId);
+      
+      const response = await firstValueFrom(this.apiService.getMaxNumberForAvaillability(selectedAvailabilityId.id, this.hospitalId, this.specialityId));
+
+      console.log(response);
+      
       const totalMaxNumber = response.reduce((sum: number, availability: any) => sum + availability.maxNumberOfAppointments, 0);
       const period = response.reduce((sum: number, availability: any) => {
                 
         return sum + availability.period;
       }, 0);
-
+       
       let requestsCompleted = 0;
 
       if (response.length==1 && (response[0]['frequency']['name']=="HEBDOMADAIRE")) {
@@ -172,36 +179,50 @@ export class TakeAppointmentComponent {
   }
 
   onSubmit() {
-    if (this.Hospitalform.valid) {
-      this.apiService.testAppointmentSaving(
-        this.Hospitalform.value.availability.id, 
-        this.Hospitalform.value.hospital, 
-        this.Hospitalform.value
-      ).subscribe({
-        next: (data) => {
-          if(data.data) {
-            this.availabilityId = this.Hospitalform.value.availability.id;
-            this.hospitalId = this.Hospitalform.value.hospital;
-            this.appointmentData = this.Hospitalform.value;
 
-            // Initier le paiement
-            this.open();
-          } else {
-            Swal.fire({
-              title: "",
-              text: data.errorMessage,
-              icon: 'warning',
-              timer: 5000,
-              showConfirmButton: false,
-              timerProgressBar: true 
+      Swal.fire({
+        title: 'Prendre RDV!',
+        text: "Voulez-vous vraiment donner ce rendez-vous?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'oui!',
+        cancelButtonText: 'non'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          if (this.Hospitalform.valid) {
+            this.apiService.testAppointmentSaving(
+              this.Hospitalform.value.availability.id, 
+              this.Hospitalform.value.hospital, 
+              this.Hospitalform.value
+            ).subscribe({
+              next: (data) => {
+                if(data.data) {
+                  this.availabilityId = this.Hospitalform.value.availability.id;
+                  this.hospitalId = this.Hospitalform.value.hospital;
+                  this.appointmentData = this.Hospitalform.value;
+      
+                  // Initier le paiement
+                  this.open();
+                } else {
+                  Swal.fire({
+                    title: "",
+                    text: data.errorMessage,
+                    icon: 'warning',
+                    timer: 5000,
+                    showConfirmButton: false,
+                    timerProgressBar: true 
+                  });
+                }
+              },
+              error: (err) => {
+                console.error('Erreur lors de la vérification du rendez-vous:', err);
+              }
             });
           }
-        },
-        error: (err) => {
-          console.error('Erreur lors de la vérification du rendez-vous:', err);
         }
       });
-    }
   }
 
   open() {

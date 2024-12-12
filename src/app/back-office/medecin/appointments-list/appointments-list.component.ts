@@ -7,6 +7,7 @@ import moment from 'moment';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../services/auth.service';
 import { ApiServiceService } from '../../../services/api-service.service';
+import { Permission } from '../../../models/model';
 
 @Component({
   selector: 'app-appointments-list',
@@ -36,6 +37,8 @@ autorities: any;
 secretaryId:any;
 isVisible = false;
 isOkLoading = false;
+canViewListAppointment=false;
+canGiveRightToSecretaire=false;
 
 constructor(private apiService:ApiServiceService,private authService:AuthService,private formBuilder:FormBuilder,private route:ActivatedRoute,private datePipe: DatePipe,private router: Router){}
 
@@ -58,6 +61,7 @@ handleCancel(): void {
 
 
 ngOnInit(): void {
+  this.getConnectedUserPermissionsOnComponent();
 
   this.doctorId=this.authService.userId;    
   this.checkForm=this.formBuilder.group({
@@ -91,6 +95,34 @@ ngOnInit(): void {
     });
  
 }
+
+
+getConnectedUserPermissionsOnComponent(){
+  this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Calendrier").subscribe({
+    next: (response) => {
+      if(response.success){
+        const currentUserPermissions: Permission[] = response.data;
+        const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+        
+        if(permissionsCodeNames.includes("VIEW_LIST_APPOINTMENTS")){
+          this.canViewListAppointment = true;
+        }else{
+          this.canViewListAppointment = false;
+        }
+        if(permissionsCodeNames.includes("GIVE_RIGHT_TO_SECRETARY")){
+          this.canGiveRightToSecretaire = true;
+        }else{
+          this.canGiveRightToSecretaire = false;
+        }
+      }
+    },error: (err) => {
+      console.log(err.message);        
+    }
+  })
+}
+
+
+
 
 allow(autority:any){
 

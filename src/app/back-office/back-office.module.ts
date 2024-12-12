@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { BackOfficeRoutingModule } from './back-office-routing.module';
@@ -40,6 +40,8 @@ import { AppointmentsDoctorComponent } from './administration/appointments-docto
 import { SecretaryComponent } from './administration/secretary/secretary.component';
 import { AdministrationModule } from './administration/administration.module';
 import { SettingsModule } from './settings/settings.module';
+import { NzAffixModule } from 'ng-zorro-antd/affix';
+
 
 
 @NgModule({
@@ -86,10 +88,14 @@ import { SettingsModule } from './settings/settings.module';
     NzTagModule,
     NzPaginationModule,
     NzModalModule,
+    NzAffixModule,
     FormsModule,
     RouterLink,
     RouterOutlet,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+    
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+
 })
 export class BackOfficeModule { }

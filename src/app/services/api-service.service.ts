@@ -200,6 +200,24 @@ export class ApiServiceService {
       return throwError(()=>new Error("Authorization not allow."));
     }
   }
+  getPermissions():Observable<any>{
+    const headers=this.createAuthorization();
+    if (headers) {
+      return this.http.get<any>(`${this.apiUrl}/api/permission`,{headers}); 
+    }else{
+      return throwError(()=>new Error("Authorization not allow."));
+    }
+  }
+  addPermissionsToUser(userId:any,permissionId:any):Observable<any>{
+   
+      return this.http.post<any>(`${this.apiUrl}/api/users/add_permission/user/${userId}/permission/${permissionId}`,{}); 
+  }
+
+  removePermissionsToUser(userId:any,permissionId:any):Observable<any>{
+   
+    return this.http.post<any>(`${this.apiUrl}/api/users/remove_permission/user/${userId}/permission/${permissionId}`,{}); 
+  }
+
   
   getUserById(id:number):Observable<any>{
     const headers=this.createAuthorization();
@@ -443,10 +461,10 @@ export class ApiServiceService {
    * @param lastName 
    * @returns 
    */
-  searchMedicalRecord(firstName: string, lastName: string): Observable<any>{
+  searchMedicalRecord(userId: number, firstName: string, lastName: string): Observable<any>{
     const headers = this.createAuthorization();
     if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/medical-records/search?firstName=${firstName}&lastName=${lastName}`, {headers})
+      return this.http.get<any>(`${this.apiUrl}/api/medical-records/${userId}/search?firstName=${firstName}&lastName=${lastName}`, {headers})
     }else{
       return throwError(()=>new Error("Autorization non accordée"));
     }
@@ -458,10 +476,25 @@ export class ApiServiceService {
      * @param lastName 
      * @returns 
      */
-  searchMedicalRecordByCode(code: string): Observable<any>{
+  searchMedicalRecordByCode(userId: number, code: string): Observable<any>{
     const headers = this.createAuthorization();
     if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/medical-records?code=${code}`, {headers})
+      return this.http.get<any>(`${this.apiUrl}/api/medical-records/${userId}/code?code=${code}`, {headers})
+    }else{
+      return throwError(()=>new Error("Autorization non accordée"));
+    }
+  }
+
+  /**
+   * Transfer a medical record to another speciality
+   * @param recordId the id of the medical record
+   * @param specialityId target speciality id
+   * @returns 
+   */
+  transferRecordToSpeciality(recordId: number, specialityId: number): Observable<any>{
+    const headers = this.createAuthorization();
+    if (headers) {
+      return this.http.post<any>(`${this.apiUrl}/api/medical-records/${recordId}/${specialityId}`, {headers})
     }else{
       return throwError(()=>new Error("Autorization non accordée"));
     }

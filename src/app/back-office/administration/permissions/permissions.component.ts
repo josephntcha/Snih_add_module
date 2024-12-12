@@ -423,6 +423,8 @@ export class PermissionsComponent implements OnInit{
       next: (response) => {
         if (response.success) {
           this.showSuccessMessage('ajoutées');
+          this.isVisible = false;
+          this.getPermissions();
         } else {
           this.showErrorMessage(response.errorMessage);
         }
@@ -444,6 +446,8 @@ export class PermissionsComponent implements OnInit{
       next: (response) => {
         if (response.success) {
           this.showSuccessMessage('retirées');
+          this.isVisible = false;
+          this.getPermissions();
         } else {
           this.showErrorMessage(response.errorMessage);
         }

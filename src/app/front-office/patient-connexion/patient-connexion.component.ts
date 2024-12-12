@@ -97,7 +97,15 @@ if (this.form1.valid) {
     }
   })
   
+}else {
+  Object.values(this.form1.controls).forEach(control => {
+    if (control.invalid) {
+      control.markAsDirty();
+      control.updateValueAndValidity({ onlySelf: true });
+    }
+  });
 }
+
 }
 
   submitForm2() {

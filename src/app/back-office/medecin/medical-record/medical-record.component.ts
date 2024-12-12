@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { FileExportService } from '../../../services/file-export.service';
-import { InfoMedicalRecord, Permission, TypeConstant } from '../../../models/model';
+import { InfoMedicalRecord, MedicalRecord, Permission, Speciality, TypeConstant } from '../../../models/model';
 import { MedicalRecordConstantsModalComponent } from '../medical-record-constants-modal/medical-record-constants-modal.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { MedicalRecordAnalyseResultsModalComponent } from '../medical-record-analyse-results-modal/medical-record-analyse-results-modal.component';
@@ -18,12 +18,15 @@ import { AuthService } from '../../../services/auth.service';
 export class MedicalRecordComponent implements OnInit{
   patientId: any;
   patients: any;
+  specialities!: Speciality[]
   searcbForm!: FormGroup;
   recordForm!: FormGroup;
+  transferForm!: FormGroup;
   selectForm!: FormGroup;
   isByCode = true;
   newRecord = false;
   listOfData!: any[];
+  medicalRecord!: MedicalRecord;
 
   checked = false;
   indeterminate = false;
@@ -42,6 +45,7 @@ export class MedicalRecordComponent implements OnInit{
   canAddConstants = false;
   canFillRecord = false;
   canCreateRecord = false;
+  canTransferRecord = false;
 
   constructor(private route: ActivatedRoute, 
               private apiService: ApiServiceService, 
@@ -53,6 +57,7 @@ export class MedicalRecordComponent implements OnInit{
   
  
   ngOnInit(): void {
+    this.getConnectedUserPermissionsOnComponent();
     this.initializeForm(this.searcbForm);
     this.selectForm = this.fb.group({
       searchMode: ['', Validators.required]
@@ -72,6 +77,10 @@ export class MedicalRecordComponent implements OnInit{
           lastName: [null, Validators.required]
         });
       }
+    }else if(form == this.transferForm){
+      this.transferForm = this.fb.group({
+        speciality: [null, Validators.required]
+      });
     }else{
       this.recordForm = this.fb.group({
         patientId: [null, Validators.required],
@@ -84,6 +93,17 @@ export class MedicalRecordComponent implements OnInit{
     this.apiService.getDataPatient().subscribe({
       next: (data) => {
         this.patients = data;
+      },error: (err) => {
+        console.log(err.message);
+      }
+    });
+  }
+
+  getSpecialities(){
+    this.apiService.getDataSpecialities().subscribe({
+      next: (data: Speciality[]) => {
+        //enlever la specialité actuelle
+        this.specialities = data.filter(sp => sp.id != this.medicalRecord.speciality.id);
       },error: (err) => {
         console.log(err.message);
       }
@@ -103,7 +123,7 @@ export class MedicalRecordComponent implements OnInit{
 
   onSubmitSearchForm(){
     if(this.isByCode){
-      this.apiService.searchMedicalRecordByCode(this.searcbForm.value.code).subscribe({
+      this.apiService.searchMedicalRecordByCode(this.authService.userId, this.searcbForm.value.code).subscribe({
         next: (data) => {
           if(data.success){
             this.listOfData = [data.data];            
@@ -123,7 +143,7 @@ export class MedicalRecordComponent implements OnInit{
         }
       });
     }else{
-      this.apiService.searchMedicalRecord(this.searcbForm.value.firstName, this.searcbForm.value.lastName).subscribe({
+      this.apiService.searchMedicalRecord(this.authService.userId, this.searcbForm.value.firstName, this.searcbForm.value.lastName).subscribe({
         next: (data) => {
           if(data.length != 0){
             this.listOfData = data;
@@ -150,6 +170,14 @@ export class MedicalRecordComponent implements OnInit{
     this.newRecord = true;
     this.getPatients();
     this.showModal()
+  }
+
+  transfer(medicalRecord: MedicalRecord){
+    this.medicalRecord = medicalRecord;
+    this.newRecord = false;
+    this.getSpecialities();
+    this.initializeForm(this.transferForm);
+    this.showModal();
   }
 
 
@@ -244,7 +272,6 @@ export class MedicalRecordComponent implements OnInit{
 
   onSubmit(){
     if(this.recordForm.valid){
-      const patientId = this.recordForm.value.patientId;
       this.apiService.postMedicalRecord(this.recordForm.value.patientId).subscribe({
         next: (response) => {
           if (response.success == true) {
@@ -281,6 +308,42 @@ export class MedicalRecordComponent implements OnInit{
           });
         }
       });
+    }else if(this.transferForm.valid){
+      this.apiService.transferRecordToSpeciality(this.medicalRecord.id, this.transferForm.value.speciality).subscribe({
+        next: (response) => {
+          if (response.success == true) {
+            Swal.fire({
+              title: '',
+              text: "Dossier transféré avec succès",
+              icon: 'success',
+              timer: 4000,
+              showConfirmButton: false,
+              timerProgressBar: true
+            });
+            this.listOfData = this.listOfData.filter(record => record.id != this.medicalRecord.id);
+            this.isVisible = false;
+          }else{
+            Swal.fire({
+              title: response.errorMessage,
+              text: '',
+              icon: 'error',
+              timer: 4000,
+              showConfirmButton: false,
+              timerProgressBar: true
+            });
+          }
+        },
+        error: () => {
+          Swal.fire({
+            title: 'Erreur inconnu',
+            text: "Une erreur inconnue s'est produite",
+            icon: 'error',
+            timer: 4000,
+            showConfirmButton: false,
+            timerProgressBar: true
+          });
+        }
+      });
     }
   }
 
@@ -297,12 +360,47 @@ export class MedicalRecordComponent implements OnInit{
         if(response.success){
           const currentUserPermissions: Permission[] = response.data;
           const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+          console.log(permissionsCodeNames);
           
           if(permissionsCodeNames.includes("VIEW_RECORD")){
             this.canViewRecord = true;
           }else{
             this.canViewRecord = false;
-            this.router.navigateByUrl("/login");
+          }
+          if(permissionsCodeNames.includes("ADD_CONSTANTS")){
+            this.canAddConstants = true;
+          }else{
+            this.canAddConstants = false;
+          }
+          if(permissionsCodeNames.includes("ADD_TESTS_RESULTS")){
+            this.canAddAnalyses = true;
+          }else{
+            this.canAddAnalyses = false;
+          }
+          if(permissionsCodeNames.includes("CREATE_RECORD")){
+            this.canCreateRecord = true;
+          }else{
+            this.canCreateRecord = false;
+          }
+          if(permissionsCodeNames.includes("SEARCH_RECORDS")){
+            this.canSearchRecords = true;
+          }else{
+            this.canSearchRecords = false;
+          }
+          if(permissionsCodeNames.includes("FILL_RECORDS")){
+            this.canFillRecord = true;
+          }else{
+            this.canFillRecord = false;
+          }
+          if(permissionsCodeNames.includes("VIEW_LIST_RECORDS")){
+            this.canViewListRecords = true;
+          }else{
+            this.canViewListRecords = false;
+          }
+          if(permissionsCodeNames.includes("TRANSFER_RECORD")){
+            this.canTransferRecord = true;
+          }else{
+            this.canTransferRecord = false;
           }
         }
       },error: (err) => {
