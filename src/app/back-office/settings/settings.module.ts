@@ -5,7 +5,8 @@ import { SettingsRoutingModule } from './settings-routing.module';
 
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
     SettingsRoutingModule

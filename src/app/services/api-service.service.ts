@@ -52,6 +52,26 @@ export class ApiServiceService {
     return this.http.get<any>(`${this.apiUrl}/api/hospitals`);
   }
 
+  getConstantes():Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/api/typeconstants`);
+  }
+  getAnalysis():Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/api/analysis`);
+  }
+  postAnalysis(data:any):Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/api/analysis`,data);
+  }
+  updateAnalysis(id:number,data:any):Observable<any>{
+    return this.http.put<any>(`${this.apiUrl}/api/update/${id}/analysis`,data);
+  }
+ postConstantes(data:any):Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/api/typeconstants`,data);
+  }
+
+  updateConstantes(id:number,data:any):Observable<any>{
+    return this.http.put<any>(`${this.apiUrl}/api/update/${id}/typeconstants`,data);
+  }
+
   getDataSpecialities():Observable<any>{
     return this.http.get<any>(`${this.apiUrl}/api/specialities`);
   }

@@ -9,6 +9,7 @@ import { UpdateUsersComponent } from './update-users/update-users.component';
 import { SecretaryComponent } from './secretary/secretary.component';
 import { AppointmentsDoctorComponent } from './appointments-doctor/appointments-doctor.component';
 import { PermissionsComponent } from './permissions/permissions.component';
+import { ConstanteComponent } from '../settings/constant/constante.component';
 
 const routes: Routes = [
   {
@@ -89,7 +90,7 @@ const routes: Routes = [
       breadcrumb: 'liste des RDV',
       title: 'Docteurs | Rendez-vous'
     }
-  },
+  }
 ];
 
 @NgModule({

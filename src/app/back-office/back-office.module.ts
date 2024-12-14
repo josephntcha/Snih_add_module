@@ -40,6 +40,8 @@ import { AppointmentsDoctorComponent } from './administration/appointments-docto
 import { SecretaryComponent } from './administration/secretary/secretary.component';
 import { AdministrationModule } from './administration/administration.module';
 import { SettingsModule } from './settings/settings.module';
+import { ConstanteComponent } from './settings/constant/constante.component';
+import { AnalysisComponent } from './settings/analysis/analysis.component';
 
 
 
@@ -50,6 +52,8 @@ import { SettingsModule } from './settings/settings.module';
     SpecialitiesComponent,
     RoomsComponent,
     BuildingsComponent,
+    ConstanteComponent,
+    AnalysisComponent,
     SettingsComponent,
     UsersComponent,
     RolesComponent,

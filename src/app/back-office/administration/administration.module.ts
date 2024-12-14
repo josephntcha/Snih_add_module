@@ -24,7 +24,7 @@ import { NzTransferModule } from 'ng-zorro-antd/transfer';
 
 @NgModule({
   declarations: [
-    PermissionsComponent
+    PermissionsComponent,
   ],
   imports: [
     CommonModule,
