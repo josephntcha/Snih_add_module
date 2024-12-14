@@ -13,6 +13,8 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class UsersComponent implements OnInit{
   listOfData!: User[];
+  filteredData!: User[];
+  searchValue = "";
   canViewList = false;
   canCreateUser = false;
   canEditeUser = false;
@@ -63,7 +65,8 @@ export class UsersComponent implements OnInit{
   getUsers(){
     this.apiService.getUsers().subscribe({
       next: (data) => {
-        this.listOfData = data;        
+        this.listOfData = data;
+        this.filteredData = [...this.listOfData]     
       },error: (err) => {
         console.log(err.message);
       }
@@ -105,6 +108,14 @@ export class UsersComponent implements OnInit{
     })
   }
 
+  onSearch(){
+    const search = this.searchValue.toLowerCase();
+    this.filteredData = this.listOfData.filter(data => 
+      data.firstName.toLowerCase().includes(search) || 
+      data.lastName.toLowerCase().includes(search) || 
+      data.username.toLowerCase().includes(search)
+    );
+  }
 
 
   updateCheckedSet(id: number, checked: boolean): void {

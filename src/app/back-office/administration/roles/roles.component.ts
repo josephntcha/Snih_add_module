@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { Permission, Role } from '../../../models/model';
+import { Permission, Role, User } from '../../../models/model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-roles',
@@ -24,8 +25,14 @@ export class RolesComponent implements OnInit{
 
   isVisible = false;
   roleForm!: FormGroup;
+  manageRoleForm!: FormGroup;
   role: any
   roleId!: number;
+  isToCreate = true;
+  isToAssign = true;
+  roles!: Role[];
+  users!: User[];
+  selectedUser!: User;
 
 
   constructor(private apiService: ApiServiceService, private router: Router, private fb: FormBuilder, private authService: AuthService){}
@@ -41,10 +48,31 @@ export class RolesComponent implements OnInit{
     this.apiService.getRights().subscribe({
       next: (data) => {
         this.listOfData = data;
+        if(this.selectedUser != undefined && this.selectedUser.roles != undefined){
+          this.roles = this.isToAssign ? this.listOfData
+            .filter(role => !this.selectedUser.roles.some(userRole => userRole.id === role.id)) : this.selectedUser.roles ;
+        }else{
+          this.roles = this.listOfData;
+        }
+      },error: (err) => {
+        console.log(err.message);   
+      }
+    });
+  }
+
+  getStaff(){
+    this.apiService.getStaff(this.authService.userId).subscribe({
+      next: (data: User[]) => {
+        this.users = data.filter(staff => staff.id != this.authService.userId);
       },error: (err) => {
         console.log(err.message);      
       }
     });
+  }
+
+  chooseUser(){
+    this.selectedUser = this.manageRoleForm.controls['user'].value;
+    this.getRoles();
   }
 
 
@@ -83,11 +111,19 @@ export class RolesComponent implements OnInit{
   }
 
 
-  initializeForm(){
-    this.roleForm = this.fb.group({
-      name: ['', Validators.required]
-    });
+  initializeForm(form: 'roleForm' | 'manageRoleForm'){
+    if(form === 'roleForm'){
+      this.roleForm = this.fb.group({
+        name: ['', Validators.required]
+      });
+    }else{
+      this.manageRoleForm = this.fb.group({
+        role: ['', Validators.required],
+        user: ['', Validators.required]
+      });
+    }
   }
+   
 
   patchForm(role: Role){
     this.roleForm.patchValue({
@@ -97,13 +133,18 @@ export class RolesComponent implements OnInit{
 
   editRole(existedRole: Role){
     this.role = existedRole
-    this.showModal()
+    this.showModal('roleForm')
     this.patchForm(existedRole);
   }
 
-  showModal(): void {
+  showModal(form: 'roleForm' | 'manageRoleForm', action: string | null = null): void {
+    this.isToCreate = form === 'roleForm';
+    this.isToAssign = action === 'assign';
+    if(!this.isToCreate){
+      this.getStaff();
+    }
+    this.initializeForm(form);
     this.isVisible = true;
-    this.initializeForm();
   }
 
   handleCancel(): void {
@@ -112,7 +153,7 @@ export class RolesComponent implements OnInit{
 
 
   onSubmit(){
-    if (this.roleForm.valid) {
+    if (this.isToCreate && this.roleForm.valid) {
       const data = {
         name: this.roleForm.value.name
       }
@@ -120,74 +161,80 @@ export class RolesComponent implements OnInit{
         this.apiService.updateRole(this.role.id, data).subscribe({
           next: (response) => {
             if(response.success){
-              Swal.fire({
-                title: "information mise à jour avec succès !",
-                text: '',
-                icon: 'success',
-                timer: 3500,
-                showConfirmButton: false,
-                timerProgressBar: true 
-              });
+              this.showNotification('success', "information mise à jour avec succès !");
               this.isVisible = false;
               this.role = null;
               this.getRoles()
             }else{
-              Swal.fire({
-                title: response.errorMessage,
-                text: '',
-                icon: 'error',
-                timer: 4000,
-                showConfirmButton: false,
-                timerProgressBar: true 
-              });
+              this.showNotification('error', response.errorMessage);
             }
           },error: (err) => {
-            console.log(err.message);            
+            this.showNotification('error', 'Une erreur inconnue s\'est produite, veuillez ressayer');    
           }
         })
       }else{
         this.apiService.saveRole(data) .subscribe({
           next: response => {
             if (response.success) {
-              Swal.fire({
-                title: 'Rôle créé avec succès',
-                text: '',
-                icon: 'success',
-                timer: 3500,
-                showConfirmButton: false,
-                timerProgressBar: true 
-              });
+              this.showNotification('success', 'Rôle créé avec succès');
               this.isVisible = false;
               this.getRoles();
             }else{
-              Swal.fire({
-                title: response.errorMessage,
-                text: '',
-                icon: 'error',
-                timer: 4000,
-                showConfirmButton: false,
-                timerProgressBar: true 
-              });
+              this.showNotification('error', response.errorMessage);
             }
           },
           error:error=>{
-            Swal.fire({
-              title: 'Une erreur inconnue s\'est produite, veuillez ressayer',
-              text: '',
-              icon: 'error',
-              timer: 3500,
-              showConfirmButton: false,
-              timerProgressBar: true 
-            });
+            this.showNotification('error', 'Une erreur inconnue s\'est produite, veuillez ressayer');
+          }
+        });
+      }
+    }else if(this.manageRoleForm.valid){
+      if(this.isToAssign){
+        this.apiService.assignRoleToUser(this.manageRoleForm.value.role, this.manageRoleForm.value.user.id).subscribe({
+          next: response => {
+            if(response.success){
+              this.showNotification('success', 'Rôle assigné avec succès');
+              this.manageRoleForm.reset();
+              this.isVisible = false;
+            }else{
+              this.showNotification('error', response.errorMessage);
+            }
+          },error: () => {
+            this.showNotification('error', 'Une erreur inconnue s\'est produite, veuillez ressayer');
+          }
+        });
+      }else{
+        this.apiService.substractUserFromRole(this.manageRoleForm.value.role, this.manageRoleForm.value.user.id).subscribe({
+          next: response => {
+            if(response.success){
+              this.showNotification('success', 'Rôle soustrait avec succès');
+              this.manageRoleForm.reset();
+              this.isVisible = false;
+            }else{
+              this.showNotification('error', response.errorMessage);
+            }
+          },error: () => {
+            this.showNotification('error', 'Une erreur inconnue s\'est produite, veuillez ressayer');
           }
         });
       }
     }
   }
 
-  resetForm(event: Event){
+  showNotification(icon: 'success' | 'error', title: string) {
+    Swal.fire({
+      title,
+      text: '',
+      icon,
+      timer: icon === 'success' ? 3500 : 4500,
+      showConfirmButton: false,
+      timerProgressBar: true
+    });
+  }
+
+  resetForm(event: Event, form: FormGroup){
     event.preventDefault();
-    this.roleForm.reset();
+    form.reset();
   }
 
 

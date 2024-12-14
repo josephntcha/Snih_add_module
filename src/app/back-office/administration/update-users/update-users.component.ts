@@ -138,7 +138,7 @@ export class UpdateUsersComponent implements OnInit{
               showConfirmButton: false,
               timerProgressBar: true 
             });
-            this.router.navigateByUrl("/Administration/users");
+            this.router.navigateByUrl("/back-office/Administration/users");
           }else{
             Swal.fire({
               title: 'Erreur',

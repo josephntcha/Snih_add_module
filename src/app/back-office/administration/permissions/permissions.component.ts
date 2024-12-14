@@ -6,6 +6,8 @@ import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
 import { TransferItem } from 'ng-zorro-antd/transfer';
 import { AuthService } from '../../../services/auth.service';
+import { filter } from 'rxjs';
+import { FileExportService } from '../../../services/file-export.service';
 
 @Component({
   selector: 'app-permissions',
@@ -14,11 +16,14 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class PermissionsComponent implements OnInit{
   listOfData!: Permission[];
+  searchValue = "";
+  filteredData!: Permission[]
 
   currentUserPermissions!: Permission[];
   canManageUserPermission = false;
   canManageRolePermission = false;
   canViewList = false;
+  connectedUser!: User;
 
   checked = false;
   indeterminate = false;
@@ -36,7 +41,7 @@ export class PermissionsComponent implements OnInit{
   selectedPermissions: number[] = [];
 
 
-  constructor(private apiService: ApiServiceService, private router: Router, private fb: FormBuilder, private authService: AuthService){
+  constructor(private apiService: ApiServiceService, private router: Router, private fb: FormBuilder, private authService: AuthService, private fileExport: FileExportService){
     this.initializeForms();
   }
 
@@ -95,6 +100,7 @@ export class PermissionsComponent implements OnInit{
     this.apiService.getAllPermissions().subscribe({
       next: (data) => {
         this.listOfData = data;
+        this.filteredData = [...this.listOfData];
         this.formTransfertlist(this.listOfData);
       },error: (err) => {
         console.log(err.message);      
@@ -116,8 +122,9 @@ export class PermissionsComponent implements OnInit{
 
   getRoles(){
     this.apiService.getRights().subscribe({
-      next: (data) => {
-        this.roles = data; //A filtrer pour enlever celui de l'utilisateur courant
+      next: (data: Role[]) => {
+        let uroles: string[] = Array.isArray(this.authService.roles) ? this.authService.roles : [this.authService.roles];
+        this.roles = data.filter(role => !uroles.includes(role.name)); // Filtrer pour enlever celui de l'utilisateur courant
       },error: (err) => {
         console.log(err.message);      
       }
@@ -170,6 +177,8 @@ export class PermissionsComponent implements OnInit{
 
 
   handleCancel(): void {
+    this.rolePermissionForm.reset();
+    this.userPermissionForm.reset();
     this.isVisible = false;
   }
 
@@ -196,180 +205,9 @@ export class PermissionsComponent implements OnInit{
     }
   }
 
-
-  // onSubmit(){
-  //   if(this.isAdd){
-  //     if(this.rolePermissionForm.valid){        
-  //       const roleId = this.rolePermissionForm.get('role')?.value.id
-  //       const formPermissions = this.rolePermissionForm.get('permissions')?.value;
-        
-  //       for(let permission of formPermissions){
-  //         this.apiService.setPermissionToRole(roleId, permission.key).subscribe({
-  //           next: (response) => {
-  //             if(response.success){
-  //               Swal.fire({
-  //                 title: "Permissions données avec succès !",
-  //                 text: '',
-  //                 icon: 'success',
-  //                 timer: 3500,
-  //                 showConfirmButton: false,
-  //                 timerProgressBar: true 
-  //               });
-  //               this.rolePermissionForm.reset();
-  //               this.list = []; //vider complètement les deux listes
-  //               this.formTransfertlist(this.listOfData);
-  //               this.isVisible = false;
-  //             }else{
-  //               Swal.fire({
-  //                 title: response.errorMessage,
-  //                 text: '',
-  //                 icon: 'error',
-  //                 timer: 4000,
-  //                 showConfirmButton: false,
-  //                 timerProgressBar: true 
-  //               });
-  //             }
-  //           },error: (err) => {
-  //             Swal.fire({
-  //               title: "Une erreur inconnue s'est produite !",
-  //               text: '',
-  //               icon: 'error',
-  //               timer: 4000,
-  //               showConfirmButton: false,
-  //               timerProgressBar: true 
-  //             });
-  //           }
-  //         });
-  //       }
-  //     }else if(this.userPermissionForm.valid){
-  //       const userId = this.userPermissionForm.get('user')?.value.id;
-  //       const formPermissions = this.userPermissionForm.get('permissions')?.value;
-  //       for(let permission of formPermissions){
-  //         this.apiService.grantPermissionToUser(userId, permission.key).subscribe({
-  //           next: (response) => {
-  //             if(response.success){
-  //               Swal.fire({
-  //                 title: "Permissions données avec succès !",
-  //                 text: '',
-  //                 icon: 'success',
-  //                 timer: 3500,
-  //                 showConfirmButton: false,
-  //                 timerProgressBar: true 
-  //               });
-  //               this.userPermissionForm.reset();
-  //               this.list = [];
-  //               this.formTransfertlist(this.listOfData);
-  //               this.isVisible = false;
-  //             }else{
-  //               Swal.fire({
-  //                 title: response.errorMessage,
-  //                 text: '',
-  //                 icon: 'error',
-  //                 timer: 4000,
-  //                 showConfirmButton: false,
-  //                 timerProgressBar: true 
-  //               });
-  //             }
-  //           },error: (err) => {
-  //             Swal.fire({
-  //               title: "Une erreur inconnue s'est produite !",
-  //               text: '',
-  //               icon: 'error',
-  //               timer: 4000,
-  //               showConfirmButton: false,
-  //               timerProgressBar: true 
-  //             });
-  //           }
-  //         });
-  //       }
-  //     }
-  //   }else if(!this.isAdd){
-  //     if(this.rolePermissionForm.valid){
-  //       const roleId = this.rolePermissionForm.get('role')?.value.id;
-  //       const formPermissions = this.rolePermissionForm.get('permissions')?.value;
-  //       for(let permission of formPermissions){
-  //         this.apiService.removePermissionFromRole(roleId, permission.key).subscribe({
-  //           next: (response) => {
-  //             if(response.success){
-  //               Swal.fire({
-  //                 title: "Permissions retirées avec succès !",
-  //                 text: '',
-  //                 icon: 'success',
-  //                 timer: 3500,
-  //                 showConfirmButton: false,
-  //                 timerProgressBar: true 
-  //               });
-  //               this.rolePermissionForm.reset();
-  //               this.list = [];
-  //               this.formTransfertlist(this.listOfData);
-  //               this.isVisible = false;
-  //             }else{
-  //               Swal.fire({
-  //                 title: response.errorMessage,
-  //                 text: '',
-  //                 icon: 'error',
-  //                 timer: 4000,
-  //                 showConfirmButton: false,
-  //                 timerProgressBar: true 
-  //               });
-  //             }
-  //           },error: (err) => {
-  //             Swal.fire({
-  //               title: "Une erreur inconnue s'est produite !",
-  //               text: '',
-  //               icon: 'error',
-  //               timer: 4000,
-  //               showConfirmButton: false,
-  //               timerProgressBar: true 
-  //             });
-  //           }
-  //         });
-  //       }
-  //     }else if(this.userPermissionForm.valid){
-  //       const userId = this.userPermissionForm.get('user')?.value.id;
-  //       const formPermissions = this.userPermissionForm.get('permissions')?.value;
-  //       for(let permission of formPermissions){
-  //         this.apiService.removeUserPermission(userId, permission.key).subscribe({
-  //           next: (response) => {
-  //             if(response.success){
-  //               Swal.fire({
-  //                 title: "Permissions retirées avec succès !",
-  //                 text: '',
-  //                 icon: 'success',
-  //                 timer: 3500,
-  //                 showConfirmButton: false,
-  //                 timerProgressBar: true 
-  //               });
-  //               this.userPermissionForm.reset();
-  //               this.list = [];
-  //               this.formTransfertlist(this.listOfData);
-  //               this.isVisible = false;
-  //             }else{
-  //               Swal.fire({
-  //                 title: response.errorMessage,
-  //                 text: '',
-  //                 icon: 'error',
-  //                 timer: 4000,
-  //                 showConfirmButton: false,
-  //                 timerProgressBar: true 
-  //               });
-  //             }
-  //           },error: (err) => {
-  //             Swal.fire({
-  //               title: "Une erreur inconnue s'est produite !",
-  //               text: '',
-  //               icon: 'error',
-  //               timer: 4000,
-  //               showConfirmButton: false,
-  //               timerProgressBar: true 
-  //             });
-  //           }
-  //         });
-  //       }
-  //     }
-  //   }
-    
-  // }
+  exportFile(){
+    this.fileExport.exportToExcel('permissions', this.listOfData);
+  }
 
   
   private showError(message: string) {
@@ -379,6 +217,15 @@ export class PermissionsComponent implements OnInit{
       timer: 4000,
       showConfirmButton: false,
     });
+  }
+
+  onSearch(){
+    const search = this.searchValue.toLowerCase();
+    this.filteredData = this.listOfData.filter(data => 
+      data.codeName.toLowerCase().includes(search) || 
+      data.name.toLowerCase().includes(search) || 
+      data.description.toLowerCase().includes(search)
+    );
   }
 
 

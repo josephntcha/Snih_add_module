@@ -120,7 +120,11 @@
     </nz-card>
 }@else{
     <nz-card>
-        <span>Ajout d'un médecin dans votre hôpital </span>
+        @if (canAddDoctorToAnotherHospital) {
+            <span>Ajout d'un médecin dans un hôpital </span>
+        }@else {
+            <span>Ajout d'un médecin dans votre hôpital </span>
+        }
         <form [formGroup]="addDoctorToHospitalform" (ngSubmit)="addDoctor(null)">
             <br><nz-form-item>
                 <nz-form-label nzSpan="7" nzRequired>Selectionner le médecin</nz-form-label>

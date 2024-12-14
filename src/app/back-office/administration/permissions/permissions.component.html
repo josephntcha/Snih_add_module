@@ -1,7 +1,16 @@
+<div *ngIf="canViewList" class="search-box">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+        <input type="text" nz-input placeholder="Recherche..." [(ngModel)]="searchValue" (ngModelChange)="onSearch()" />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
+    </ng-template>
+</div>
+
 <div class="table-operations">
     <button *ngIf="canManageUserPermission" (click)="showModal('user')" nz-button nzType="primary">Gérer permission utilisateur</button>
     <button *ngIf="canManageRolePermission" (click)="showModal('role')" nz-button nzType="primary">Gérer permission de rôle</button>
-    <button *ngIf="canViewList" nz-button><i nz-icon nzType="export"></i>Exporter en Excel</button>
+    <button *ngIf="canViewList" nz-button (click)="exportFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
 </div>
 <div *ngIf="canViewList" class="selected-items">
     {{ setOfCheckedId.size }} éléments sélectionnés
@@ -10,7 +19,7 @@
 <nz-table *ngIf="canViewList"
     #basicTable 
     nzShowSizeChanger
-    [nzData]="listOfData"
+    [nzData]="filteredData"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
 >
     <thead>

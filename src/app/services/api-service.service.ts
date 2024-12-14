@@ -192,6 +192,10 @@ export class ApiServiceService {
     return this.http.get<any>(`${this.apiUrl}/api/days`);
   }
 
+  /**
+   * Get all users
+   * @returns 
+   */
   getUsers():Observable<any>{
     const headers=this.createAuthorization();
     if (headers) {
@@ -200,23 +204,38 @@ export class ApiServiceService {
       return throwError(()=>new Error("Authorization not allow."));
     }
   }
-  getPermissions():Observable<any>{
+
+  /**
+   * Get all staff of a hospital
+   * @param userId The id of the connected user whose hospital will be considered
+   * @returns 
+   */
+  getStaff(userId: number):Observable<any>{
     const headers=this.createAuthorization();
     if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/permission`,{headers}); 
+      return this.http.get<any>(`${this.apiUrl}/api/users/${userId}/staff`,{headers}); 
     }else{
       return throwError(()=>new Error("Authorization not allow."));
     }
   }
-  addPermissionsToUser(userId:any,permissionId:any):Observable<any>{
-   
-      return this.http.post<any>(`${this.apiUrl}/api/users/add_permission/user/${userId}/permission/${permissionId}`,{}); 
-  }
 
-  removePermissionsToUser(userId:any,permissionId:any):Observable<any>{
+  // getPermissions():Observable<any>{
+  //   const headers=this.createAuthorization();
+  //   if (headers) {
+  //     return this.http.get<any>(`${this.apiUrl}/api/permission`,{headers}); 
+  //   }else{
+  //     return throwError(()=>new Error("Authorization not allow."));
+  //   }
+  // }
+  // addPermissionsToUser(userId:any,permissionId:any):Observable<any>{
    
-    return this.http.post<any>(`${this.apiUrl}/api/users/remove_permission/user/${userId}/permission/${permissionId}`,{}); 
-  }
+  //     return this.http.post<any>(`${this.apiUrl}/api/users/add_permission/user/${userId}/permission/${permissionId}`,{}); 
+  // }
+
+  // removePermissionsToUser(userId:any,permissionId:any):Observable<any>{
+   
+  //   return this.http.post<any>(`${this.apiUrl}/api/users/remove_permission/user/${userId}/permission/${permissionId}`,{}); 
+  // }
 
   
   getUserById(id:number):Observable<any>{
@@ -861,6 +880,36 @@ export class ApiServiceService {
     const headers = this.createAuthorization();
     if(headers != null){
       return this.http.post<any>(`${this.apiUrl}/api/permissions/roles/${roleId}/remove`, permissionIds, {headers});
+    }else{
+      return throwError(()=>new Error("Autorization non accordée"));
+    }
+  }
+
+  /**
+   * Assign a role to a user
+   * @param roleId 
+   * @param userId 
+   * @returns 
+   */
+  assignRoleToUser(roleId: number, userId: number){
+    const headers = this.createAuthorization();
+    if(headers != null){
+      return this.http.post<any>(`${this.apiUrl}/api/roles/${roleId}/users/${userId}/assign`, null, {headers});
+    }else{
+      return throwError(()=>new Error("Autorization non accordée"));
+    }
+  }
+
+  /**
+   * Substract a role from a user
+   * @param roleId 
+   * @param userId 
+   * @returns 
+   */
+  substractUserFromRole(roleId: number, userId: number){
+    const headers = this.createAuthorization();
+    if(headers != null){
+      return this.http.post<any>(`${this.apiUrl}/api/roles/${roleId}/users/${userId}/substract`, null, {headers});
     }else{
       return throwError(()=>new Error("Autorization non accordée"));
     }
