@@ -5,6 +5,8 @@ import { SpecialitiesComponent } from './specialities/specialities.component';
 import { RoomsComponent } from './rooms/rooms.component';
 import { SettingsComponent } from './settings.component';
 import { BuildingsComponent } from './buildings/buildings.component';
+import { ConstanteComponent } from './constant/constante.component';
+import { AnalysisComponent } from './analysis/analysis.component';
 
 const routes: Routes = [
   {
@@ -47,6 +49,22 @@ const routes: Routes = [
       title: 'Paramètres | Paramétrage de la plateforme'
     }
   },
+  {
+    path: "constantes",
+    component: ConstanteComponent,
+    data: {
+      breadcrumb: 'Prise de constante',
+      title: 'Paramétrage | Constantes'
+    }
+  },
+  {
+    path: "analyses",
+    component: AnalysisComponent,
+    data: {
+      breadcrumb: 'Type d\'analyse',
+      title: 'Paramétrage | Type d\'analyse'
+    }
+  }
 ];
 
 @NgModule({

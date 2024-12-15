@@ -87,9 +87,7 @@
                 <nz-form-label nzSpan="7" nzRequired>Hôpital</nz-form-label>
                 <nz-form-control nzSpan="12">
                     <nz-select formControlName="hospital" nzPlaceHolder="Sélectionner l'hôpital">
-                        @for (hosp of hospitals; track hosp) {
-                            <nz-option [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
-                        }
+                        <nz-option *ngFor="let hosp of hospitals" [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
                     </nz-select>
                 </nz-form-control>
 
@@ -98,9 +96,7 @@
                 <nz-form-label nzSpan="7" nzRequired>Spécialité</nz-form-label>
                 <nz-form-control nzSpan="12">
                     <nz-select formControlName="speciality" nzPlaceHolder="Sélectionner la spécialité">
-                        @for (sp of listOfData; track sp) {
-                            <nz-option [nzLabel]="sp.name" [nzValue]="sp.id"></nz-option>
-                        }
+                        <nz-option *ngFor="let sp of listOfData" [nzLabel]="sp.name" [nzValue]="sp.id"></nz-option>
                     </nz-select>
                 </nz-form-control>
             </nz-form-item>

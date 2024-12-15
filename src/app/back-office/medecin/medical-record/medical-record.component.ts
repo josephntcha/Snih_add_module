@@ -255,9 +255,9 @@ export class MedicalRecordComponent implements OnInit{
   }
 
 
-  exportToFile(){
-    this.exportService.exportToExcel("records", this.listOfData);
-  }
+  // exportToFile(){
+  //   this.exportService.exportToExcel("records", this.listOfData);
+  // }
 
 
   showModal(): void {

@@ -49,11 +49,11 @@
         </form>
     }
     @else if(listOfData.length != 0){
-        <h1>Dossiers méédicaux</h1>
+        <h1>Dossiers médicaux</h1>
         
         <div class="table-operations">
             <button *ngIf="canCreateRecord" (click)="createRecord()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un dossier</button>
-            <button *ngIf="canSearchRecords || canViewListRecords" nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
+            <!-- <button *ngIf="canSearchRecords || canViewListRecords" nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button> -->
         </div>
         <div *ngIf="canSearchRecords || canViewListRecords" class="selected-items">
             {{ setOfCheckedId.size }} éléments selectionnés
