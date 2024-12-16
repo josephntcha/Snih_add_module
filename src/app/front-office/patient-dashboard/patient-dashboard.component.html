@@ -60,5 +60,26 @@
       </nz-table>
     </div>
   </div>
+
   
+  
+  <nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Recherche de rendez-vous" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+        <form [formGroup]="usernameForm" (ngSubmit)="onSubmitSerch()">
+            <nz-form-item>
+                <nz-form-label nzSpan="7" nzRequired>Code du demandeur</nz-form-label>
+                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                    <input nz-input formControlName="username" placeholder="Entrez le code qui vous ait envoyé ">
+                </nz-form-control>
+            </nz-form-item>
+    
+            <nz-form-item>
+                <nz-form-control nzOffset="7" nzSpan="12">
+                    <button class="submitButton" nz-button nzType="primary" [disabled]="usernameForm.invalid">Soumettre</button>
+                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>
   

@@ -281,6 +281,15 @@ export class ApiServiceService {
     return this.http.get<any>(`${this.apiUrl}/api/medical-records/${patientId}`);
   }
 
+  /**
+   * Get all the appointments of a patient by his username (code)
+   * @param patientUsername 
+   * @returns 
+   */
+  getPatientAppointmentsByUsername(patientUsername: string):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/api/users/patients/appointments?username=${patientUsername}`);
+  }
+
 /**
   * Create patient medical record
   * @param patientId this id of the patient
