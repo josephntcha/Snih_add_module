@@ -30,6 +30,10 @@ export class TakeAppointmentComponent {
   days: any;
   maxNumberOfAppointments: any;
   priceBySpeciality: number = 0;
+  patientFirstName = "";
+  patientLastName = "";
+  patientPhone = "97000000";
+  patientEmail = "";
   selectedAvailability: any;
   daysH: any = [];
   daysM: any = [];
@@ -38,7 +42,14 @@ export class TakeAppointmentComponent {
   appointmentData: any;
   availabilityId!: number;
 
-  constructor(private apiService: ApiServiceService, private kkiapayService: KkiapayService, private fromBuilder: FormBuilder, private route:Router){}
+  isVisible = false;
+  usernameForm!: FormGroup;
+
+  constructor(private apiService: ApiServiceService, 
+              private kkiapayService: KkiapayService, 
+              private fromBuilder: FormBuilder, 
+              private route:Router,
+              private fb: FormBuilder){}
 
   mergeArraysWithoutDuplicates(A1: any[], B1: any[]): any[] {
     return [...new Set([...A1, ...B1])];
@@ -199,6 +210,11 @@ export class TakeAppointmentComponent {
                   this.availabilityId = this.Hospitalform.value.availability.id;
                   this.hospitalId = this.Hospitalform.value.hospital;
                   this.appointmentData = this.Hospitalform.value;
+
+                  this.patientFirstName = this.Hospitalform.value.patientFirstName;
+                  this.patientLastName = this.Hospitalform.value.patientLastName;
+                  this.patientEmail = this.Hospitalform.value.patientEmail;
+                  this.patientPhone = this.Hospitalform.value.patientPhone;                  
       
                   // Initier le paiement
                   this.open();
@@ -235,19 +251,36 @@ export class TakeAppointmentComponent {
   open() {
     openKkiapayWidget({
       amount: this.priceBySpeciality,
+      fullname: this.patientFirstName + ' ' + this.patientLastName,
+      email: this.patientEmail,
       api_key: "021734b06f6511ef86df8fbf72b655ad",
       sandbox: true,
-      phone: "97000000",
+      phone: this.patientPhone,
     })
   }
 
+  showModal(): void {
+    this.initializeForm();
+    this.isVisible = true;
+  }
+
+  handleCancel(): void {
+    this.isVisible = false;
+  }
+
+  initializeForm(){
+    this.usernameForm = this.fb.group({
+      username: ['', Validators.required]
+    });
+  }
+
+  resetForm(event: Event){
+    event.preventDefault();
+    this.usernameForm.reset();
+  }
 
   successHandler = (transactionData: any) => {
-    // console.log('Transaction réussie:', transactionData);
-    // console.log('Données du rendez-vous:', this.availabilityId, this.hospitalId, this.appointmentData);
-
     if (!this.availabilityId || !this.hospitalId || !this.appointmentData) {
-      // console.error('Données manquantes pour le rendez-vous');
       return;
     }
 

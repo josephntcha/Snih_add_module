@@ -5,6 +5,7 @@ import { AuthService } from '../services/auth.service';
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   let authService = inject(AuthService);
   if(req.url.includes('auth/login') 
+      || req.url.includes('/api/users') && req.url.includes('verify-identity' || 'update_code')
       || req.url.includes('users/password-change') 
       || req.url.includes('/api/appointments') && req.method === 'POST'
       || req.url.includes('/api/hospitals') && !req.url.includes('specialities') && req.method === 'GET'
