@@ -191,7 +191,7 @@ getAppointmentCount(day: Date): { follow: number; notFollow: number } {
     return { follow: 0, notFollow: 0 };
   }
   const appointmentsForDate = availability.appointments.filter((appointment: any) => {
-    return moment(appointment.date).isSame(day, 'day') && moment(appointment.date).isSame(appointment.newDate, 'day');
+    return moment(appointment.newDate).isSame(day, 'day');
   });
   
   

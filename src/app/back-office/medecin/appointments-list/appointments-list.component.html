@@ -78,7 +78,7 @@
           <td>{{ appointment.patientFirstName }}</td>
           <td>{{ appointment.patientEmail }}</td>
           <td>{{ appointment.patientPhone }}</td>
-          <td>{{ appointment.date | date: 'dd/MM/yyyy' }}</td>
+          <td>{{ appointment.newDate | date: 'dd/MM/yyyy' }}</td>
           <td>
             <ng-container *ngIf="appointment.status === 'ASKED'">En attente</ng-container>
             <ng-container *ngIf="appointment.status === 'POSTPONE'">Reporté</ng-container>
