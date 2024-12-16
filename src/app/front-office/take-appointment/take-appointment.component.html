@@ -25,11 +25,17 @@
   <br><br>
 <div nz-row>
     <div nz-col nzSpan="18" nzOffset="3" class="">
-      <a routerLink="/je_connais_mon_medecin" nz-col nzSpan="4" nz-button nzType="primary" class="float-left">Je connais mon médecin</a>
       <br>
       <nz-card>
         <div nz-card-body>
-          <h4 nz-typography>Prendre un rendez-vous</h4>
+          <div nz-row>
+            <div nz-col nzSpan="13">
+              <h3 nz-typography>Prise de rendez-vous sans connaitre son médecin</h3>
+            </div>
+            <div nz-col nzSpan="11">
+            </div>
+          </div>
+          
           <nz-divider></nz-divider>
           <form [formGroup]="Hospitalform" (ngSubmit)="onSubmit()">
             <div nz-row nzGutter="16">
@@ -117,6 +123,9 @@
           </form>
         </div>
       </nz-card>
+      <br>
+      <h3 nz-typography>Vous connaissez votre médecin? cliquez <a routerLink="/je_connais_mon_medecin"  nz-button nzType="primary" class="float-left">Je connais mon médecin</a></h3>
+
     </div>
   </div>
 

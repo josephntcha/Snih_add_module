@@ -80,9 +80,9 @@ if (this.form1.valid) {
     console.log(this.username);
     
    if (this.form2.valid) {
-    this.apiService.postLogin(this.username,this.form2.get("code2")?.value).subscribe({
+    this.authService.login(this.username,this.form2.get("code2")?.value).subscribe({
       next: (response)=>{
-        console.log(response);
+        this.authService.loadProfile(response);
         this.route.navigate(['/patient-dashboard']);   
       },
       error:(error)=>{

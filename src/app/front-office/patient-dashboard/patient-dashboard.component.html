@@ -54,7 +54,11 @@
             <td>{{ appointment.patientEmail }}</td>
             <td>{{ appointment.date | date: 'd MMMM y' }}</td>
             <td>{{ appointment.hospitalDTO.name }}</td>
-            <td>{{ appointment.status }}</td>
+            <td>
+              <ng-container *ngIf="appointment.status === 'ASKED'">En attente</ng-container>
+              <ng-container *ngIf="appointment.status === 'POSTPONE'">Reporté</ng-container>
+              <ng-container *ngIf="appointment.status === 'CONFIRMED'">Confirmé</ng-container>
+            </td>
             <!-- <td>
               <button nz-button nzType="success" nzSize="small" (click)="showConfirmationDialog(appointment)">Confirmer</button>
               <button nz-button nzType="warning" nzSize="small" class="ms-2" (click)="showpostponeDialog(appointment)">Reporter</button>
