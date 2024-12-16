@@ -73,6 +73,7 @@ export class AuthService {
     this.userId = undefined;
     this.accessToken = undefined;
     this.roles = undefined;
+    this.isAuthenticated = false;
     window.localStorage.removeItem("jwt-token");
     //clean the timer
     if(this.tokenExpirationTimer){

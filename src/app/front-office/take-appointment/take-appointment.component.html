@@ -111,7 +111,7 @@
   
             <div nz-row>
               <div nz-col nzOffset="20">
-                <button nz-button nzType="primary" type="submit">Prendre RDV</button>
+                <button nz-button nzType="primary" type="submit" [disabled]="Hospitalform.invalid">Prendre RDV</button>
               </div>
             </div>
           </form>

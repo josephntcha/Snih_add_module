@@ -9,12 +9,13 @@ import { registerLocaleData } from '@angular/common';
 import en from '@angular/common/locales/en';
 import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { RouterOutlet } from '@angular/router';
 import { AuthModule } from './auth/auth.module';
 import { BackOfficeModule } from './back-office/back-office.module';
 import { MedecinModule } from './back-office/medecin/medecin.module';
 import { FrontOfficeModule } from './front-office/front-office.module';
+import { authInterceptor } from './auth/auth.interceptor';
 
 registerLocaleData(en);
 
@@ -36,7 +37,9 @@ registerLocaleData(en);
   providers: [
     { provide: NZ_I18N, useValue: fr_FR },
     provideAnimationsAsync(),
-    provideHttpClient()
+    provideHttpClient(
+      withInterceptors([authInterceptor])
+    )
   ],
   bootstrap: [AppComponent]
 })
