@@ -178,8 +178,8 @@ export class TakeAppointmentComponent {
     this.days = mergedDays;
   }
 
-  onSubmit() {
-
+  onSubmit() {    
+    if (this.Hospitalform.valid) {
       Swal.fire({
         title: 'Prendre RDV!',
         text: "Voulez-vous vraiment donner ce rendez-vous?",
@@ -223,6 +223,9 @@ export class TakeAppointmentComponent {
           }
         }
       });
+    }else{
+      alert("Le formulaire est invalide");
+    }
   }
 
   open() {

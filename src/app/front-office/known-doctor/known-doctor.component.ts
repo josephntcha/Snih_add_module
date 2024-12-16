@@ -66,7 +66,7 @@ export class KnownDoctorComponent implements OnInit{
              patientPhone:['',Validators.required],
              doctor:['',Validators.required],
              hospital:['',Validators.required],
-             speciality:['',Validators.required],
+             speciality:[''],
              availability:['',Validators.required],
              date:['',Validators.required],
              price:['']
@@ -128,27 +128,40 @@ export class KnownDoctorComponent implements OnInit{
    }
  
 
-   onSubmit(){
+   onSubmit(){    
     if (this.Hospitalform.valid) {
-      console.log(this.Hospitalform.value);
-
-       this.apiService.postAppointment(this.Hospitalform.value.availability.id,this.Hospitalform.value.hospital,this.Hospitalform.value).subscribe({
-        next:response=>{
-          if (response.success) {
-            Swal.fire({
-              title: 'RDV prit',
-              text: response.code,
-              icon: 'success',
-              timer:3500,
-              showConfirmButton:false,
-              timerProgressBar:true 
-            });
-          }
-        },
-        error:error=>{
-          console.log(error);
+      Swal.fire({
+        title: 'Prendre RDV!',
+        text: "Voulez-vous vraiment donner ce rendez-vous?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'oui!',
+        cancelButtonText: 'non'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.apiService.postAppointment(this.Hospitalform.value.availability.id,this.Hospitalform.value.hospital,this.Hospitalform.value).subscribe({
+            next:response=>{
+              if (response.success) {
+                Swal.fire({
+                  title: 'RDV prit',
+                  text: response.code,
+                  icon: 'success',
+                  timer:3500,
+                  showConfirmButton:false,
+                  timerProgressBar:true 
+                });
+              }
+            },
+            error:error=>{
+              console.log(error);
+            }
+           })
         }
-       })
+      })
+    }else{
+       alert("Le formulaire n'est pas valide");    
     }
   }
 
