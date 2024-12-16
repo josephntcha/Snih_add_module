@@ -164,7 +164,7 @@ allow(autority:any){
 loadAppointmentsByAvailability(){
   if (this.appointmentId) {
     const selectedAppointments = this.appointmentId.appointments.filter((appointment: any) =>
-      moment(appointment.date).isSame(this.day, 'day')
+      moment(appointment.newDate).isSame(this.day, 'day')
     );
     this.appointments = selectedAppointments;
     this.originalAppointments = [...selectedAppointments]; // Gardez une copie
@@ -215,6 +215,7 @@ confirmAppointment(appointment: any) {
 
     })
   }
+
 showpostponeDialog(appointment:any) {
   this.apiService.getAvailabilitiesByDoctorAndHospital(this.doctorId,this.hospitalId).subscribe(response=>{
     this.availabilities=response; 
