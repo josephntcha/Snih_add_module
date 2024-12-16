@@ -6,6 +6,8 @@ import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { ApiServiceService } from '../../../services/api-service.service';
+import { Permission } from '../../../models/model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-calendar',
@@ -21,6 +23,7 @@ export class CalendarComponent implements OnInit{
   DoctorId:any;
   specialityId:any;
   Doctor_name: any;
+  canViewListAppointment=false;
   constructor(private apiService: ApiServiceService, public authService: AuthService,private formBuilder:FormBuilder,private route:Router){}
 
   currentDate = moment(); 
@@ -28,6 +31,7 @@ export class CalendarComponent implements OnInit{
   weeks: Date[][] = [];
 
   ngOnInit(): void {
+    this.getConnectedUserPermissionsOnComponent();
       
     this.Hospitalform=this.formBuilder.group({
      hospital:['']
@@ -254,13 +258,20 @@ onAppointmentClick(day: Date) {
   });
 
    if (availability) {
-    this.route.navigate(['/back-office/medecin/list-appointment'],{state: { availability: availability, date: day, hospitalId:this.hospitalId,specialityId:this.specialityId}})
+    if (this.canViewListAppointment) {
+      if (this.getAppointmentCount(day).follow>0 || this.getAppointmentCount(day).notFollow>0) {
+
+       this.route.navigate(['/back-office/medecin/list-appointment'],{state: { availability: availability, date: day, hospitalId:this.hospitalId,specialityId:this.specialityId}})   
+      }else{
+        this.route.navigate(['/back-office/medecin/calendar']); 
+      }
+    }else{
+
+      this.route.navigate(['/back-office/medecin/calendar']); 
+    }
   }
 
 }
-
-
-
 
   previousMonth() {
   this.currentDate = moment(this.currentDate).subtract(1, 'month');
@@ -272,6 +283,25 @@ nextMonth() {
   this.currentDate = moment(this.currentDate).add(1, 'month');
   this.currentMonth = this.currentDate.toDate();
   this.generateCalendar();
+}
+
+getConnectedUserPermissionsOnComponent(){
+  this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Calendrier").subscribe({
+    next: (response) => {
+      if(response.success){
+        const currentUserPermissions: Permission[] = response.data;
+        const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+        
+        if(permissionsCodeNames.includes("VIEW_LIST_APPOINTMENTS")){
+          this.canViewListAppointment = true;
+        }else{
+          this.canViewListAppointment = false;
+        }
+      }
+    },error: (err) => {
+      console.log(err.message);        
+    }
+  })
 }
 
 
