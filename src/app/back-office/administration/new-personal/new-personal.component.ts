@@ -4,6 +4,8 @@ import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
+import { Permission } from '../../../models/model';
 
 @Component({
   selector: 'app-new-personal',
@@ -39,11 +41,18 @@ export class NewPersonalComponent implements OnInit{
     userType: FormControl<any>;
   }>;
 
+  canAddDoctorToAnotherHospital = false;
+  canAddDoctorToOwnHospital = false;
+
   
-  constructor(private apiService: ApiServiceService, private fromBuilder: FormBuilder, private router: Router){}
+  constructor(private apiService: ApiServiceService, 
+            private fromBuilder: FormBuilder, 
+            private router: Router,
+            private authService: AuthService){}
 
 
   ngOnInit(): void {
+    this.getConnectedUserPermissionsOnComponent();
     this.staffForm = this.fromBuilder.group({
       hospital: [null] as unknown as FormControl<any>,
       firstName: ['', Validators.required] as unknown as FormControl<string>,
@@ -81,23 +90,51 @@ export class NewPersonalComponent implements OnInit{
     }
    
     this.apiService.getUserById(this.userId).subscribe(response => {
-      this.hospitalId = response.data.hospital.id;
+      this.hospitalId = this.canAddDoctorToAnotherHospital ? null : response.data.hospital.id;
     });
-    
-
-    this.addDoctorToHospitalform = this.fromBuilder.group({
-      doctor: ['',Validators.required],
-    }); 
       
     this.apiService.getDataDoctors().subscribe(response=>{
       this.doctors=response;
     });
   }
 
+  initializeAddDoctorToHospitalForm() {
+    this.addDoctorToHospitalform = this.fromBuilder.group({
+      doctor: ['', Validators.required],
+      hospital: ['', this.canAddDoctorToAnotherHospital ? Validators.required : null]
+    });
+  }
+
+
+  getConnectedUserPermissionsOnComponent(){
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Utilisateurs").subscribe({
+      next: (response) => {
+        if(response.success){
+          const currentUserPermissions = response.data;
+          const permissionsCodeNames = currentUserPermissions.map((permission: Permission) => permission.codeName);
+          
+          if(permissionsCodeNames.includes("ADD_DOCTOR_TO_ANOTHER_HOSPITAL")){
+            this.canAddDoctorToAnotherHospital = true;
+          }else{
+            this.canAddDoctorToAnotherHospital = false;
+          }
+          if(permissionsCodeNames.includes("ADD_DOCTOR_TO_OWN_HOSPITAL")){
+            this.canAddDoctorToOwnHospital = true;
+          }else{
+            this.canAddDoctorToOwnHospital = false;
+          }
+
+          this.initializeAddDoctorToHospitalForm();
+        }
+      },error: (err) => {
+        console.log(err.message);        
+      }
+    })
+  }
+
 
   onSubmitAdmin() {
     if (this.staffForm.valid) {
-
       let data;
 
       if(this.isStaff){
@@ -116,25 +153,11 @@ export class NewPersonalComponent implements OnInit{
         this.apiService.postAdmin(this.staffForm.value.hospital, data).subscribe({
           next: response => {
             if(response.success){
-              Swal.fire({
-                title: 'Compte créé avec succès',
-                text: '',
-                icon: 'success',
-                timer: 3500,
-                showConfirmButton: false,
-                timerProgressBar: true 
-              });
-              // this.staffForm.reset();
-              this.router.navigateByUrl("/Administration/users");
+              this.showNotification('success', 'Compte créé avec succès');
+              this.staffForm.reset();
+              this.router.navigateByUrl("/back-office/Administration/users");
             }else{
-              Swal.fire({
-                title: 'Erreur',
-                text: response.errorMessage,
-                icon: 'error',
-                timer:3500,
-                showConfirmButton:false,
-                timerProgressBar:true 
-              });
+              this.showNotification('error', response.errorMessage);
             }
           },
           error:error=>{
@@ -157,27 +180,13 @@ export class NewPersonalComponent implements OnInit{
         this.apiService.postDoctor(data).subscribe({
           next:response => {
             if(response.success){
-              this.addDoctor(response.data.id)
+              this.addDoctor(response.data.id);
             }else{
-              Swal.fire({
-                title: response.errorMessage,
-                text: '',
-                icon: 'error',
-                timer: 3500,
-                showConfirmButton: false,
-                timerProgressBar: true 
-              });
+              this.showNotification('error', response.errorMessage);
             }
           },
-          error: error => {
-            Swal.fire({
-              title: 'Une erreur inconnue s\'est produite, veuillez ressayer plus tard.',
-              text: '',
-              icon: 'error',
-              timer: 3500,
-              showConfirmButton: false,
-              timerProgressBar: true 
-            });
+          error: () => {
+            this.showNotification('error', 'Une erreur inconnue s\'est produite, veuillez ressayer plus tard.');
           }
         });
       }
@@ -197,41 +206,34 @@ export class NewPersonalComponent implements OnInit{
       }else if(this.addDoctorToHospitalform.invalid && doctorId != null){
         dbDoctorId = doctorId;
       }
+      if(this.canAddDoctorToAnotherHospital){
+        this.hospitalId = this.addDoctorToHospitalform.value.hospital
+      }
       this.apiService.postAddDoctorHospital(dbDoctorId, this.hospitalId).subscribe({
         next:response=>{
-          if (response.success==true) {
-            Swal.fire({
-              title: 'Effectué avec succès',
-              text: '',
-              icon: 'success',
-              timer:3500,
-              showConfirmButton:false,
-              timerProgressBar:true 
-            });
-            this.router.navigateByUrl("/Administration/users");
+          if (response.success) {
+            this.showNotification('success', 'Effectué avec succès');
+            this.router.navigateByUrl("/back-office/Administration/users");
           }else{
-            Swal.fire({
-              title: response.errorMessage,
-              text: '',
-              icon: 'error',
-              timer:3500,
-              showConfirmButton:false,
-              timerProgressBar:true 
-            });
+            this.showNotification('error', response.errorMessage);
           }
         },
         error:error=>{
-          Swal.fire({
-            title: 'Une erreur inconnue s\'est produite, veuillez ressayer plus tard.',
-            text: '',
-            icon: 'error',
-            timer:3500,
-            showConfirmButton:false,
-            timerProgressBar:true 
-          });
+          this.showNotification('error', 'Une erreur inconnue s\'est produite, veuillez ressayer plus tard.');
         }
       });
     }
+  }
+
+  showNotification(icon: 'success' | 'error', title: string){
+    Swal.fire({
+      title,
+      text: '',
+      icon,
+      timer : icon === 'success' ? 3500 : 4500,
+      showConfirmButton: false,
+      timerProgressBar: true 
+    });
   }
 
   resetDoctorForm(event: Event){

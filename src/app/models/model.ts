@@ -63,7 +63,7 @@ export interface Speciality {
 export interface Role {
   id: number;
   name: string;
-  // permissions: Permission[];
+  permissions: Permission[];
 }
 
 export interface Room {
@@ -81,6 +81,7 @@ export interface MedicalRecord {
   id: number;
   code_dossier: string;
   date_creation: Date
+  speciality: Speciality;
 }
 
 export interface Module {

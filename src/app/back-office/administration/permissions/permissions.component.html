@@ -1,7 +1,16 @@
+<div *ngIf="canViewList" class="search-box">
+    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+        <input type="text" nz-input placeholder="Recherche..." [(ngModel)]="searchValue" (ngModelChange)="onSearch()" />
+    </nz-input-group>
+    <ng-template #suffixIconButton>
+        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
+    </ng-template>
+</div>
+
 <div class="table-operations">
     <button *ngIf="canManageUserPermission" (click)="showModal('user')" nz-button nzType="primary">Gérer permission utilisateur</button>
     <button *ngIf="canManageRolePermission" (click)="showModal('role')" nz-button nzType="primary">Gérer permission de rôle</button>
-    <button *ngIf="canViewList" nz-button><i nz-icon nzType="export"></i>Exporter en Excel</button>
+    <button *ngIf="canViewList" nz-button (click)="exportFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
 </div>
 <div *ngIf="canViewList" class="selected-items">
     {{ setOfCheckedId.size }} éléments sélectionnés
@@ -9,7 +18,8 @@
 </div>
 <nz-table *ngIf="canViewList"
     #basicTable 
-    [nzData]="listOfData"
+    nzShowSizeChanger
+    [nzData]="filteredData"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
 >
     <thead>
@@ -33,96 +43,59 @@
 </nz-table>
 
 
-<nz-modal nzFooter=" " [nzWidth]="'70%'" [(nzVisible)]="isVisible" nzTitle="Gérer permission de rôle" (nzOnCancel)="handleCancel()">
+<nz-modal
+    nzFooter=" "
+    [nzWidth]="'70%'"
+    [(nzVisible)]="isVisible"
+    [nzTitle]="isRoleForm ? 'Gérer les permissions de rôle' : 'Gérer les permissions d\'utilisateur'"
+    (nzOnCancel)="handleCancel()"
+>
     <ng-container *nzModalContent>
-        @if (isRoleForm) {
-            <form [formGroup]="rolePermissionForm" (ngSubmit)="onSubmit()">
-                <nz-form-item>
-                    <nz-form-label nzSpan="6" nzRequired>Action</nz-form-label>
-                    <nz-form-control nzSpan="12" nzErrorTip="Ce champ est obligatoire">
-                        <nz-select formControlName="actionType" (nzOpenChange)="chooseActionType()" nzPlaceHolder="Action à mener sur le rôle">
-                            <nz-option [nzLabel]="'Ajouter permissions'" [nzValue]="'add'"></nz-option>
-                            <nz-option [nzLabel]="'Retirer permissions'" [nzValue]="'remove'"></nz-option>
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
-    
-                <nz-form-item>
-                    <nz-form-label nzSpan="6" nzRequired>Rôle</nz-form-label>
-                    <nz-form-control nzSpan="12" nzErrorTip="Ce champ est obligatoire">
-                        <nz-select formControlName="role" (nzOpenChange)="getRolePermissions()" nzPlaceHolder="Sélectionner un rôle">
-                            @for (role of roles; track role) {
-                                <nz-option [nzLabel]="role.name" [nzValue]="role"></nz-option>
-                            }
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
+        <form
+            [formGroup]="isRoleForm ? rolePermissionForm : userPermissionForm"
+        >
+            <nz-form-item>
+                <nz-form-label nzSpan="6" nzRequired>
+                    {{ isRoleForm ? 'Rôle' : 'Utilisateur' }}
+                </nz-form-label>
+                <nz-form-control nzSpan="12" nzErrorTip="Ce champ est obligatoire">
+                    <nz-select
+                        formControlName="{{ isRoleForm ? 'role' : 'user' }}"
+                        (nzOpenChange)="loadPermissions()"
+                        [nzPlaceHolder]="isRoleForm ? 'Sélectionner un rôle' : 'Sélectionner un utilisateur'"
+                    >
+                        @if (isRoleForm) {
+                        <ng-container *ngFor="let item of roles">
+                            <nz-option
+                                [nzLabel]="item.name"
+                                [nzValue]="item"
+                            ></nz-option>
+                        </ng-container>
+                        } @else {
+                        <ng-container *ngFor="let item of users">
+                            <nz-option
+                                [nzLabel]="item.firstName + ' ' + item.lastName"
+                                [nzValue]="item"
+                            ></nz-option>
+                        </ng-container>
+                        }
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
 
-
-                <nz-form-item>
-                    <nz-form-label nzSpan="6">Permissions</nz-form-label>
-                    <nz-form-control nzSpan="17">
-                        <nz-transfer
+            <nz-form-item>
+                <nz-form-label nzSpan="6">Permissions</nz-form-label>
+                <nz-form-control nzSpan="17">
+                    <nz-transfer
                         [nzDataSource]="list"
                         nzShowSearch
-                        [nzFilterOption]="filterOption"
-                        (nzSearchChange)="search($event)"
+                        [nzOperations]="['Ajouter', 'Retirer']"
+                        [nzTitles]="['disponibles', 'existants']"
+                        [nzListStyle]="{ 'width.px': 250, 'height.px': 250, 'font-size.em': 1.5 }"
                         (nzChange)="change($event)"
-                        ></nz-transfer>
-                    </nz-form-control>
-                </nz-form-item>
-
-        
-                <nz-form-item>
-                    <nz-form-control nzOffset="7" nzSpan="12">
-                        <button class="submitButton" nz-button nzType="primary" [disabled]="rolePermissionForm.invalid">Soumettre</button>
-                        <button nz-button (click)="resetForm($event, rolePermissionForm)">Réinitialiser</button>
-                    </nz-form-control>
-                </nz-form-item>
-            </form>
-        }@else {
-            <form [formGroup]="userPermissionForm" (ngSubmit)="onSubmit()">
-                <nz-form-item>
-                    <nz-form-label nzSpan="6" nzRequired>Action</nz-form-label>
-                    <nz-form-control nzSpan="12" nzErrorTip="Ce champ est obligatoire">
-                        <nz-select formControlName="actionType" (nzOpenChange)="chooseActionType()" nzPlaceHolder="Action à mener sur le rôle">
-                            <nz-option [nzLabel]="'Ajouter permissions'" [nzValue]="'add'"></nz-option>
-                            <nz-option [nzLabel]="'Retirer permissions'" [nzValue]="'remove'"></nz-option>
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
-    
-                <nz-form-item>
-                    <nz-form-label nzSpan="6" nzRequired>Utilisateur</nz-form-label>
-                    <nz-form-control nzSpan="12" nzErrorTip="Ce champ est obligatoire">
-                        <nz-select formControlName="user" (nzOpenChange)="getUserPermissions()" nzPlaceHolder="Sélectionner un rôle">
-                            @for (user of users; track user) {
-                                <nz-option [nzLabel]="user.firstName+' '+user.lastName" [nzValue]="user"></nz-option>
-                            }
-                        </nz-select>
-                    </nz-form-control>
-                </nz-form-item>
-
-                <nz-form-item>
-                    <nz-form-label nzSpan="6">Permissions</nz-form-label>
-                    <nz-form-control nzSpan="17">
-                        <nz-transfer
-                            [nzDataSource]="list"
-                            nzShowSearch
-                            [nzFilterOption]="filterOption"
-                            (nzSearchChange)="search($event)"
-                            (nzChange)="change($event)"
-                        ></nz-transfer>
-                    </nz-form-control>
-                </nz-form-item>
-        
-                <nz-form-item>
-                    <nz-form-control nzOffset="7" nzSpan="12">
-                        <button class="submitButton" nz-button nzType="primary" [disabled]="userPermissionForm.invalid">Soumettre</button>
-                        <button nz-button (click)="resetForm($event, userPermissionForm)">Réinitialiser</button>
-                    </nz-form-control>
-                </nz-form-item>
-            </form>
-        }
+                    ></nz-transfer>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
     </ng-container>
 </nz-modal>

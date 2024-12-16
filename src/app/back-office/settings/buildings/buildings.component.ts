@@ -74,7 +74,7 @@ export class BuildingsComponent implements OnInit{
           const currentUserPermissions: Permission[] = response.data;
           const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
           
-          if(permissionsCodeNames.includes("VIEW_LIST_BUILDING")){
+          if(permissionsCodeNames.includes("VIEW_LIST_BUILDINGS")){
             this.canViewList = true;
           }else{
             this.canViewList = false;

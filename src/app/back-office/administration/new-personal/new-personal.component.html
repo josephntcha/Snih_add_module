@@ -120,7 +120,11 @@
     </nz-card>
 }@else{
     <nz-card>
-        <span>Ajout d'un médecin dans votre hôpital </span>
+        @if (canAddDoctorToAnotherHospital) {
+            <span>Ajout d'un médecin dans un hôpital </span>
+        }@else {
+            <span>Ajout d'un médecin dans votre hôpital </span>
+        }
         <form [formGroup]="addDoctorToHospitalform" (ngSubmit)="addDoctor(null)">
             <br><nz-form-item>
                 <nz-form-label nzSpan="7" nzRequired>Selectionner le médecin</nz-form-label>
@@ -128,6 +132,17 @@
                     <nz-select formControlName="doctor" nzPlaceHolder="Veuillez selectionner le médecin">
                         @for (doc of doctors; track doc) {
                             <nz-option [nzLabel]="doc.firstName + doc.lastName" [nzValue]="doc.id"></nz-option>
+                        }
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item *ngIf="canAddDoctorToAnotherHospital">
+                <nz-form-label nzSpan="7">Selectionner l'hôpital</nz-form-label>
+                <nz-form-control nzSpan="12" nzHasFeedback >
+                    <nz-select formControlName="hospital" nzPlaceHolder="Veuillez selectionner l'hôpital">
+                        @for (hosp of hospitals; track hosp) {
+                            <nz-option [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
                         }
                     </nz-select>
                 </nz-form-control>

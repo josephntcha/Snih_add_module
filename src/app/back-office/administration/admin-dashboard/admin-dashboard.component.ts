@@ -90,27 +90,45 @@ export class AdminDashboardComponent implements OnInit{
         if(response.success){
           const currentUserPermissions: Permission[] = response.data;
           const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+          if(permissionsCodeNames.includes("ACCESS_ADMIN_DASHBOARD")){
+            this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Bâtiments").subscribe(response => {
+              if(response.success){
+                const currentUserPermissions: Permission[] = response.data;
+                const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+                                
+                if(permissionsCodeNames.includes("VIEW_LIST_BUILDINGS")){
+                  this.canViewListBuildings = true;
+                }else{
+                  this.canViewListBuildings = false;
+                }
+                if(permissionsCodeNames.includes("VIEW_LIST_ROOMS")){
+                  this.canViewListRoomss = true;
+                }else{
+                  this.canViewListRoomss = false;
+                }
+              }
+            });
+            this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Utilisateurs").subscribe(response => {
+            
+              if(response.success){
+                const currentUserPermissions: Permission[] = response.data;
+                const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+                                
+                if(permissionsCodeNames.includes("VIEW_LIST_USERS")){
+                  this.canViewListUsers = true;
+                }else{
+                  this.canViewListUsers = false;
+                }
+              }
+            });
+           
+          }
           
-          if(permissionsCodeNames.includes("VIEW_LIST_BUILDINGS")){
-            this.canViewListBuildings = true;
-          }else{
-            this.canViewListBuildings = false;
-          }
-          if(permissionsCodeNames.includes("VIEW_LIST_USERS")){
-            this.canViewListUsers = true;
-          }else{
-            this.canViewListUsers = false;
-          }
-          if(permissionsCodeNames.includes("VIEW_LIST_ROOMS")){
-            this.canViewListRoomss = true;
-          }else{
-            this.canViewListRoomss = false;
-          }
         }
       },error: (err) => {
         console.log(err.message);        
       }
-    })
+    });
   }
 
 }

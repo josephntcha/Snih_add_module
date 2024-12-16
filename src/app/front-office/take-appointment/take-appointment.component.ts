@@ -95,11 +95,8 @@ export class TakeAppointmentComponent {
 
   async loadDays(selectedAvailabilityId: any) {
     try {
-      console.log(selectedAvailabilityId.id, this.hospitalId, this.specialityId);
       
       const response = await firstValueFrom(this.apiService.getMaxNumberForAvaillability(selectedAvailabilityId.id, this.hospitalId, this.specialityId));
-
-      console.log(response);
       
       const totalMaxNumber = response.reduce((sum: number, availability: any) => sum + availability.maxNumberOfAppointments, 0);
       const period = response.reduce((sum: number, availability: any) => {
@@ -182,7 +179,7 @@ export class TakeAppointmentComponent {
     if (this.Hospitalform.valid) {
       Swal.fire({
         title: 'Prendre RDV!',
-        text: "Voulez-vous vraiment donner ce rendez-vous?",
+        text: "Voulez-vous vraiment demander ce rendez-vous?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -224,7 +221,14 @@ export class TakeAppointmentComponent {
         }
       });
     }else{
-      alert("Le formulaire est invalide");
+      Swal.fire({
+        title: 'Le formulaire n\'est pas valide',
+        text: '',
+        icon: 'error',
+        timer: 3500,
+        showConfirmButton: false,
+        timerProgressBar: true 
+      });
     }
   }
 
@@ -243,7 +247,7 @@ export class TakeAppointmentComponent {
     // console.log('Données du rendez-vous:', this.availabilityId, this.hospitalId, this.appointmentData);
 
     if (!this.availabilityId || !this.hospitalId || !this.appointmentData) {
-      console.error('Données manquantes pour le rendez-vous');
+      // console.error('Données manquantes pour le rendez-vous');
       return;
     }
 
@@ -273,7 +277,7 @@ export class TakeAppointmentComponent {
       },
       error: error => {
         this.ngOnInit()
-        console.error('Erreur lors de l\'enregistrement du rendez-vous:', error);
+        // console.error('Erreur lors de l\'enregistrement du rendez-vous:', error);
         Swal.fire({
           title: "Erreur",
           text: 'Une erreur est survenue lors de l\'enregistrement du rendez-vous',

@@ -1,0 +1,50 @@
+<div *ngIf="canViewRecord" class="container medical-record">
+    <div *ngIf="medicalRec" class="record-details">
+      <h2 class="title">Dossier Médical</h2>
+      
+      <div class="grid">
+        <div class="key">Code du Dossier :</div>
+        <div class="value">{{ medicalRec.code_dossier }}</div>
+        
+        <div class="key">Date de création :</div>
+        <div class="value">{{ medicalRec.date_creation | date:'dd-MM-yyyy' }}</div>
+        
+        <div class="key">Patient :</div>
+        <div class="value">{{ medicalRec.patient.firstName }} {{ medicalRec.patient.lastName }}</div>
+      </div>
+  
+      <h4>Informations médicales</h4>
+      <div *ngFor="let info of medicalRec.infoMedicalRecords" class="info-record">
+        <div class="grid">
+          <div class="key">Diagnostic :</div>
+          <div class="value">{{ info.diagnostique }}</div>
+          
+          <div class="key">Date :</div>
+          <div class="value">{{ info.date | date:'dd-MM-yyyy' }}</div>
+          
+          <div class="key">Traitement :</div>
+          <div class="value">{{ info.traitement }}</div>
+        </div>
+  
+        <!-- Affichage des analyses -->
+        <h4>Analyses</h4>
+        <div class="grid">
+          <div class="key">Analyse</div>
+          <div class="value">Résultat</div>
+        </div>
+        <div *ngFor="let analyse of info.analyses_resultats" class="grid">
+            <div class="key">{{ analyse.analysis.name }} :</div>
+            <div class="value">{{ analyse.result }}</div>
+        </div>
+  
+        <!-- Affichage des constantes -->
+        <h4>Constantes</h4>
+        <!-- <div class="grid"> -->
+          <div *ngFor="let constant of info.constants" class="grid">
+            <div class="key">{{ constant.typeConstant.name }} :</div>
+            <div class="value">{{ constant.valeur }}</div>
+          </div>
+        <!-- </div> -->
+      </div>
+    </div>
+  </div>

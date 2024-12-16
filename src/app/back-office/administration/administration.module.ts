@@ -20,11 +20,23 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { NzDividerModule } from 'ng-zorro-antd/divider';
 import { NzTransferModule } from 'ng-zorro-antd/transfer';
+import { UsersComponent } from './users/users.component';
+import { RolesComponent } from './roles/roles.component';
+import { SuperAdminDashboardComponent } from './super-admin-dashboard/super-admin-dashboard.component';
+import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { NewPersonalComponent } from './new-personal/new-personal.component';
+import { UpdateUsersComponent } from './update-users/update-users.component';
 
 
 @NgModule({
   declarations: [
     PermissionsComponent,
+    UsersComponent,
+    RolesComponent,
+    SuperAdminDashboardComponent,
+    AdminDashboardComponent,
+    NewPersonalComponent,
+    UpdateUsersComponent,
   ],
   imports: [
     CommonModule,

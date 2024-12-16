@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BackOfficeComponent } from './back-office/back-office.component';
-import { LoginComponent } from './auth/login/login.component';
+import { authGuard } from './auth/auth.guard';
 
 const routes: Routes = [
   {
@@ -14,6 +14,7 @@ const routes: Routes = [
   },
   {
     path: "back-office",
+    canActivate: [authGuard],
     component: BackOfficeComponent,
     data: {
       breadcrumb: 'back-office',

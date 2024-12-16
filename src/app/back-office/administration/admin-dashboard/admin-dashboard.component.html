@@ -5,7 +5,7 @@
                 <p class="element" >Bâtiments</p>
                 <span class="value" *ngIf="buildings">{{buildings.length}}</span>
                 <nz-divider></nz-divider>
-                <button routerLink="/Administration/buildings" nz-button nzType="primary" class="button"> Consulter</button>
+                <button routerLink="/back-office/settings/buildings" nz-button nzType="primary" class="button"> Consulter</button>
             </nz-card>
         </div>
         <div *ngIf="canViewListRoomss" nz-col [nzSpan]="8">
@@ -13,7 +13,7 @@
                 <p class="element" >Salle</p>
                 <span class="value" *ngIf="rooms">{{rooms.length}}</span>
                 <nz-divider></nz-divider>
-                <button routerLink="/Administration/buildings" nz-button nzType="primary" class="button"> Consulter</button>
+                <button routerLink="/back-office/settings/buildings" nz-button nzType="primary" class="button"> Consulter</button>
             </nz-card>
         </div>
         <div *ngIf="canViewListUsers" nz-col [nzSpan]="8">
@@ -21,7 +21,7 @@
                 <p class="element" >Médecin</p>
                 <span class="value" *ngIf="doctors">{{doctors.length}}</span>
                 <nz-divider></nz-divider>
-                <button routerLink="/Administration/users" nz-button nzType="primary" class="button"> Consulter</button>
+                <button routerLink="/back-office/Administration/users" nz-button nzType="primary" class="button"> Consulter</button>
             </nz-card>
         </div>
     </div>

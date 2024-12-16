@@ -1,157 +1,73 @@
 
-<!-- <nz-space nz-row nzDirection="vertical" class="container mt-5">
-   
-    <div *ngIf="currentStep" nz-col nzSpan="24" class="col-8 offset-2 animate-slide-in">
-      <nz-card nzBordered class="bodystyle">
-        <nz-card-header>
-          <h4 class="text-center">Veuillez entrer votre code de connexion</h4>
-        </nz-card-header>
-        <nz-card-content>
-          <form [formGroup]="form1" (ngSubmit)="submitForm1()">
-            <div nz-form-item nzGutter="16">
-              <nz-form-label [nzSpan]="24" for="code">Code</nz-form-label>
-              <nz-form-control [nzSpan]="24">
-                <input nz-input id="code" formControlName="code" required />
-              </nz-form-control>
-            </div>
-            <div nz-form-item nzGutter="16">
-              <nz-form-label [nzSpan]="24" for="phone">Numéro</nz-form-label>
-              <nz-form-control [nzSpan]="24">
-                <input nz-input type="text" formControlName="phone" required />
-              </nz-form-control>
-            </div>
-            <br>
-            <button nz-button nzType="primary" class="my-2">Envoyer</button>
-          </form>
-        </nz-card-content>
-        <nz-card-footer></nz-card-footer>
-      </nz-card>
-    </div>
-  
-     Formulaire 2 
-    <div *ngIf="currentStep2" class="col-8 offset-2 animate-slide-in">
-      <nz-card nzBordered class="bodystyle">
-        <nz-card-header>
-          <h4 class="text-center">Entrez le code envoyé sur votre numéro de téléphone</h4>
-        </nz-card-header>
-        <nz-card-content>
-          <form [formGroup]="form2" (ngSubmit)="submitForm2()">
-            <div nz-form-item nzGutter="16">
-              <nz-form-label [nzSpan]="24" for="otpCode">Code OTP</nz-form-label>
-              <nz-form-control [nzSpan]="24">
-                <input nz-input type="text" formControlName="code2" required />
-              </nz-form-control>
-            </div>
-            <button nz-button nzType="primary" class="my-2">Envoyer</button>
-          </form>
-        </nz-card-content>
-        <nz-card-footer>
-          <small>Veuillez consulter votre téléphone pour entrer le code envoyé. NB : Le code a une date d'expiration</small>
-        </nz-card-footer>
-      </nz-card>
-    </div>
-  </nz-space> -->
-
-  <div class="background"  *ngIf="currentStep">
+<div class="background">
     <nz-carousel nzAutoPlay class="image-carousel">
       <div nz-carousel-content *ngFor="let image of images">
         <img [src]="image" alt="Image" class="carousel-image" />
         <div class="overlay"></div>
       </div>
     </nz-carousel>
-
-    <form nz-form [formGroup]="form1" class="login-form" (ngSubmit)="submitForm1()">
-      <nz-card nzTitle="Connexion Patient" class="login-card">
+    
+    <form *ngIf="currentStep" nz-form [formGroup]="form1" class="login-form" (ngSubmit)="submitForm1()">
+      <nz-card nzTitle="Connexion" class="login-card">
         <nz-form-item>
-          <nz-form-control nzErrorTip="Veuillez entrer votre code">
-            <nz-input-group nzPrefixIcon="code">
-              <input type="text" nz-input formControlName="code" placeholder="Entrez le code" />
+          <nz-form-control nzErrorTip="Veuillez vérifier le code">
+            <nz-input-group nzPrefixIcon="user">
+              <input type="text" nz-input formControlName="code" placeholder="Entrez votre code" />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
     
         <nz-form-item>
-          <nz-form-control nzErrorTip="Veuillez entrer votre numéro de téléphone">
+          <nz-form-control nzErrorTip="Veuillez vérifier le numéro de téléphone">
             <nz-input-group nzPrefixIcon="phone">
-              <input type="text" nz-input formControlName="phone" placeholder="Numéro de téléphone"/>
+              <input type="phone" nz-input formControlName="phone" placeholder="Entrez votre numéro de téléphone" />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
     
-        <div nz-row class="login-form-margin">
-          <!-- <div nz-col [nzSpan]="12">
-            <label nz-checkbox formControlName="remember">
-              <span>Remember me</span>
-            </label>
-          </div> -->
-          <div nz-col [nzSpan]="24">
-            <a class="login-form-forgot">Regénérer le code</a>
-          </div>
-        </div>
         <button nz-button class="login-form-button" [nzType]="'primary'">Se connecter</button>
-        
-        <!-- <button nz-button class="login-form-button" [nzType]="'primary'">Log in</button> -->
-        <div class="login-form-register">
-          <!-- Or <a>register now!</a> -->
-           <small>Suite à cette action, un code sera générer et vous sera envoyé. Ne le partagez avec personne, Merci</small>
-        </div>
+        <!-- <div class="login-form-register">
+          Or <a>register now!</a>
+        </div> -->
       </nz-card>
     </form>
-  </div>
 
-
-  <div class="background"  *ngIf="currentStep2">
-    <nz-carousel nzAutoPlay class="image-carousel">
-      <div nz-carousel-content *ngFor="let image of images">
-        <img [src]="image" alt="Image" class="carousel-image"/>
-        <div class="overlay"></div>
-      </div>
-    </nz-carousel>
-
-    <form nz-form [formGroup]="form2" class="login-form" (ngSubmit)="submitForm2()">
-      <nz-card nzTitle="Connexion avec le code OTP" class="login-card">
+    <form *ngIf="currentStep2" [formGroup]="form2" class="login-form" (ngSubmit)="submitForm2()">
+      <nz-card nzTitle="Connexion" class="login-card">
         <nz-form-item>
-          <nz-form-control nzErrorTip="Veuillez entrer le Code OTP">
-            <nz-input-group nzPrefixIcon="code">
-              <input type="text" nz-input formControlName="code2" placeholder="Veuillez entrer le Code OTP envoyé" />
+          <nz-form-control nzErrorTip="Veuillez vérifier le code OTP">
+            <nz-input-group>
+              <input type="text" nz-input formControlName="code2" placeholder="Entrez le code envoyé sur votre numéro de téléphone" />
             </nz-input-group>
           </nz-form-control>
         </nz-form-item>
-    
-    
-       
-        <button nz-button class="login-form-button" [nzType]="'primary'">Se connecter</button>
-        
-        <!-- <button nz-button class="login-form-button" [nzType]="'primary'">Log in</button> -->
-        <div class="login-form-register">
-          <!-- Or <a>register now!</a> -->
-           <small>Veuillez consulter votre téléphone et entrer le code envoyé. NB : Le code a une date d'expiration</small>
-        </div>
+        <button nz-button nzType="primary" class="login-form-button">Envoyer</button>
+        <a nz-button nzType="primary" (click)="regenerateCode()" class="login-form-button">Renvoyer le code</a>
       </nz-card>
     </form>
-  </div>
+</div>
 
 
-
-  <!-- <div  class="col-8 offset-2 animate-slide-in">
-    <nz-card nzBordered class="bodystyle">
-      <nz-card-header>
-        <h4 class="text-center">Entrez le code envoyé sur votre numéro de téléphone</h4>
-      </nz-card-header>
-      <nz-card-content>
-        <form [formGroup]="form2" (ngSubmit)="submitForm2()">
-          <div nz-form-item nzGutter="16">
-            <nz-form-label [nzSpan]="24" for="otpCode">Code OTP</nz-form-label>
-            <nz-form-control [nzSpan]="24">
-              <input nz-input type="text" formControlName="code2" required />
-            </nz-form-control>
-          </div>
-          <button nz-button nzType="primary" class="my-2">Envoyer</button>
-        </form>
-      </nz-card-content>
-      <nz-card-footer>
-        <small>Veuillez consulter votre téléphone pour entrer le code envoyé. NB : Le code a une date d'expiration</small>
-      </nz-card-footer>
-    </nz-card>
-  </div> -->
+<!-- Formulaire 2 -->
+<!-- <div  class="col-8 offset-2 animate-slide-in">
+  <nz-card nzBordered class="bodystyle">
+    <nz-card-header>
+      <h4 class="text-center">Entrez le code envoyé sur votre numéro de téléphone</h4>
+    </nz-card-header>
+    <nz-card-content>
+      <form [formGroup]="form2" (ngSubmit)="submitForm2()">
+        <div nz-form-item nzGutter="16">
+          <nz-form-label [nzSpan]="24" for="otpCode">Code OTP</nz-form-label>
+          <nz-form-control [nzSpan]="24">
+            <input nz-input type="text" formControlName="code2" required />
+          </nz-form-control>
+        </div>
+        <button nz-button nzType="primary" class="my-2">Envoyer</button>
+      </form>
+    </nz-card-content>
+    <nz-card-footer>
+      <small>Veuillez consulter votre téléphone pour entrer le code envoyé. NB : Le code a une date d'expiration</small>
+    </nz-card-footer>
+  </nz-card>
+</div> -->
   

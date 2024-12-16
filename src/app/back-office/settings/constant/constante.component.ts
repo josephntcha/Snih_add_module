@@ -13,37 +13,35 @@ import Swal from 'sweetalert2';
   styleUrl: './constante.component.css'
 })
 export class ConstanteComponent implements OnInit{
-   constantForm!:FormGroup;
-   constants!:TypeConstant[];
-   constant:any;
-   canViewList = false;
-   canCreateConstant = false;
-   canEditConstant = false;
-  isVisible=false;
-  checked = false;
-  indeterminate = false;
-  setOfCheckedId = new Set<number>();
-   constructor( private apiService: ApiServiceService,
+    constantForm!:FormGroup;
+    constants!:TypeConstant[];
+    constant:any;
+    canViewList = false;
+    canCreateConstant = false;
+    canEditConstant = false;
+    isVisible=false;
+    checked = false;
+    indeterminate = false;
+    setOfCheckedId = new Set<number>();
+
+    constructor( private apiService: ApiServiceService,
                 private router: Router, 
                 private fb: FormBuilder,
                 private fileExport: FileExportService,
                 private authService: AuthService){}
 
-  ngOnInit(): void {
+    ngOnInit(): void {
       this.constantForm=this.fb.group({
         name:["",Validators.required],
         unit:["",Validators.required]
       });
-      this.getConnectedUserPermissionsOnComponent()
-      this.getConstants()
-     
+      this.getConnectedUserPermissionsOnComponent();
+      this.getConstants();
     }
 
     getConnectedUserPermissionsOnComponent(){
       this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Constantes").subscribe({
         next: (response) => {
-          console.log(response.data);
-          
           if(response.success){
             const currentUserPermissions: Permission[] = response.data;
             const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);

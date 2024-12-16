@@ -34,8 +34,8 @@ export class LoginComponent implements OnInit{
   submitForm(): void {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value.username, this.loginForm.value.password).subscribe({
-        next: (data) => {          
-          this.authService.loadProfile(data);
+        next: (response: any) => {
+          this.authService.loadProfile(response);
           if(!this.authService.isPatient()){
             if(this.authService.isSuperAdmin()){
               this.router.navigateByUrl("/back-office/Administration/super-admin-dashboard");
@@ -47,11 +47,14 @@ export class LoginComponent implements OnInit{
               this.router.navigateByUrl("/back-office/Administration/secretaire-dashboard");
             }
           }else{
-            this.router.navigateByUrl("/patient-interface");
+            this.router.navigateByUrl("/patient-dashboard");
           }
+          
         },error: (err) => {
+          // console.log(err);
+          
           Swal.fire({
-            title: err.message,
+            title: err,
             text: '',
             icon: 'error',
             timer: 3500,
@@ -61,12 +64,12 @@ export class LoginComponent implements OnInit{
         }
       })
     } else {
-      Object.values(this.loginForm.controls).forEach(control => {
-        if (control.invalid) {
-          control.markAsDirty();
-          control.updateValueAndValidity({ onlySelf: true });
-        }
-      });
+      // Object.values(this.loginForm.controls).forEach(control => {
+      //   if (control.invalid) {
+      //     control.markAsDirty();
+      //     control.updateValueAndValidity({ onlySelf: true });
+      //   }
+      // });
     }
   }
 

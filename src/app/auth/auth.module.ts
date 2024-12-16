@@ -16,11 +16,14 @@ import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzLayoutModule } from 'ng-zorro-antd/layout';
 import { NzDropDownModule } from 'ng-zorro-antd/dropdown';
 import { NzMenuModule } from 'ng-zorro-antd/menu';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     CommonModule,
@@ -39,7 +42,8 @@ import { NzMenuModule } from 'ng-zorro-antd/menu';
     NzSelectModule,
     NzLayoutModule,
     NzDropDownModule,
-    NzMenuModule
+    NzMenuModule,
+    NzAlertModule
   ]
 })
 export class AuthModule { }

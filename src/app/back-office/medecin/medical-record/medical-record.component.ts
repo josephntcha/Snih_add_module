@@ -4,10 +4,11 @@ import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { FileExportService } from '../../../services/file-export.service';
-import { InfoMedicalRecord, TypeConstant } from '../../../models/model';
+import { InfoMedicalRecord, MedicalRecord, Permission, Speciality, TypeConstant } from '../../../models/model';
 import { MedicalRecordConstantsModalComponent } from '../medical-record-constants-modal/medical-record-constants-modal.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { MedicalRecordAnalyseResultsModalComponent } from '../medical-record-analyse-results-modal/medical-record-analyse-results-modal.component';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-medical-record',
@@ -17,12 +18,15 @@ import { MedicalRecordAnalyseResultsModalComponent } from '../medical-record-ana
 export class MedicalRecordComponent implements OnInit{
   patientId: any;
   patients: any;
+  specialities!: Speciality[]
   searcbForm!: FormGroup;
   recordForm!: FormGroup;
+  transferForm!: FormGroup;
   selectForm!: FormGroup;
   isByCode = true;
   newRecord = false;
   listOfData!: any[];
+  medicalRecord!: MedicalRecord;
 
   checked = false;
   indeterminate = false;
@@ -30,21 +34,30 @@ export class MedicalRecordComponent implements OnInit{
   listOfCurrentPageData: readonly any[] = [];
   isVisible = false;
 
-  /************** Setion of constant adding ****************/
   recordId: any
   typeConstants: TypeConstant[] = [];
   allTypeConstants: TypeConstant[] = [];
 
-  /************** Section of analyses adding ***************/
+  canViewListRecords = false;
+  canViewRecord = false;
+  canSearchRecords = false;
+  canAddAnalyses = false;
+  canAddConstants = false;
+  canFillRecord = false;
+  canCreateRecord = false;
+  canTransferRecord = false;
+
   constructor(private route: ActivatedRoute, 
               private apiService: ApiServiceService, 
               private fb: FormBuilder, 
               private router: Router, 
               private exportService: FileExportService,
-              private modalService: NzModalService){}
+              private modalService: NzModalService,
+              private authService: AuthService){}
   
  
   ngOnInit(): void {
+    this.getConnectedUserPermissionsOnComponent();
     this.initializeForm(this.searcbForm);
     this.selectForm = this.fb.group({
       searchMode: ['', Validators.required]
@@ -64,6 +77,10 @@ export class MedicalRecordComponent implements OnInit{
           lastName: [null, Validators.required]
         });
       }
+    }else if(form == this.transferForm){
+      this.transferForm = this.fb.group({
+        speciality: [null, Validators.required]
+      });
     }else{
       this.recordForm = this.fb.group({
         patientId: [null, Validators.required],
@@ -76,6 +93,17 @@ export class MedicalRecordComponent implements OnInit{
     this.apiService.getDataPatient().subscribe({
       next: (data) => {
         this.patients = data;
+      },error: (err) => {
+        console.log(err.message);
+      }
+    });
+  }
+
+  getSpecialities(){
+    this.apiService.getDataSpecialities().subscribe({
+      next: (data: Speciality[]) => {
+        //enlever la specialité actuelle
+        this.specialities = data.filter(sp => sp.id != this.medicalRecord.speciality.id);
       },error: (err) => {
         console.log(err.message);
       }
@@ -95,7 +123,7 @@ export class MedicalRecordComponent implements OnInit{
 
   onSubmitSearchForm(){
     if(this.isByCode){
-      this.apiService.searchMedicalRecordByCode(this.searcbForm.value.code).subscribe({
+      this.apiService.searchMedicalRecordByCode(this.authService.userId, this.searcbForm.value.code).subscribe({
         next: (data) => {
           if(data.success){
             this.listOfData = [data.data];            
@@ -115,7 +143,7 @@ export class MedicalRecordComponent implements OnInit{
         }
       });
     }else{
-      this.apiService.searchMedicalRecord(this.searcbForm.value.firstName, this.searcbForm.value.lastName).subscribe({
+      this.apiService.searchMedicalRecord(this.authService.userId, this.searcbForm.value.firstName, this.searcbForm.value.lastName).subscribe({
         next: (data) => {
           if(data.length != 0){
             this.listOfData = data;
@@ -144,14 +172,22 @@ export class MedicalRecordComponent implements OnInit{
     this.showModal()
   }
 
+  transfer(medicalRecord: MedicalRecord){
+    this.medicalRecord = medicalRecord;
+    this.newRecord = false;
+    this.getSpecialities();
+    this.initializeForm(this.transferForm);
+    this.showModal();
+  }
+
 
   addInfoMedRecord(medicalRecordId: number) {
-    this.router.navigateByUrl("/create-info-medical-record/" + medicalRecordId);
+    this.router.navigateByUrl("/back-office/medecin/info-medical-records/" + medicalRecordId);
   }
 
 
   consulter(medicalRecordId: number){
-    this.router.navigateByUrl("/medical-record-details/" + medicalRecordId);
+    this.router.navigateByUrl("/back-office/medecin/view-medical-record/" + medicalRecordId);
   }
   
   addConstants(medicalRecordId: number) {
@@ -219,9 +255,9 @@ export class MedicalRecordComponent implements OnInit{
   }
 
 
-  exportToFile(){
-    this.exportService.exportToExcel("records", this.listOfData);
-  }
+  // exportToFile(){
+  //   this.exportService.exportToExcel("records", this.listOfData);
+  // }
 
 
   showModal(): void {
@@ -236,7 +272,6 @@ export class MedicalRecordComponent implements OnInit{
 
   onSubmit(){
     if(this.recordForm.valid){
-      const patientId = this.recordForm.value.patientId;
       this.apiService.postMedicalRecord(this.recordForm.value.patientId).subscribe({
         next: (response) => {
           if (response.success == true) {
@@ -250,11 +285,47 @@ export class MedicalRecordComponent implements OnInit{
             });
             this.listOfData = [response.data];
             this.isVisible = false;
-            this.router.navigateByUrl('/Administration/medical-records');
+            this.router.navigateByUrl('/back-office/medecin/medical-records');
           }else{
             Swal.fire({
               title: 'Dossier existant',
               text: response.errorMessage,
+              icon: 'error',
+              timer: 4000,
+              showConfirmButton: false,
+              timerProgressBar: true
+            });
+          }
+        },
+        error: () => {
+          Swal.fire({
+            title: 'Erreur inconnu',
+            text: "Une erreur inconnue s'est produite",
+            icon: 'error',
+            timer: 4000,
+            showConfirmButton: false,
+            timerProgressBar: true
+          });
+        }
+      });
+    }else if(this.transferForm.valid){
+      this.apiService.transferRecordToSpeciality(this.medicalRecord.id, this.transferForm.value.speciality).subscribe({
+        next: (response) => {
+          if (response.success == true) {
+            Swal.fire({
+              title: '',
+              text: "Dossier transféré avec succès",
+              icon: 'success',
+              timer: 4000,
+              showConfirmButton: false,
+              timerProgressBar: true
+            });
+            this.listOfData = this.listOfData.filter(record => record.id != this.medicalRecord.id);
+            this.isVisible = false;
+          }else{
+            Swal.fire({
+              title: response.errorMessage,
+              text: '',
               icon: 'error',
               timer: 4000,
               showConfirmButton: false,
@@ -282,154 +353,59 @@ export class MedicalRecordComponent implements OnInit{
   }
 
 
-  /************** Setion of constant adding ****************/
 
-
-// Récupérer les types de constantes depuis le serveur
-  // getTypeConstants(): void{
-  //   this.apiService.getTypeConstants().subscribe(data => {
-  //     this.allTypeConstants = data;
-  //     if (this.constant.length === 0) {
-  //       this.addAnotherConstant();
-  //     }
-  //   });
-  // }
-
-
-  // get constant(): FormArray {
-  //   return this.recordForm.get('constants') as FormArray;
-  // }
-
-  // createConstant(): FormGroup {
-  //   return this.fb.group({
-  //     typeConstant: [null, Validators.required],
-  //     valeur: ['', Validators.required]
-  //   });
-  // }
-
-  // addAnotherConstant(): void {
-  //   const selectedConstants = this.constant.controls
-  //     .map(control => control.get('typeConstant')?.value)
-  //     .filter(value => value !== null && value !== undefined);
-
-  //   if (selectedConstants.length < this.allTypeConstants.length) {
-  //     this.constant.push(this.createConstant());
-  //   } else {
-  //     Swal.fire({
-  //       title: 'Info',
-  //       text: 'Toutes les constantes disponibles ont déjà été ajoutées.',
-  //       icon: 'info',
-  //       timer: 4500,
-  //       showConfirmButton: false,
-  //       timerProgressBar: true
-  //     });
-  //   }
-  // }
-
-  // // Mettre à jour les constantes disponibles en fonction des éléments déjà sélectionnés
-  // updateAvailableConstants() {
-  //   const selectedConstants = this.constant.controls
-  //     .map(control => control.get('typeConstant')?.value)
-  //     .filter(value => value !== null && value !== undefined);
-
-  //   this.typeConstants = this.allTypeConstants.filter(constant => 
-  //     !selectedConstants.includes(constant.id) || 
-  //     this.constant.controls.some(control => control.get('typeConstant')?.value === constant.id)
-  //   );
-  // }
-
-  // // Récupérer les constantes disponibles en excluant celles déjà sélectionnées
-  // getAvailableConstants(index: number): TypeConstant[] {
-  //   const currentValue = this.constant.at(index).get('typeConstant')?.value;
-  //   const otherSelectedConstants = this.constant.controls
-  //     .filter((_, i) => i !== index) // Exclure la constante courante
-  //     .map(control => control.get('typeConstant')?.value)
-  //     .filter(value => value !== null && value !== undefined);
-
-  //   return this.allTypeConstants.filter(constant => 
-  //     !otherSelectedConstants.includes(constant.id) || 
-  //     constant.id === currentValue
-  //   );
-  // }
-
-  // getSelectedConstantUnit(index: number): string | undefined {
-  //   const typeConstantId = this.constant.at(index).get('typeConstant')?.value;
-  //   if (typeConstantId) {
-  //     const selectedConstant = this.allTypeConstants.find(c => c.id === typeConstantId);
-  //     return selectedConstant?.unit;
-  //   }
-  //   return undefined;
-  // }
-
-  // onSubmitForm(): void {
-  //   if (this.recordForm.valid) {
-  //     const formValue = this.recordForm.value;
-
-  //     // Transformation des constants
-  //     formValue.constants = formValue.constants.map((item: any) => ({
-  //       typeConstant: { id: item.typeConstant },
-  //       valeur: item.valeur
-  //     }));
-  //     formValue.analyses_resultats = null;
-  //     formValue.traitement = null;
-
-  //     this.infoMedRecord = formValue;
-      
-
-  //   this.apiService.addConstant(this.infoMedRecord, this.recordId).subscribe({
-  //     next:response=>{
-  //       if (response.success==true) {
-  //         console.log(response.data);
-  //         this.ngOnInit()
-  //        Swal.fire({
-  //          title: 'Succès',
-  //          text: "Données ajoutées avec succès",
-  //          icon: 'success',
-  //          timer:4000,
-  //          showConfirmButton:false,
-  //          timerProgressBar:true
-  //        });
-  //       //  this.router.navigateByUrl('/MedicalRecord/' + this.medicalRec.patient.id);
-  //       }else{
-  //         this.ngOnInit()
-  //         Swal.fire({
-  //           title: 'Erreur',
-  //           text: response.errorMessage,
-  //           icon: 'info',
-  //           timer:4000,
-  //           showConfirmButton:false,
-  //           timerProgressBar:true
-  //         });
-  //       }
-  //      },
-  //     error: err=>{
-  //       Swal.fire({
-  //         title: 'Erreur',
-  //         text: "Une erreur inconnue s'est produite",
-  //         icon: 'error',
-  //         timer:4000,
-  //         showConfirmButton:false,
-  //         timerProgressBar:true
-  //       });
-  //      }
-  //   });
-  //   } else {
-  //     console.log('Formulaire invalide');
-  //   }
-  // }
-
-
-
-  // getMedicalRecordById(medId: number){
-  //   this.apiService.getMedicalRecord(medId).subscribe({
-  //     next: (data) => {
-  //       if(data.success == true){
-  //         this.medicalRec = data.data
+  getConnectedUserPermissionsOnComponent(){
+    this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Dossiers médicaux").subscribe({
+      next: (response) => {
+        if(response.success){
+          const currentUserPermissions: Permission[] = response.data;
+          const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
+          console.log(permissionsCodeNames);
           
-  //       }
-  //     },error: (err) => {
-  //       console.log(err.message);
-  //     }
-  //   });
-  // }
+          if(permissionsCodeNames.includes("VIEW_RECORD")){
+            this.canViewRecord = true;
+          }else{
+            this.canViewRecord = false;
+          }
+          if(permissionsCodeNames.includes("ADD_CONSTANTS")){
+            this.canAddConstants = true;
+          }else{
+            this.canAddConstants = false;
+          }
+          if(permissionsCodeNames.includes("ADD_TESTS_RESULTS")){
+            this.canAddAnalyses = true;
+          }else{
+            this.canAddAnalyses = false;
+          }
+          if(permissionsCodeNames.includes("CREATE_RECORD")){
+            this.canCreateRecord = true;
+          }else{
+            this.canCreateRecord = false;
+          }
+          if(permissionsCodeNames.includes("SEARCH_RECORDS")){
+            this.canSearchRecords = true;
+          }else{
+            this.canSearchRecords = false;
+          }
+          if(permissionsCodeNames.includes("FILL_RECORDS")){
+            this.canFillRecord = true;
+          }else{
+            this.canFillRecord = false;
+          }
+          if(permissionsCodeNames.includes("VIEW_LIST_RECORDS")){
+            this.canViewListRecords = true;
+          }else{
+            this.canViewListRecords = false;
+          }
+          if(permissionsCodeNames.includes("TRANSFER_RECORD")){
+            this.canTransferRecord = true;
+          }else{
+            this.canTransferRecord = false;
+          }
+        }
+      },error: (err) => {
+        console.log(err.message);
+      }
+    })
+  }
 }

@@ -19,10 +19,10 @@ export class AnalysisComponent implements OnInit{
   canViewList = false;
   canCreateConstant = false;
   canEditConstant = false;
- isVisible=false;
- checked = false;
- indeterminate = false;
- setOfCheckedId = new Set<number>();
+  isVisible=false;
+  checked = false;
+  indeterminate = false;
+  setOfCheckedId = new Set<number>();
 
   constructor( private apiService: ApiServiceService,
     private router: Router, 
@@ -39,9 +39,7 @@ export class AnalysisComponent implements OnInit{
   }
   getConnectedUserPermissionsOnComponent(){
     this.apiService.getUserPermissionsOnComponent(this.authService.userId, "Analyses").subscribe({
-      next: (response) => {
-        console.log(response.data);
-        
+      next: (response) => {        
         if(response.success){
           const currentUserPermissions: Permission[] = response.data;
           const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
@@ -167,7 +165,7 @@ onSubmit() {
               title: response.errorMessage,
               text: '',
               icon: 'error',
-              timer: 4000,
+              timer: 4500,
               showConfirmButton: false,
               timerProgressBar: true 
             });
@@ -195,7 +193,7 @@ onSubmit() {
               title: response.errorMessage,
               text: '',
               icon: 'error',
-              timer: 4000,
+              timer: 4500,
               showConfirmButton: false,
               timerProgressBar: true 
             });
@@ -206,7 +204,7 @@ onSubmit() {
             title: 'Une erreur inconnue s\'est produite, veuillez ressayer',
             text: '',
             icon: 'error',
-            timer: 3500,
+            timer: 4500,
             showConfirmButton: false,
             timerProgressBar: true 
           });

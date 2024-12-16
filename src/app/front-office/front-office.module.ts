@@ -33,6 +33,9 @@ import { PatientDashboardComponent } from './patient-dashboard/patient-dashboard
 import { KnownDoctorComponent } from './known-doctor/known-doctor.component';
 import { PatientMedicalRecordComponent } from './patient-medical-record/patient-medical-record.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
+import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 
 
 @NgModule({
@@ -75,7 +78,10 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
     FormsModule,
     RouterLink,
     RouterOutlet,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NzCheckboxModule,
+    NzCarouselModule,
+    NzAlertModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

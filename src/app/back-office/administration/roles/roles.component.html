@@ -1,6 +1,8 @@
 <div class="table-operations">
-    <button *ngIf="canViewList" (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer nouveau rôle</button>
-    <button *ngIf="canViewList" nz-button><i nz-icon nzType="export"></i>Exporter en Excel</button>
+    <button *ngIf="canCreateRole" (click)="showModal('roleForm')" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer nouveau rôle</button>
+    <button *ngIf="canCreateRole" (click)="showModal('manageRoleForm', 'assign')" nz-button nzType="primary">Assigner un rôle</button>
+    <button *ngIf="canCreateRole" (click)="showModal('manageRoleForm', 'substract')" nz-button nzType="primary" nzDanger>Soustraire un rôle</button>
+    <!-- <button *ngIf="canViewList" nz-button><i nz-icon nzType="export"></i>Exporter en Excel</button> -->
 </div>
 <div *ngIf="canViewList" class="selected-items">
     {{ setOfCheckedId.size }} éléments sélectionnés
@@ -16,7 +18,7 @@
             <th [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
             <th>#ID</th>
             <th>Nom</th>
-            <th>Actions</th>
+            <th *ngIf="canEditeRole || canDeleteRole">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -34,24 +36,54 @@
 </nz-table>
 
 
-<nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout de rôle" (nzOnCancel)="handleCancel()">
+<nz-modal *ngIf="isToCreate" nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout de rôle" (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
-        <!-- <nz-card> -->
-            <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
-                <nz-form-item>
-                    <nz-form-label nzSpan="7" nzRequired>Nom</nz-form-label>
-                    <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                        <input nz-input formControlName="name" placeholder="Libellé du rôle">
-                    </nz-form-control>
-                </nz-form-item>
-        
-                <nz-form-item>
-                    <nz-form-control nzOffset="7" nzSpan="12">
-                        <button class="submitButton" nz-button nzType="primary" [disabled]="roleForm.invalid">Soumettre</button>
-                        <button nz-button (click)="resetForm($event)">Réinitialiser</button>
-                    </nz-form-control>
-                </nz-form-item>
-            </form>
-        <!-- </nz-card> -->
+        <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
+            <nz-form-item>
+                <nz-form-label nzSpan="7" nzRequired>Nom</nz-form-label>
+                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                    <input nz-input formControlName="name" placeholder="Libellé du rôle">
+                </nz-form-control>
+            </nz-form-item>
+    
+            <nz-form-item>
+                <nz-form-control nzOffset="7" nzSpan="12">
+                    <button class="submitButton" nz-button nzType="primary" [disabled]="roleForm.invalid">Soumettre</button>
+                    <button nz-button (click)="resetForm($event, roleForm)">Réinitialiser</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>
+
+
+<nz-modal *ngIf="!isToCreate" nzFooter=" " [(nzVisible)]="isVisible" [nzTitle]="isToAssign ? 'Assignation de rôle' : 'Soustraction de rôle'" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+        <form [formGroup]="manageRoleForm" (ngSubmit)="onSubmit()">
+            <nz-form-item>
+                <nz-form-label nzSpan="7" nzRequired>Utilisateur</nz-form-label>
+                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                    <nz-select formControlName="user" nzPlaceHolder="Choisir l'utilisateur" (nzOpenChange)="chooseUser()" >
+                        <nz-option *ngFor="let user of users" [nzLabel]="user.firstName + ' ' + user.lastName" [nzValue]="user" ></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            
+            <nz-form-item>
+                <nz-form-label nzSpan="7" nzRequired>Rôle</nz-form-label>
+                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                    <nz-select formControlName="role" nzPlaceHolder="Choisir le rôle">
+                        <nz-option *ngFor="let role of roles" [nzLabel]="role.name" [nzValue]="role.id" ></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+    
+            <nz-form-item>
+                <nz-form-control nzOffset="7" nzSpan="12">
+                    <button class="submitButton" nz-button nzType="primary" [disabled]="manageRoleForm.invalid">Soumettre</button>
+                    <button nz-button (click)="resetForm($event, manageRoleForm)">Réinitialiser</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
     </ng-container>
 </nz-modal>

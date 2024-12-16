@@ -38,7 +38,7 @@ export class SecretaryComponent implements OnInit{
   
   
 appointmentsDoctor(doctor: any) {
-  this.router.navigate(['back-office/Administration/doctor-appointments',this.hospitalId,doctor.id]);
+  this.router.navigate(['/back-office/Administration/doctor-appointments',this.hospitalId,doctor.id]);
    }
  
   

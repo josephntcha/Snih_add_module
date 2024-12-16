@@ -14,6 +14,8 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class HospitalsComponent implements OnInit{
   listOfData!: Hospital[];
+  filteredData!: Hospital[];
+  searchValue = "";
   canViewList = false;
   canCreateHospital = false;
   canEditHospital = false;
@@ -47,6 +49,7 @@ export class HospitalsComponent implements OnInit{
     this.apiService.getDataHospitals().subscribe({
       next: (data) => {
         this.listOfData = data;
+        this.filteredData = [...this.listOfData];
       },error: (err) => {
         console.log(err.message);        
       }
@@ -61,7 +64,7 @@ export class HospitalsComponent implements OnInit{
           const currentUserPermissions: Permission[] = response.data;
           const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
           
-          if(permissionsCodeNames.includes("VIEW_LIST_HOSPITAL")){
+          if(permissionsCodeNames.includes("VIEW_LIST_HOSPITALS")){
             this.canViewList = true;
           }else{
             this.canViewList = false;
@@ -86,6 +89,14 @@ export class HospitalsComponent implements OnInit{
         console.log(err.message);        
       }
     })
+  }
+
+  onSearch(){
+    const search = this.searchValue.toLowerCase();
+    this.filteredData = this.listOfData.filter(data => 
+      data.name.toLowerCase().includes(search) || 
+      data.location.toLowerCase().includes(search)
+    );
   }
 
 
@@ -141,7 +152,7 @@ export class HospitalsComponent implements OnInit{
               this.isVisible = false;
               this.hospital = null;
               this.getHospitals()
-              this.router.navigateByUrl("/Administration/hospitals");
+              this.router.navigateByUrl("/back-office/Administration/hospitals");
             }else{
               Swal.fire({
                 title: response.errorMessage,
@@ -263,7 +274,7 @@ export class HospitalsComponent implements OnInit{
             timerProgressBar: true 
           });
           this.getHospitals()
-          this.router.navigateByUrl("/Administration/hospitals");
+          this.router.navigateByUrl("/back-office/Administration/hospitals");
         });
       }
     });

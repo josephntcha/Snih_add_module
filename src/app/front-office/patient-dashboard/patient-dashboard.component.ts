@@ -9,22 +9,22 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './patient-dashboard.component.css'
 })
 export class PatientDashboardComponent implements OnInit{
-  patientId:any;
-  appointments:any;
+  patientId: any;
+  appointments: any;
 
-  constructor(private route:ActivatedRoute,private apiService:ApiServiceService,private authService:AuthService,private router:Router){}
+  constructor(private route: ActivatedRoute,
+              private apiService: ApiServiceService,
+              private router: Router, 
+              private authService: AuthService){}
 
   ngOnInit(): void {
-
-    this.apiService.getPatinetAppointments(this.authService.userId).subscribe(response=>{
-      this.appointments=response;
-      
+    this.patientId= this.authService.userId;
+    this.apiService.getPatinetAppointments(this.patientId).subscribe(response=>{
+      this.appointments = response;
     })
 }
 
 deconnexion() {
-
-  localStorage.removeItem('token');
-  this.router.navigateByUrl("/");
+  this.authService.logout();
  }
 }

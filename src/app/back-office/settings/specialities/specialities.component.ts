@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { Permission, Speciality } from '../../../models/model';
+import { Hospital, Permission, Speciality } from '../../../models/model';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { Router } from '@angular/router';
@@ -29,8 +29,12 @@ export class SpecialitiesComponent implements OnInit{
   filterForm!: FormGroup
 
   specialityForm!: FormGroup;
+  addSpecialityform!: FormGroup;
   isVisible = false;
   speciality: any;
+  isToAddSpecialityToHospital = false;
+  hospitals!: Hospital[];
+  buttonText = 'Ajouter une spécialité à un hôpital';
 
 
   constructor(
@@ -60,7 +64,7 @@ export class SpecialitiesComponent implements OnInit{
           const currentUserPermissions: Permission[] = response.data;
           const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
           
-          if(permissionsCodeNames.includes("VIEW_LIST_SPECIALITY")){
+          if(permissionsCodeNames.includes("VIEW_LIST_SPECIALITIES")){
             this.canViewList = true;
           }else{
             this.canViewList = false;
@@ -111,6 +115,16 @@ export class SpecialitiesComponent implements OnInit{
     });
   }
 
+  getHospitals(){
+    this.apiService.getDataHospitals().subscribe({
+      next: (data) => {
+        this.hospitals = data;
+      },error: (err) => {
+        console.log(err.message);
+      }
+    })
+  }
+
 
   getHospitalSpecialities(hospitalId: number){
     if(this.hospitalId){
@@ -124,15 +138,24 @@ export class SpecialitiesComponent implements OnInit{
         }
       });
     }
-    
   }
 
 
-
   initializeForm(){
-    this.specialityForm = this.fb.group({
-      name: ['', Validators.required],
-    });
+    this.getHospitals();
+    if(this.isToAddSpecialityToHospital){
+      this.addSpecialityform = this.fb.group({
+        hospital: ['', Validators.required],
+        speciality: ['', Validators.required],
+        price: ['', Validators.required], 
+      });
+      this.buttonText = 'Créer spécialité';
+    }else{
+      this.buttonText = 'Ajouter une spécialité à un hôpital';
+      this.specialityForm = this.fb.group({
+        name: ['', Validators.required],
+      });
+    }
   }
 
   patchForm(speciality: Speciality){
@@ -165,7 +188,7 @@ export class SpecialitiesComponent implements OnInit{
       }
       if(this.speciality){
         this.apiService.updateSpeciality(this.speciality.id, data).subscribe({
-          next: (response) => {
+          next: (response) => {            
             if(response.success){
               Swal.fire({
                 title: "information mise à jour avec succès !",
@@ -178,7 +201,7 @@ export class SpecialitiesComponent implements OnInit{
               this.isVisible = false;
               this.speciality = null;
               this.getAllSpecialities();
-              this.router.navigateByUrl("/Administration/specialities");
+              this.router.navigateByUrl("/back-office/Administration/specialities");
             }else{
               Swal.fire({
                 title: response.errorMessage,
@@ -233,9 +256,48 @@ export class SpecialitiesComponent implements OnInit{
     }
   }
 
+  addSpeciality(){
+    if (this.addSpecialityform.valid) {
+      this.apiService.postAddSpecialityHospital(this.addSpecialityform.value.hospital, this.addSpecialityform.value.speciality, this.addSpecialityform.value.price).subscribe({
+        next: response => {          
+          if(response.success){
+            Swal.fire({
+              title: 'Spécialité ajouté à l\'hôpital',
+              text: '',
+              icon: 'success',
+              timer: 3500,
+              showConfirmButton: false,
+              timerProgressBar: true 
+            });
+            this.addSpecialityform.reset();
+            this.isVisible = false;
+          }else{
+            Swal.fire({
+              title: response.errorMessage,
+              text: '',
+              icon: 'error',
+              timer: 3500,
+              showConfirmButton: false,
+              timerProgressBar: true 
+            });
+          }
+        },
+        error:error=>{
+          console.log(error);
+        }
+       })
+   }
+  }
+
+  addSpecialityToHospital(){
+    this.isToAddSpecialityToHospital = !this.isToAddSpecialityToHospital;
+    this.initializeForm();
+  }
+
   resetForm(event: Event){
     event.preventDefault();
     this.specialityForm.reset();
+    this.addSpecialityform.reset();
   }
 
 
