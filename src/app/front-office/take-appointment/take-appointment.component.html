@@ -8,13 +8,9 @@
   <li nz-menu-item class="menu-item-spacing">
     <button nz-button nzType="link" routerLink="/prendre-rdv">Prendre RDV</button>
   </li>
-
-  <li nz-menu-item class="menu-item-spacing">
-      <button nz-button nzType="link"  [routerLink]="['/patient-medical-record']">Dossier Médical</button>
-  </li>
  
   <li nz-menu-item class="menu-item-spacing">
-    <button nz-button nzType="link" routerLink="/patient-dashboard">Mes rendez-vous</button>
+    <button nz-button nzType="link" (click)="showModal()">Mes rendez-vous</button>
   </li>
 
   <li nz-menu-item class="menu-item-spacing">
@@ -41,16 +37,16 @@
             <div nz-row nzGutter="16">
               <div nz-col nzSpan="12">
                 <nz-form-item>
-                  <nz-form-label [nzSpan]="4">Hôpital</nz-form-label>
-                  <nz-form-control [nzSpan]="18">
+                  <nz-form-label nzRequired [nzSpan]="4">Hôpital</nz-form-label>
+                  <nz-form-control [nzSpan]="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                     <nz-select formControlName="hospital">
                       <nz-option *ngFor="let hospital of dataHospitals" [nzValue]="hospital.id" [nzLabel]="hospital.name + ' || Localisation: ' + hospital.location"></nz-option>
                     </nz-select>
                   </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
-                  <nz-form-label [nzSpan]="4">Spécialité</nz-form-label>
-                  <nz-form-control [nzSpan]="18">
+                  <nz-form-label nzRequired [nzSpan]="4">Spécialité</nz-form-label>
+                  <nz-form-control [nzSpan]="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire" >
                     <nz-select formControlName="speciality">
                       <nz-option *ngFor="let speciality of specialities" [nzValue]="speciality.id" [nzLabel]="speciality.name"></nz-option>
                     </nz-select>
@@ -58,8 +54,8 @@
                 </nz-form-item>
   
                 <nz-form-item>
-                  <nz-form-label [nzSpan]="4">Disponibilité</nz-form-label>
-                  <nz-form-control [nzSpan]="18">
+                  <nz-form-label nzRequired [nzSpan]="4">Disponibilité</nz-form-label>
+                  <nz-form-control [nzSpan]="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                     <nz-select formControlName="availability">
                       <nz-option *ngFor="let availability of availabilities" [nzValue]="availability" [nzLabel]="availability['day']['name'] + ' De ' + availability.startTime + ' A ' + availability.endTime"></nz-option>
                     </nz-select>
@@ -67,16 +63,16 @@
                 </nz-form-item>
   
                 <nz-form-item>
-                  <nz-form-label [nzSpan]="4">Date du RDV</nz-form-label>
-                  <nz-form-control [nzSpan]="18">
+                  <nz-form-label nzRequired [nzSpan]="4">Date du RDV</nz-form-label>
+                  <nz-form-control [nzSpan]="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                     <nz-select formControlName="date">
                       <nz-option *ngFor="let day of days" [nzValue]="day" [nzLabel]="(day | date: 'd MMMM y')"></nz-option>
                     </nz-select>
                   </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
-                  <nz-form-label [nzSpan]="4">Prix</nz-form-label>
-                  <nz-form-control [nzSpan]="18">
+                  <nz-form-label nzRequired [nzSpan]="4">Prix</nz-form-label>
+                  <nz-form-control [nzSpan]="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                     <input nz-input formControlName="price" [value]="priceBySpeciality" readonly />
                   </nz-form-control>
                 </nz-form-item>
@@ -84,29 +80,29 @@
   
               <div nz-col nzSpan="12">
                 <nz-form-item>
-                  <nz-form-label [nzSpan]="4">Nom</nz-form-label>
-                  <nz-form-control [nzSpan]="18">
+                  <nz-form-label nzRequired [nzSpan]="4">Nom</nz-form-label>
+                  <nz-form-control [nzSpan]="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                     <input nz-input formControlName="patientLastName" />
                   </nz-form-control>
                 </nz-form-item>
                 
                 <nz-form-item>
-                  <nz-form-label [nzSpan]="4">Prénom</nz-form-label>
-                  <nz-form-control [nzSpan]="18">
+                  <nz-form-label nzRequired [nzSpan]="4">Prénom</nz-form-label>
+                  <nz-form-control [nzSpan]="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                     <input nz-input formControlName="patientFirstName" />
                   </nz-form-control>
                 </nz-form-item>
                 
                 <nz-form-item>
-                  <nz-form-label [nzSpan]="4">Email</nz-form-label>
+                  <nz-form-label nzRequired [nzSpan]="4">Email</nz-form-label>
                   <nz-form-control [nzSpan]="18">
                     <input nz-input formControlName="patientEmail" />
                   </nz-form-control>
                 </nz-form-item>
                 
                 <nz-form-item>
-                  <nz-form-label [nzSpan]="4">Téléphone</nz-form-label>
-                  <nz-form-control [nzSpan]="18">
+                  <nz-form-label nzRequired [nzSpan]="4">Téléphone</nz-form-label>
+                  <nz-form-control [nzSpan]="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                     <input nz-input formControlName="patientPhone" />
                   </nz-form-control>
                 </nz-form-item>
@@ -130,7 +126,25 @@
   </div>
 
 
-
+  <nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Recherche de rendez-vous" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+        <form [formGroup]="usernameForm" (ngSubmit)="onSubmit()">
+            <nz-form-item>
+                <nz-form-label nzSpan="7" nzRequired>Code du demandeur</nz-form-label>
+                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                    <input nz-input formControlName="username" placeholder="Entrez le code qui vous ait envoyé ">
+                </nz-form-control>
+            </nz-form-item>
+    
+            <nz-form-item>
+                <nz-form-control nzOffset="7" nzSpan="12">
+                    <button class="submitButton" nz-button nzType="primary" [disabled]="usernameForm.invalid">Soumettre</button>
+                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>
 
 
 
