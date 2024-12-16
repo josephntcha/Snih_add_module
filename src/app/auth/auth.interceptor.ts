@@ -12,7 +12,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       || req.url.includes('/api/specialities') && req.url.includes('price') && req.method === 'GET'
       || req.url.includes('availabilities') && req.method === 'GET'
       || req.url.includes('/api/days') && req.method === 'GET'
-      || req.url.includes('/api/users/doctors') && req.method === 'GET') return next(req);
+      || req.url.includes('/api/users/doctors') && req.method === 'GET'
+  ) return next(req);
   
   let newReq = req.clone({
     headers: req.headers.set('Authorization', 'Bearer ' + authService.accessToken)

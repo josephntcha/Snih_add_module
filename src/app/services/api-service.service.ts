@@ -2,7 +2,6 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap, throwError } from 'rxjs';
 import { Analysis, Building, InfoMedicalRecord, Module, Permission, TypeConstant } from '../models/model';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,39 +13,23 @@ export class ApiServiceService {
   public modules$ = this.modulesSubject.asObservable();
 
   constructor(private http: HttpClient) {}
-
-
-  private  createAuthorization(): HttpHeaders | null {
-    const jwtToken = localStorage.getItem("jwt-token");
-      
-    if (jwtToken) {
-
-      return new HttpHeaders({'Authorization': `Bearer ${jwtToken}`});
-    } else {
-      console.log("Token not found");
-      return null;
-    }
-  }
+ 
 
   postLogin(username: string, password: string): Observable<any> {
     let params = new HttpParams().set("username", username).set("password", password);
-     const options = {
-     headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
-     };
-  
+    const options = {
+    headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+    };
     return this.http.post<any>(`${this.apiUrl}/api/auth/login`,params,options);
   }
 
   postVerifyIdentity(numero:any,code:any): Observable<any> {
-   
     return this.http.post<any>(`${this.apiUrl}/api/users/verify-identity?phone=${numero}&code=${code}`,{ responseType: 'text' as 'json' });
   }
  
   getPatinetAppointments(patientId:any):Observable<any>{
-    
     return this.http.get<any>(`${this.apiUrl}/api/users/patients/${patientId}/appointments`);
   }
-
 
   getDataHospitals():Observable<any>{
     return this.http.get<any>(`${this.apiUrl}/api/hospitals`);
@@ -55,15 +38,19 @@ export class ApiServiceService {
   getConstantes():Observable<any>{
     return this.http.get<any>(`${this.apiUrl}/api/typeconstants`);
   }
+
   getAnalysis():Observable<any>{
     return this.http.get<any>(`${this.apiUrl}/api/analysis`);
   }
+
   postAnalysis(data:any):Observable<any>{
     return this.http.post<any>(`${this.apiUrl}/api/analysis`,data);
   }
+
   updateAnalysis(id:number,data:any):Observable<any>{
     return this.http.put<any>(`${this.apiUrl}/api/update/${id}/analysis`,data);
   }
+
  postConstantes(data:any):Observable<any>{
     return this.http.post<any>(`${this.apiUrl}/api/typeconstants`,data);
   }
@@ -77,13 +64,7 @@ export class ApiServiceService {
   }
 
   getRights():Observable<any>{
-    const headers=this.createAuthorization();
-    if (headers) {
-
-    return this.http.get<any>(`${this.apiUrl}/api/roles`,{headers});
-    }else{
-    return throwError(()=>new Error("Authorization not allow."));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/roles`);
   }
 
    getDataFrequencies():Observable<any>{
@@ -103,34 +84,18 @@ export class ApiServiceService {
   }
   
   getAutorities():Observable<any>{
-   const headers=this.createAuthorization();
-   
-   if (headers) {
-    
-    return this.http.get<any>(`${this.apiUrl}/api/rights`,{headers});
-   }else{
-
-    return throwError(()=>new Error("Authorization not allow."));
-   }
+    return this.http.get<any>(`${this.apiUrl}/api/rights`);
   }
+
   getSecretary(hospitalId:number,specialityId:number):Observable<any>{
-    const headers=this.createAuthorization();
-    if (headers) {
-
-    return this.http.get<any>(`${this.apiUrl}/api/users/hospitals/${hospitalId}/specialities/${specialityId}/secretaries`,{headers});
-    }else{
-
-      return throwError(()=>new Error("Authorization not allow."));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/users/hospitals/${hospitalId}/specialities/${specialityId}/secretaries`);
   }
 
    getDaysForAvailability(dayId:any,numOfMonth:number):Observable<any>{
-
     return this.http.get<any>(`${this.apiUrl}/api/days/${dayId}/month/${numOfMonth}`);
   }
 
   getDaysForAvailability2(dayId:any,orderOfDay:any,numOfMonth:number):Observable<any>{
-
     return this.http.get<any>(`${this.apiUrl}/api/days/${dayId}/${orderOfDay}/period/${numOfMonth}`);
   }
 
@@ -152,34 +117,18 @@ export class ApiServiceService {
   }
 
   postBuilding(hospitalId:number,building:any): Observable<any> {
-
     return this.http.post<any>(`${this.apiUrl}/api/buildings/${hospitalId}`,building);
   }
 
-  // putBuilding(hospitalId:number,buildingId:any,data:any): Observable<any> {
-
-  //   return this.http.put<any>(`${this.apiUrl}/api/buildings/update_building/${hospitalId}/${buildingId}`,data);
-  //   return this.http.put<any>(`${this.apiUrl}/api/rooms/update_room/${hospitalId}/${roomId}`,data);
-  // }
-
   postRoom(buildingId:any,room:any): Observable<any> {
-
     return this.http.post<any>(`${this.apiUrl}/api/rooms/${buildingId}`,room);
   }
 
-  // putRoom(hospitalId:number,roomId:any,data:any): Observable<any> {
-  //  console.log(data);
-   
-  //   return this.http.put<any>(`${this.apiUrl}/api/rooms/update_room/${hospitalId}/${roomId}`,data);
-  // }
-
   putAvailability(availabilityId:number,dayId:any,doctorId:any,hospitalId:any,data:any): Observable<any> {
-
     return this.http.put<any>(`${this.apiUrl}/api/update/availability/${availabilityId}/${dayId}/${doctorId}/${hospitalId}`,data);
   }
 
   getAvailabilitiesByHospitalAndSpeciality(hospitalId:number, specialityId:number): Observable<any> {
-
     return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}/${hospitalId}/availabilities`);
   }
 
@@ -217,12 +166,7 @@ export class ApiServiceService {
    * @returns 
    */
   getUsers():Observable<any>{
-    const headers=this.createAuthorization();
-    if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/users`,{headers}); 
-    }else{
-      return throwError(()=>new Error("Authorization not allow."));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/users`); 
   }
 
   /**
@@ -231,49 +175,15 @@ export class ApiServiceService {
    * @returns 
    */
   getStaff(userId: number):Observable<any>{
-    const headers=this.createAuthorization();
-    if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/users/${userId}/staff`,{headers}); 
-    }else{
-      return throwError(()=>new Error("Authorization not allow."));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/users/${userId}/staff`); 
   }
-
-  // getPermissions():Observable<any>{
-  //   const headers=this.createAuthorization();
-  //   if (headers) {
-  //     return this.http.get<any>(`${this.apiUrl}/api/permission`,{headers}); 
-  //   }else{
-  //     return throwError(()=>new Error("Authorization not allow."));
-  //   }
-  // }
-  // addPermissionsToUser(userId:any,permissionId:any):Observable<any>{
-   
-  //     return this.http.post<any>(`${this.apiUrl}/api/users/add_permission/user/${userId}/permission/${permissionId}`,{}); 
-  // }
-
-  // removePermissionsToUser(userId:any,permissionId:any):Observable<any>{
-   
-  //   return this.http.post<any>(`${this.apiUrl}/api/users/remove_permission/user/${userId}/permission/${permissionId}`,{}); 
-  // }
-
   
   getUserById(id:number):Observable<any>{
-    const headers=this.createAuthorization();
-    if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/users/${id}`,{headers});
-    }else{
-      return throwError(()=>new Error("Authorization not allow."));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/users/${id}`);
   }
 
   getDoctorGiveRight(rightId:number,userId:number):Observable<any>{
-    const headers=this.createAuthorization();
-    if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/users/doctors/${rightId}/${userId}`,{headers});
-    }else{
-      return throwError(()=>new Error("Authorization not allow."));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/users/doctors/${rightId}/${userId}`);
   }
 
   
@@ -290,94 +200,46 @@ export class ApiServiceService {
   }
 
   postAppointment(availabilityId:number,hospitalId:number,data:any): Observable<any> {
-
     return this.http.post<any>(`${this.apiUrl}/api/appointments/${availabilityId}/${hospitalId}`,data);
   }
 
   postDoctor(data:any): Observable<any> {
-    const headers=this.createAuthorization();
-      if (headers) {
-        return this.http.post<any>(`${this.apiUrl}/api/users/save-doctor`,data,{headers});
-      }else{
-        return throwError(()=>new Error("Authorization not allow."));
-      }
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/users/save-doctor`,data);
+  }
 
   postAdmin(hospitalId:number,data:any): Observable<any> {
-    const headers=this.createAuthorization();
-      if (headers) {
-        
-        return this.http.post<any>(`${this.apiUrl}/api/users/save-staff/${hospitalId}`,data,{headers});
-      }else{
-        return throwError(()=>new Error("Authorization not allow."));
-      }
+    return this.http.post<any>(`${this.apiUrl}/api/users/save-staff/${hospitalId}`,data);
   }
 
   
   postAddSpecialityHospital(hospitalId:number,specialityId:number,data:any): Observable<any> {
     let params = new HttpParams().set("price", data);
-    const headers=this.createAuthorization();
-    if (headers) {
-
-    return this.http.post<any>(`${this.apiUrl}/api/hospitals/${hospitalId}/${specialityId}`,params,{headers});
-    }else{
-      
-      return throwError(()=>new Error("Authorization not allow."));
-    }
-
+    return this.http.post<any>(`${this.apiUrl}/api/hospitals/${hospitalId}/${specialityId}`,params);
   }
 
     
   postAddDoctorHospital(doctorId:any,hospitalId:any): Observable<any> {
-    const headers=this.createAuthorization();
-    if (headers) {
-      return this.http.post<any>(`${this.apiUrl}/api/users/${doctorId}/hospitals/${hospitalId}`,{headers});
-    }else{
-      return throwError(()=>new Error("Authorization not allow."));
-    }
-
+    return this.http.post<any>(`${this.apiUrl}/api/users/${doctorId}/hospitals/${hospitalId}`, null);
   }
 
   confirmAppointment(appointmentId:number){
-    const headers=this.createAuthorization();
-    if (headers) {
-      return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/confirm`,{},{headers});
-    }else{
-      return throwError(()=>new Error("Authorization not allow"));
-    }
+    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/confirm`,{});
   }
 
 
   followAppointment(appointmentId:number,newDate:any){
-    
     let params = new HttpParams().set("newDate", newDate);
-    const headers=this.createAuthorization();
-    if (headers) {
-      return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/follow?newDate=${newDate}`,{},{headers});
-    }else{
-      return throwError(()=>new Error("Authorization not allow"));
-    }
+    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/follow?newDate=${newDate}`,{});
   }
 
    postponeAppointment(appointmentId:number,nouvelleDate:any){
-    const headers=this.createAuthorization();
-    if (headers) {
-    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/postpone?newDate=${nouvelleDate}`,null,{headers});
-    }else{
-      return throwError(()=>new Error("Authorization not allow"));
+    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/postpone?newDate=${nouvelleDate}`,null);
 
-    }
   }
 
   
   postSpeciality(data:any){
-    const headers=this.createAuthorization();
-    if (headers) {
-
-    return this.http.post<any>(`${this.apiUrl}/api/specialities`,data,{headers});
-    }else{
-      return throwError(()=>new Error("Authorization not allow"));
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/specialities`,data);
   }
 
 
@@ -394,59 +256,28 @@ export class ApiServiceService {
 
 
   postAvailability(dayId:number,doctorId:number,hospitalId:number,data:any){
-    const headers=this.createAuthorization();
-    if (headers) {
-
-      return this.http.post<any>(`${this.apiUrl}/api/availabilities/${dayId}/${doctorId}/${hospitalId}`,data,{headers});
-    }else{
-    return throwError(()=>new Error("Authorization not allow"));
-
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/availabilities/${dayId}/${doctorId}/${hospitalId}`, data);
   }
   
   
   postHospital(data:any){
-    const headers=this.createAuthorization();
-    if (headers) {
-    return this.http.post<any>(`${this.apiUrl}/api/hospitals`,data,{headers});
-    }else{
-      return throwError(()=>new Error("Authorization not allow"));
-    } 
+    return this.http.post<any>(`${this.apiUrl}/api/hospitals`,data); 
   }
 
   postAutority(secretaryId:number,rightId:number,doctorId:number){
-    const headers=this.createAuthorization();
-    if (headers) {
-
-    return this.http.post<any>(`${this.apiUrl}/api/users/${secretaryId}/grantrights/${rightId}/${doctorId}`,null,{headers});
-    }else{
-      return throwError(()=>new Error("Authorization not allow"));
-      
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/users/${secretaryId}/grantrights/${rightId}/${doctorId}`,null);  
   }
   
   deleteAppointment(appointmentId:number){
-    const headers=this.createAuthorization();
-    if (headers) {
-    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/cancel`,{},{headers});
-    }else{
-      return throwError(()=>new Error("Authorization not allow"));
-    }
+    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/cancel`,{});
   }
 
   getDataPatient():Observable<any>{
-    const headers=this.createAuthorization();
-    if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/users/patients`,{headers});
-    }else{
-      return throwError(()=>new Error("Authorization not allow"));
-
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/users/patients`);
   }
 
   
   getPatientMedicalRecord(patientId:number):Observable<any>{
-
     return this.http.get<any>(`${this.apiUrl}/api/medical-records/${patientId}`);
   }
 
@@ -456,12 +287,7 @@ export class ApiServiceService {
   * @returns 
 */
   postMedicalRecord(patientId:number): Observable<any> {
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.post<any>(`${this.apiUrl}/api/medical-records/${patientId}/new`, null, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }        
+    return this.http.post<any>(`${this.apiUrl}/api/medical-records/${patientId}/new`, null);        
   }
 
 
@@ -472,12 +298,7 @@ export class ApiServiceService {
    * @returns 
    */
   createInforMedicalRecord(infoMedRecord: InfoMedicalRecord, medicalRecId: number): Observable<any>{
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.post<any>(`${this.apiUrl}/api/info_medical_records/${medicalRecId}`, infoMedRecord, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }        
+    return this.http.post<any>(`${this.apiUrl}/api/info_medical_records/${medicalRecId}`, infoMedRecord);        
   }
 
   /**
@@ -486,12 +307,7 @@ export class ApiServiceService {
    * @returns 
    */
   getMedicalRecord(medicalRecorid: number): Observable<any>{
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/medical-records/${medicalRecorid}/find`);
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }  
+    return this.http.get<any>(`${this.apiUrl}/api/medical-records/${medicalRecorid}/find`);  
   }
 
   /**
@@ -501,12 +317,7 @@ export class ApiServiceService {
    * @returns 
    */
   searchMedicalRecord(userId: number, firstName: string, lastName: string): Observable<any>{
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/medical-records/${userId}/search?firstName=${firstName}&lastName=${lastName}`, {headers})
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/medical-records/${userId}/search?firstName=${firstName}&lastName=${lastName}`)
   }
 
   /**
@@ -516,12 +327,7 @@ export class ApiServiceService {
      * @returns 
      */
   searchMedicalRecordByCode(userId: number, code: string): Observable<any>{
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/medical-records/${userId}/code?code=${code}`, {headers})
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/medical-records/${userId}/code?code=${code}`)
   }
 
   /**
@@ -531,12 +337,7 @@ export class ApiServiceService {
    * @returns 
    */
   transferRecordToSpeciality(recordId: number, specialityId: number): Observable<any>{
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.post<any>(`${this.apiUrl}/api/medical-records/${recordId}/${specialityId}`, {headers})
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/medical-records/${recordId}/${specialityId}`, null)
   }
 
   /**
@@ -557,12 +358,7 @@ export class ApiServiceService {
 
 
   addConstant(infoMedRecord: InfoMedicalRecord, recordId: number): Observable<any>{
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.post<any>(`${this.apiUrl}/api/info_medical_records/${recordId}/save-constants`, infoMedRecord, {headers})
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/info_medical_records/${recordId}/save-constants`, infoMedRecord)
   }
 
   /**
@@ -572,12 +368,7 @@ export class ApiServiceService {
    * @returns 
    */
   addAnalysisResult(infoMedRecord: InfoMedicalRecord, recordId: number): Observable<any>{
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.post<any>(`${this.apiUrl}/api/info_medical_records/${recordId}/save-analysis-result`, infoMedRecord, {headers})
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/info_medical_records/${recordId}/save-analysis-result`, infoMedRecord)
   }
 
   /**
@@ -587,16 +378,11 @@ export class ApiServiceService {
    * @returns 
    */
   addAnalysisResultFromFile(formData: FormData, recordId: number): Observable<any>{
-    const headers = this.createAuthorization();
-    if (headers) {
-      const url = `${this.apiUrl}/api/analysis/upload-pdf/${recordId}`;
-      return this.http.post(url, formData, {
-        reportProgress: true,
-        observe: 'events'
-      });
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    const url = `${this.apiUrl}/api/analysis/upload-pdf/${recordId}`;
+    return this.http.post(url, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 
   /**
@@ -605,12 +391,7 @@ export class ApiServiceService {
    * @returns 
    */
   getCurrentDayInfoMedRecord(medicalRecordId: number): Observable<InfoMedicalRecord> {
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.get<InfoMedicalRecord>(`${this.apiUrl}/api/info_medical_records/${medicalRecordId}`, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.get<InfoMedicalRecord>(`${this.apiUrl}/api/info_medical_records/${medicalRecordId}`);
   }
 
 
@@ -620,12 +401,7 @@ export class ApiServiceService {
    * @returns 
    */
   deleteSpeciality(specialityId: number){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.delete<any>(`${this.apiUrl}/api/specialities/${specialityId}`, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.delete<any>(`${this.apiUrl}/api/specialities/${specialityId}`);
   }
 
 
@@ -635,12 +411,7 @@ export class ApiServiceService {
    * @returns 
    */
   deleteHospital(hospitalId: number){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.delete<any>(`${this.apiUrl}/api/hospitals/${hospitalId}`, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.delete<any>(`${this.apiUrl}/api/hospitals/${hospitalId}`);
   }
 
 
@@ -650,12 +421,7 @@ export class ApiServiceService {
    * @returns 
    */
   manageUser(userId: number, action: string){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.patch<any>(`${this.apiUrl}/api/users/${userId}/action?action=${action}`, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.patch<any>(`${this.apiUrl}/api/users/${userId}/action?action=${action}`, null);
   }
 
   /**
@@ -664,32 +430,17 @@ export class ApiServiceService {
    * @returns 
    */
   deleteRole(roleId: number){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.delete<any>(`${this.apiUrl}/api/roles/${roleId}`, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.delete<any>(`${this.apiUrl}/api/roles/${roleId}`);
   }
   
   // Delete a building
   deleteBuilding(buildingId: number){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.delete<any>(`${this.apiUrl}/api/buildings/${buildingId}`, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.delete<any>(`${this.apiUrl}/api/buildings/${buildingId}`);
   }
 
   // Delete a room
   deleteRoom(roomId: number){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.delete<any>(`${this.apiUrl}/api/rooms/${roomId}`, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.delete<any>(`${this.apiUrl}/api/rooms/${roomId}`);
   }
 
   /**
@@ -699,12 +450,7 @@ export class ApiServiceService {
    * @returns 
    */
   updateUser(userId: number, user: any){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.put<any>(`${this.apiUrl}/api/users/${userId}`, user, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.put<any>(`${this.apiUrl}/api/users/${userId}`, user);
   }
 
   /**
@@ -714,12 +460,7 @@ export class ApiServiceService {
    * @returns 
    */
   updateHospital(hospitalId: number, hospital: any){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.put<any>(`${this.apiUrl}/api/hospitals/${hospitalId}`, hospital, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.put<any>(`${this.apiUrl}/api/hospitals/${hospitalId}`, hospital);
   }
   
   /**
@@ -729,48 +470,23 @@ export class ApiServiceService {
    * @returns 
    */
   updateSpeciality(specialityId: number, speciality: any){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.put<any>(`${this.apiUrl}/api/specialities/${specialityId}`, speciality, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.put<any>(`${this.apiUrl}/api/specialities/${specialityId}`, speciality);
   }
 
   updateBuilding(buildingId: any, building: any){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.put<any>(`${this.apiUrl}/api/buildings/update_building/${buildingId}`, building, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.put<any>(`${this.apiUrl}/api/buildings/update_building/${buildingId}`, building);
   }
 
   updateRoom(roomId: number, room: any){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.put<any>(`${this.apiUrl}/api/rooms/update_room/${roomId}`, room, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.put<any>(`${this.apiUrl}/api/rooms/update_room/${roomId}`, room);
   }
 
   updateRole(roleId: number, role: any){
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.put<any>(`${this.apiUrl}/api/roles/${roleId}/update`, role, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.put<any>(`${this.apiUrl}/api/roles/${roleId}/update`, role);
   }
 
   saveRole(role: any): Observable<any>{
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.post<any>(`${this.apiUrl}/api/roles`, role, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/roles`, role);
   }
 
   /**
@@ -779,12 +495,7 @@ export class ApiServiceService {
    * @returns 
    */
   getSpecialityById(specialityId: number): Observable<any> {
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}`, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}`);
   }
 
   /**
@@ -793,28 +504,18 @@ export class ApiServiceService {
    * @returns 
    */
   getHospitalById(hospitalId: number): Observable<any> {
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/hospitals/${hospitalId}`, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/hospitals/${hospitalId}`);
   }
 
   /**
    * Get all accessible module for the connected user
    * @returns 
    */
-  loadAccessibleModules(username: string): Observable<any> {
-    const headers = this.createAuthorization();    
-    if (headers != null) {
-      return this.http.get<any>(`${this.apiUrl}/api/modules/hierarchy?username=${username}`, {headers})
+  loadAccessibleModules(username: string): Observable<any> {    
+      return this.http.get<any>(`${this.apiUrl}/api/modules/hierarchy?username=${username}`)
       .pipe(
         tap(modules => this.modulesSubject.next(modules))
       );
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
   }
 
   /**
@@ -822,12 +523,7 @@ export class ApiServiceService {
    * @returns 
    */
   getAllPermissions(): Observable<Permission[]> {
-    const headers = this.createAuthorization();
-    if (headers) {
-      return this.http.get<any>(`${this.apiUrl}/api/permissions`, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/permissions`);
   }
 
   /**
@@ -837,12 +533,7 @@ export class ApiServiceService {
    * @returns 
    */
   getUserPermissionsOnComponent(userId: number, componentName: string): Observable<any> {
-    const headers = this.createAuthorization();
-    if(headers != null){
-      return this.http.get<any>(`${this.apiUrl}/api/permissions/users/${userId}?componentName=${componentName}`, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.get<any>(`${this.apiUrl}/api/permissions/users/${userId}?componentName=${componentName}`);
   }
 
   /**
@@ -852,12 +543,7 @@ export class ApiServiceService {
    * @returns 
    */
   grantPermissionToUser(userId: number, permissionIds: number[]){
-    const headers = this.createAuthorization();
-    if(headers != null){
-      return this.http.post<any>(`${this.apiUrl}/api/permissions/users/${userId}/grant`, permissionIds, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/permissions/users/${userId}/grant`, permissionIds);
   }
 
   /**
@@ -867,12 +553,7 @@ export class ApiServiceService {
    * @returns 
    */
   removeUserPermission(userId: number, permissionIds: number[]){
-    const headers = this.createAuthorization();
-    if(headers != null){
-      return this.http.post<any>(`${this.apiUrl}/api/permissions/users/${userId}/remove`, permissionIds, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/permissions/users/${userId}/remove`, permissionIds);
   }
 
   /**
@@ -882,12 +563,7 @@ export class ApiServiceService {
    * @returns 
    */
   setPermissionToRole(roleId: number, permissionIds: number[]){
-    const headers = this.createAuthorization();
-    if(headers != null){
-      return this.http.post<any>(`${this.apiUrl}/api/permissions/roles/${roleId}/grant`, permissionIds, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/permissions/roles/${roleId}/grant`, permissionIds);
   }
 
   /**
@@ -897,12 +573,7 @@ export class ApiServiceService {
    * @returns 
    */
   removePermissionFromRole(roleId: number, permissionIds: number[]){
-    const headers = this.createAuthorization();
-    if(headers != null){
-      return this.http.post<any>(`${this.apiUrl}/api/permissions/roles/${roleId}/remove`, permissionIds, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/permissions/roles/${roleId}/remove`, permissionIds);
   }
 
   /**
@@ -912,12 +583,7 @@ export class ApiServiceService {
    * @returns 
    */
   assignRoleToUser(roleId: number, userId: number){
-    const headers = this.createAuthorization();
-    if(headers != null){
-      return this.http.post<any>(`${this.apiUrl}/api/roles/${roleId}/users/${userId}/assign`, null, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/roles/${roleId}/users/${userId}/assign`, null);
   }
 
   /**
@@ -927,12 +593,7 @@ export class ApiServiceService {
    * @returns 
    */
   substractUserFromRole(roleId: number, userId: number){
-    const headers = this.createAuthorization();
-    if(headers != null){
-      return this.http.post<any>(`${this.apiUrl}/api/roles/${roleId}/users/${userId}/substract`, null, {headers});
-    }else{
-      return throwError(()=>new Error("Autorization non accordée"));
-    }
+    return this.http.post<any>(`${this.apiUrl}/api/roles/${roleId}/users/${userId}/substract`, null);
   }
 
 
