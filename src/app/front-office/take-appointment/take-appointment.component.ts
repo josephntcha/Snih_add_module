@@ -221,7 +221,14 @@ export class TakeAppointmentComponent {
         }
       });
     }else{
-      alert("Le formulaire est invalide");
+      Swal.fire({
+        title: 'Le formulaire n\'est pas valide',
+        text: '',
+        icon: 'error',
+        timer: 3500,
+        showConfirmButton: false,
+        timerProgressBar: true 
+      });
     }
   }
 

@@ -161,7 +161,14 @@ export class KnownDoctorComponent implements OnInit{
         }
       })
     }else{
-       alert("Le formulaire n'est pas valide");    
+      Swal.fire({
+        title: 'Le formulaire n\'est pas valide',
+        text: '',
+        icon: 'error',
+        timer: 3500,
+        showConfirmButton: false,
+        timerProgressBar: true 
+      });
     }
   }
 
