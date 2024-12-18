@@ -164,7 +164,7 @@ export class ConstanteComponent implements OnInit{
               this.isVisible = false;
               this.constant = null;
               this.getConstants()
-              this.router.navigateByUrl("/Administration/constants");
+              this.router.navigateByUrl("/Administration/constant");
             }else{
               Swal.fire({
                 title: response.errorMessage,

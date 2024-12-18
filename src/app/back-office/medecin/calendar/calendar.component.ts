@@ -261,8 +261,17 @@ onAppointmentClick(day: Date) {
     if (this.canViewListAppointment) {
       if (this.getAppointmentCount(day).follow>0 || this.getAppointmentCount(day).notFollow>0) {
 
-       this.route.navigate(['/back-office/medecin/list-appointment'],{state: { availability: availability, date: day, hospitalId:this.hospitalId,specialityId:this.specialityId}})   
+        this.route.navigate(['/back-office/medecin/list-appointment'], {
+          queryParams: {
+            availability: JSON.stringify(availability),
+            date: day.toISOString(),
+            hospitalId: this.hospitalId,
+            specialityId: this.specialityId
+          }
+        });
+       //this.route.navigate(['/back-office/medecin/list-appointment'],{state: { availability: availability, date: day, hospitalId:this.hospitalId,specialityId:this.specialityId}})   
       }else{
+
         this.route.navigate(['/back-office/medecin/calendar']); 
       }
     }else{

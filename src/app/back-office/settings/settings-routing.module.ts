@@ -50,7 +50,7 @@ const routes: Routes = [
     }
   },
   {
-    path: "constantes",
+    path: "constant",
     component: ConstanteComponent,
     data: {
       breadcrumb: 'Prise de constante',
@@ -58,7 +58,7 @@ const routes: Routes = [
     }
   },
   {
-    path: "analyses",
+    path: "analysis",
     component: AnalysisComponent,
     data: {
       breadcrumb: 'Type d\'analyse',

@@ -1,5 +1,5 @@
-<div class="landing-container">
-  
+<!-- <div class="landing-container">
+
   <nz-layout>
     <nz-header>
       <div class="header-content">
@@ -8,10 +8,8 @@
             <span class="brand-name">SNIH</span>
             <small class="brand-subtitle">Système National d'Information Hospitalière</small>
           </h1>
-        </div>
-        
+        </div> 
         <div class="nav-actions">
-          
           <a nz-button nz-dropdown [nzDropdownMenu]="menu" class="login-btn">
             <span>Se connecter</span>
             <span nz-icon nzType="down"></span>
@@ -36,8 +34,6 @@
         </div>
       </div>
     </nz-header>
-
-    <!-- Contenu principal -->
     <nz-content>
       <div class="hero-section">
         <div class="hero-content">
@@ -55,22 +51,84 @@
                 <h3>Dossier médical</h3>
                 <p>Accédez à mon dossier médical en toute sécurité</p>
               </nz-card>
-              
-                <!-- <nz-card [nzBordered]="false" class="feature-card" routerLink="/login">
-                  <span nz-icon nzType="team" nzTheme="outline" class="card-icon"></span>
-                  <h3>Suivi personnalisé</h3>
-                  <p>Bénéficiez d'un suivi adapté à vos besoins</p>
-                </nz-card> -->
             </div>
           </div>
         </div>
       </div>
     </nz-content>
-
-    <!-- <nz-footer>
-      <div class="footer-content">
-        <p>SNIH ©2024 - Tous droits réservés</p>
-      </div>
-    </nz-footer> -->
   </nz-layout>
-</div>
+</div> -->
+
+
+  <div class="container">
+    
+    <div class="header-content">
+      <div nz-row class="logo">
+        <h1 nz-col nzSpan="5" nz-typography>
+          <span class="brand-name">SNIH</span>
+        </h1>
+        <marquee nz-col nzSpan="12" behavior="" direction=""><small class="brand-subtitle">Système National d'Information Hospitalière</small></marquee>
+      </div> 
+    </div>
+     
+    <nz-carousel 
+    [nzAutoPlay]="true" 
+    [nzAutoPlaySpeed]="3000" 
+    [nzEffect]="'fade'" 
+    [nzDots]="true" 
+    class="styled-carousel"
+  >
+      <div nz-carousel-content>
+        <h2 nz-typography nzType="secondary">
+          Votre santé, notre mission. Prenez rendez-vous facilement en ligne.
+       
+        </h2>
+      </div>
+      <div nz-carousel-content>
+        <h2 nz-typography nzType="secondary">
+          Découvrez un centre médical d’excellence pour des soins personnalisés.
+        </h2>
+      </div>
+      <div nz-carousel-content>
+        <h2 nz-typography nzType="secondary">
+          Bienvenue sur cette plateforme, où votre santé est notre priorité.
+        </h2>
+      </div>
+    </nz-carousel>
+   <nz-content>
+    <div class="hero-section">
+      <div class="hero-content">
+        <div class="text-content">
+          <div nz-row class="feature-cards">
+           
+              <div class="nav-actions" nz-col nzSpan="12">
+                <a nz-button nz-dropdown [nzDropdownMenu]="menu" class="login-btn">
+                  <span class="connecter">Se connecter</span>
+                  <span nz-icon nzType="down"></span>
+                </a>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                  <ul nz-menu nzSelectable>
+                    <li nz-menu-item routerLink="/login">
+                      <span nz-icon nzType="user" nzTheme="outline"></span>
+                      Personnel
+                    </li>
+                    <li nz-menu-item routerLink="/patient-connexion">
+                      <span nz-icon nzType="team" nzTheme="outline"></span>
+                      Patient
+                    </li>
+                  </ul>
+                </nz-dropdown-menu>
+              </div>
+              <button nz-col nzSpan="8" nz-button nzType="primary" routerLink="/prendre-rdv" class="rdv-btn">
+                <span nz-icon nzType="calendar" nzTheme="outline"></span>
+               <span class="prendre_rdv">Prendre RDV</span> 
+              </button>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </nz-content>
+  </div>
+   
+ 

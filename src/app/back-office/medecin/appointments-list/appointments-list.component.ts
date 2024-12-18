@@ -73,12 +73,18 @@ ngOnInit(): void {
     secretary:['']
   });
 
-    this.appointmentId = history.state.availability;
-    this.day = history.state.date;
-    this.hospitalId=history.state.hospitalId;
-    this.specialityId=history.state.specialityId;
+  
+
+  this.route.queryParams.subscribe(params => {
+    this.appointmentId  = JSON.parse(params['availability']);
+    this.day = params['date'];
+    this.hospitalId = params['hospitalId'];
+    this.specialityId = params['specialityId'];
+  });
+
+  this.filterAppointment('ASKED');
+  //this.loadAppointmentsByAvailability(); 
     
-    this.loadAppointmentsByAvailability(); 
 
     this.apiService.getAutorities().subscribe(response=>{
 
@@ -94,6 +100,40 @@ ngOnInit(): void {
       this.secretaryId=selectedSecretaryId;
     });
  
+}
+
+loadAvailabilityAndAppiontment(){
+
+  this.apiService.getAvailabilitiesByDoctorAndHospital(this.authService.userId,this.hospitalId).subscribe(response=>{
+    this.availabilities=response;
+
+    const availability = this.availabilities.find((availability: any) => {
+
+      if(availability['day']['id']==7){
+          availability['day']['id']==0;
+          }
+        const jourIndex = availability['day']['id']; 
+        const dayIndex = moment(this.day).day(); 
+     
+        if (jourIndex !== dayIndex) {
+          return false;
+        }
+    
+        const periode = availability['period'];
+        const currentDate = moment();
+        const dayDate = moment(this.day);
+    
+        const startMonth = currentDate.clone().startOf('month');
+        const endMonth = currentDate.clone().add(periode - 1, 'months').endOf('month');
+    
+        return dayDate.isBetween(startMonth, endMonth, null, '[]');
+      
+    });
+    this.appointments =availability.appointments.filter((appointment: any) =>moment(appointment.newDate).isSame(this.day, 'day'));
+    
+})
+
+
 }
 
 
@@ -160,27 +200,10 @@ allow(autority:any){
 
 
 
-
-loadAppointmentsByAvailability(){
-  if (this.appointmentId) {
-    const selectedAppointments = this.appointmentId.appointments.filter((appointment: any) =>
-      moment(appointment.newDate).isSame(this.day, 'day')
-    );
-    this.appointments = selectedAppointments;
-    this.originalAppointments = [...selectedAppointments]; // Gardez une copie
-  }  
-}
-
-
 confirmAppointment(appointment: any) {
   this.apiService.confirmAppointment(appointment.id).subscribe(updatedAppointment=>{
-     
-    for (let index = 0; index < this.appointments.length; index++) {
-      const element = this.appointments[index]['id'];
-      if (element==updatedAppointment.data['id']) {
-        this.appointments[index] = updatedAppointment.data; 
-      }
-    }
+    this.filterAppointment('ASKED');
+
   })
 }
 
@@ -205,14 +228,8 @@ confirmAppointment(appointment: any) {
 
   postponeAppointment(id: any,newDate:any) {
     this.apiService.postponeAppointment(id,newDate).subscribe(response=>{
-      
-      for (let index = 0; index < this.appointments.length; index++) {
-        const element = this.appointments[index]['id'];
-        if (element==response.data['id']) {
-          this.appointments[index] = response.data; 
-        }
-      }
-
+  
+      this.filterAppointment('ASKED');
     })
   }
 
@@ -230,13 +247,16 @@ showpostponeDialog(appointment:any) {
       confirmButtonText: 'Confirmer!',
       cancelButtonText: 'Annuler',
       html: `
-        <select id="availability" class="form-select form-control">
-          <option value="">-- Choisissez une disponibilité --</option>
-          ${this.availabilities.map((availability: any,index: number) => `<option value="${index}">${availability.day.name} || ${availability.startTime} à ${availability.endTime}</option>`).join('')}
-        </select> <br>
-        <select id="days" class="form-select form-control" disabled>
-          <option value="">-- Choisissez un jour --</option>
-        </select>
+       <select id="availability" class="custom-select" style="width: 100%; padding: 6px 12px; font-size: 1rem; line-height: 1.5; color: #495057; background-color: #fff; border: 1px solid #ced4da; border-radius: 0.25rem;">
+        <option value="">Choisissez une disponibilité </option>
+        ${this.availabilities.map((availability: any, index: number) => 
+          `<option value="${index}">${availability.day.name} || ${availability.startTime} à ${availability.endTime}</option>`
+        ).join('')}
+      </select>
+     <br><br>
+      <select id="days" class="custom-select" disabled style="width: 100%; padding: 6px 12px; font-size: 1rem; line-height: 1.5; color: #495057; background-color: #e9ecef; border: 1px solid #ced4da; border-radius: 0.25rem;">
+        <option value="">Choisissez un jour</option>
+      </select>
       `,
       didOpen: () => {
         const availabilitySelect = document.getElementById('availability') as HTMLSelectElement;
@@ -248,12 +268,14 @@ showpostponeDialog(appointment:any) {
           if (selectedIndex) {
              this.apiService.getDaysForAvailability(selectedAvailability.id,selectedAvailability.period).subscribe(response => {
                this.days = response.data;
-               daysSelect.innerHTML = this.days.map((day: any) => `<option value="${day}">${day}</option>`).join('');
+               daysSelect.innerHTML = this.days.map((day: any) => `<option value="${day}">${this.datePipe.transform(day, 'd MMMM y', 'fr-FR')}</option>`).join('');
                daysSelect.disabled = false;
+               daysSelect.style.backgroundColor = '#fff';
              });
           } else {
             daysSelect.innerHTML = `<option value="">-- Choisissez un jour --</option>`;
             daysSelect.disabled = true;
+            daysSelect.style.backgroundColor = '#e9ecef'; 
           }
         });
   
@@ -286,12 +308,8 @@ showpostponeDialog(appointment:any) {
 deleteAppointment(id: any) {
   this.apiService.deleteAppointment(id).subscribe(response=>{
 
-     for (let index = 0; index < this.appointments.length; index++) {
-        const element = this.appointments[index]['id'];
-        if (element==response.data['id']) {
-          this.appointments[index] = response.data; 
-        }
-      }
+      this.filterAppointment('ASKED');
+
       
     })
 }
@@ -314,7 +332,6 @@ deleteAppointment(id: any) {
 }
 
  followAppointment(appointment: any) {
-
   this.apiService.getAvailabilitiesByDoctorAndHospital(this.doctorId,this.hospitalId).subscribe(response=>{
     this.availabilities=response; 
     
@@ -328,12 +345,12 @@ deleteAppointment(id: any) {
       confirmButtonText: 'Confirmer!',
       cancelButtonText: 'Annuler',
       html: `
-        <select id="availability" class="form-select form-control">
-          <option value="">-- Choisissez une disponibilité --</option>
+        <select id="availability" class="form-select form-control" style="width: 100%; padding: 6px 12px; font-size: 1rem; line-height: 1.5; color: #495057; background-color: #fff; border: 1px solid #ced4da; border-radius: 0.25rem;">
+          <option value="">Choisissez une disponibilité </option>
           ${this.availabilities.map((availability: any,index:number) => `<option value="${index}">${availability.day.name} || ${availability.startTime} à ${availability.endTime}</option>`).join('')}
-        </select> <br>
-        <select id="days" class="form-select form-control" disabled>
-          <option value="">-- Choisissez un jour --</option>
+        </select> <br><br>
+        <select id="days" class="form-select form-control" disabled style="width: 100%; padding: 6px 12px; font-size: 1rem; line-height: 1.5; color: #495057; background-color: #e9ecef; border: 1px solid #ced4da; border-radius: 0.25rem;">
+          <option value="">Choisissez un jour</option>
         </select>
       `,
       didOpen: () => {
@@ -347,12 +364,14 @@ deleteAppointment(id: any) {
             this.apiService.getDaysForAvailability(selectedAvailability.id,selectedAvailability.period).subscribe(response => {
               this.days = response.data;
   
-              daysSelect.innerHTML = this.days.map((day: any) => `<option value="${day}">${day}</option>`).join('');
+              daysSelect.innerHTML = this.days.map((day: any) => `<option value="${day}">${this.datePipe.transform(day, 'd MMMM y', 'fr-FR')}</option>`).join('');
               daysSelect.disabled = false;
+              daysSelect.style.backgroundColor = '#fff';
             });
           } else {
             daysSelect.innerHTML = `<option value="">-- Choisissez un jour --</option>`;
             daysSelect.disabled = true;
+            daysSelect.style.backgroundColor = '#e9ecef'; 
           }
         });
   
@@ -376,6 +395,7 @@ deleteAppointment(id: any) {
        
         this.formattedDateFollow = this.datePipe.transform(result.value.selectedDay, 'yyyy/MM/dd');
         this.apiService.followAppointment(appointment.id,this.formattedDateFollow).subscribe(response=>{
+         this.filterAppointment('CONFIRMED');
                 
          });
 
@@ -387,9 +407,42 @@ deleteAppointment(id: any) {
 }
 
 filterAppointment(status: string) {
-  this.appointments = this.originalAppointments.filter((appointment: any) => 
-    appointment.status?.toLowerCase() === status.toLowerCase()
-  );
+
+  this.apiService.getAvailabilitiesByDoctorAndHospital(this.authService.userId,this.hospitalId).subscribe(response=>{
+    this.availabilities=response;
+
+    const availability = this.availabilities.find((availability: any) => {
+
+      if(availability['day']['id']==7){
+          availability['day']['id']==0;
+          }
+        const jourIndex = availability['day']['id']; 
+        const dayIndex = moment(this.day).day(); 
+     
+        if (jourIndex !== dayIndex) {
+          return false;
+        }
+    
+        const periode = availability['period'];
+        const currentDate = moment();
+        const dayDate = moment(this.day);
+    
+        const startMonth = currentDate.clone().startOf('month');
+        const endMonth = currentDate.clone().add(periode - 1, 'months').endOf('month');
+    
+        return dayDate.isBetween(startMonth, endMonth, null, '[]');
+      
+    });
+    this.appointments =availability.appointments.filter((appointment: any) =>moment(appointment.newDate).isSame(this.day, 'day'));
+
+    this.appointments = this.appointments.filter((appointment: any) => 
+      appointment.status?.toLowerCase() === status.toLowerCase()
+    );
+ })
+
+
+ 
+  
 }
 
 }

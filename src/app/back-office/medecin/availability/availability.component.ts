@@ -103,35 +103,38 @@ export class AvailabilityComponent implements  OnInit{
               
             })
     
-       
-    
-          this.apiService.getAvailabilitiesByHospitalAndSpeciality(selectedHospitalId,this.doctor.speciality.id).subscribe(response=>{
-            this.availabilities1=response;
-            
-             for (let index1 = 0; index1 < this.availabilities1.length; index1++) {
-    
-              this.apiService.getMaxNumberForAvaillability(this.availabilities1[index1]['id'],selectedHospitalId,this.doctor.speciality.id).subscribe(response=>{
-                   
+              this.apiService.getAvailabilitiesByHospitalAndSpeciality(selectedHospitalId,this.doctor.speciality.id).subscribe(response=>{
+                this.availabilities1=response;
                 
-                  for (let index2 = 0; index2 < response.length; index2++) {
-                     for (let index3 = 0; index3 < this.rooms.length; index3++) {
-    
-                      if ((response[index2].day.id==this.availabiltyForm.get('day')?.value) && 
-                          (response[index2].startTime==this.availabiltyForm.get('startTime')?.value) &&
-                          (response[index2].endTime==this.availabiltyForm.get('endTime')?.value) &&
-                          (response[index2].room==this.rooms[index3]['room'])) {
-                      
-                      this.rooms=this.rooms.filter((room:any)=> room.room !== response[index2].room)                     
+                 for (let index1 = 0; index1 < this.availabilities1.length; index1++) {
+
+                  this.apiService.getMaxNumberForAvaillability(this.availabilities1[index1]['id'],selectedHospitalId,this.doctor.speciality.id).subscribe(response=>{
+                       
+                      for (let index2 = 0; index2 < response.length; index2++) {
+                        if(this.availabiltyForm.get('building')?.value != ""){
+                          for (let index3 = 0; index3 < this.rooms.length; index3++) {
+        
+                            if ((response[index2].day.id==this.availabiltyForm.get('day')?.value) && 
+                                (response[index2].startTime==this.availabiltyForm.get('startTime')?.value) &&
+                                (response[index2].endTime==this.availabiltyForm.get('endTime')?.value) &&
+                                (response[index2].room==this.rooms[index3]['room'])) {
+                            
+                            this.rooms=this.rooms.filter((room:any)=> room.room !== response[index2].room)                     
+                            }
+                           }
+                        }
+                        
+                         
                       }
-                     }
-                     
-                  }
-              
+                  
+                  });
+                  
+                 }
               });
-              
-             }
-          });
-          
+             
+            
+    
+           
        });
 
 
