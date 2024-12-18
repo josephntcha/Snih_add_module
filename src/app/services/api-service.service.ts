@@ -48,7 +48,7 @@ export class ApiServiceService {
   }
 
   updateAnalysis(id:number,data:any):Observable<any>{
-    return this.http.put<any>(`${this.apiUrl}/api/update/${id}/analysis`,data);
+    return this.http.put<any>(`${this.apiUrl}/api/analysis/${id}`,data);
   }
 
  postConstantes(data:any):Observable<any>{
@@ -56,7 +56,7 @@ export class ApiServiceService {
   }
 
   updateConstantes(id:number,data:any):Observable<any>{
-    return this.http.put<any>(`${this.apiUrl}/api/update/${id}/typeconstants`,data);
+    return this.http.put<any>(`${this.apiUrl}/api/typeconstants/${id}`,data);
   }
 
   getDataSpecialities():Observable<any>{
