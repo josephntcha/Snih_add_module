@@ -15,12 +15,12 @@
   
       <h4>Informations médicales</h4>
       <div *ngFor="let info of medicalRec.infoMedicalRecords" class="info-record">
+        <div class="date" >{{ info.date | date:'dd-MM-yyyy' }}</div>
         <div class="grid">
+          <!-- <div class="key">Date :</div> -->
+          
           <div class="key">Diagnostic :</div>
           <div class="value">{{ info.diagnostique }}</div>
-          
-          <div class="key">Date :</div>
-          <div class="value">{{ info.date | date:'dd-MM-yyyy' }}</div>
           
           <div class="key">Traitement :</div>
           <div class="value">{{ info.traitement }}</div>
@@ -40,9 +40,13 @@
         <!-- Affichage des constantes -->
         <h4>Constantes</h4>
         <!-- <div class="grid"> -->
-          <div *ngFor="let constant of info.constants" class="grid">
-            <div class="key">{{ constant.typeConstant.name }} :</div>
-            <div class="value">{{ constant.valeur }}</div>
+          <div *ngFor="let constant of info.constants">
+            <div class="constDate">{{constant.date | date: "dd-MM-yyyy à HH:mm "}}</div>
+            <div class="grid">
+              <div class="key">{{ constant.typeConstant.name }} :</div>
+              <div class="value">{{ constant.valeur}} <span class="unit">{{constant.typeConstant.unit}}</span></div>
+            </div>
+            
           </div>
         <!-- </div> -->
       </div>

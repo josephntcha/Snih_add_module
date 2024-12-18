@@ -84,13 +84,13 @@
                     <td>
                         <a *ngIf="canViewRecord" (click)="consulter(data.id)">Consulter</a>
                         <nz-divider *ngIf="canViewRecord" nzType="vertical"></nz-divider>
-                        <a *ngIf="canFillRecord" (click)="addInfoMedRecord(data.id)">Ajouter Info</a>
+                        <a *ngIf="canFillRecord" (click)="addInfoMedRecord(data.id)">Remplir dossier</a>
                         <nz-divider *ngIf="canFillRecord" nzType="vertical"></nz-divider>
-                        <a *ngIf="canAddConstants" (click)="addConstants(data.id)">Constantes</a>
+                        <a *ngIf="canAddConstants" (click)="addConstants(data.id)">Ajouter Constantes</a>
                         <nz-divider *ngIf="canAddConstants" nzType="vertical"></nz-divider>
-                        <a *ngIf="canAddAnalyses" (click)="addAnalisis(data.id)">Analyse</a>
+                        <a *ngIf="canAddAnalyses" (click)="addAnalisis(data.id)">Ajouter Analyses</a>
                         <nz-divider *ngIf="canAddAnalyses" nzType="vertical"></nz-divider>
-                        <a *ngIf="canTransferRecord" (click)="transfer(data)">Trasférer</a>
+                        <a *ngIf="canTransferRecord" (click)="transfer(data)">Trasférer dossier</a>
                     </td>
                 </tr>
             </tbody>

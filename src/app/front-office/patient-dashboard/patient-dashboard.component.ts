@@ -14,18 +14,23 @@ export class PatientDashboardComponent implements OnInit{
   appointments: any;
   isVisible = false;
   usernameForm!: FormGroup;
+  username!: string | null;
 
   constructor(private apiService: ApiServiceService,
               private router: Router, 
-              private authService: AuthService,
+              public authService: AuthService,
               private fb: FormBuilder){}
 
   ngOnInit(): void {
+    this.username = window.localStorage.getItem('username');
+    
     if(this.authService.isAuthenticated){
       this.patientId= this.authService.userId;
       this.apiService.getPatinetAppointments(this.patientId).subscribe(response => {
         this.appointments = response;
       });
+    }else if(this.username != 'undefined' && this.username != null){
+      this.getAppointments(this.username);
     }else{
       this.showModal();
     }
@@ -52,22 +57,32 @@ export class PatientDashboardComponent implements OnInit{
     this.usernameForm.reset();
   }
 
+  getAppointments(username: string){
+    this.apiService.getPatientAppointmentsByUsername(username).subscribe({
+      next: (data) => {
+        this.appointments = data;
+        window.localStorage.setItem('username', username);
+        this.handleCancel();
+      },error: (err) => {
+        console.log(err);
+      }
+    });
+    
+    
+  }
+  
   onSubmitSerch(){
     if(this.usernameForm.valid){
-      this.apiService.getPatientAppointmentsByUsername(this.usernameForm.value.username).subscribe({
-        next: (data) => {
-          this.appointments = data;
-          console.log(this.appointments);
-          
-          this.handleCancel();
-        },error: (err) => {
-          console.log(err);
-        }
-      });
+      this.getAppointments(this.usernameForm.value.username);
     }
   }
 
   deconnexion() {
-    this.authService.logout();
+    if(this.authService.isAuthenticated){
+      this.authService.logout();
+    }else{
+      window.localStorage.removeItem("username");
+      this.router.navigateByUrl("");
+    }
   }
 }

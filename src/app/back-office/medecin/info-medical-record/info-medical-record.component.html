@@ -1,17 +1,21 @@
-<form nz-form [formGroup]="medicalRecordForm" (ngSubmit)="onSubmit()">
+<form nz-form [formGroup]="medicalRecordForm" >
     <!-- Titre du dossier médical -->
     <nz-page-header *ngIf="medicalRec" 
       [nzTitle]="'Dossier médical : ' + medicalRec.code_dossier">
     </nz-page-header>
   
     <!-- Constantes existantes -->
-    <ng-container *ngIf="existingInfoMedRecord?.constants?.length; else constantsForm">
+    <ng-container *ngIf="existingInfoMedRecord?.constants?.length && !addAdditionalConstants; else constantsForm">
       <nz-card nzTitle="Constantes prises">
-        <nz-list [nzDataSource]="existingInfoMedRecord.constants" nzBordered>
+        {{existingInfoMedRecord.date | date: "d MMMM y HH:mm"}}
+        <br><br><nz-list [nzDataSource]="existingInfoMedRecord.constants" nzBordered>
           <nz-list-item *ngFor="let const of existingInfoMedRecord.constants">
             {{const.typeConstant.name}} : {{const.valeur}}
           </nz-list-item>
         </nz-list>
+        <br><button nz-button nzType="primary" (click)="addConstants()">
+          Ajouter des constantes
+        </button>
       </nz-card>
     </ng-container>
   
@@ -39,7 +43,9 @@
               <nz-form-item>
                 <nz-form-label>Valeur</nz-form-label>
                 <nz-form-control>
-                  <input nz-input formControlName="valeur" placeholder="Valeur" />
+                  <nz-input-group [nzAddOnAfter]="getSelectedConstantUnit(i)">
+                    <input nz-input formControlName="valeur" placeholder="Valeur" />
+                  </nz-input-group>
                 </nz-form-control>
               </nz-form-item>
             </div>
@@ -133,6 +139,7 @@
         <button 
           nz-button 
           nzType="primary" 
+          (click)="onSubmit()"
           [disabled]="medicalRecordForm.invalid">
           Envoyer
         </button>

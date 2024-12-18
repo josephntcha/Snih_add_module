@@ -293,10 +293,11 @@ export class ApiServiceService {
 /**
   * Create patient medical record
   * @param patientId this id of the patient
+  * @param userId the connected user who is creating
   * @returns 
 */
-  postMedicalRecord(patientId:number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/medical-records/${patientId}/new`, null);        
+  postMedicalRecord(patientId: number, userId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/medical-records/${patientId}/${userId}/new`, null);        
   }
 
 

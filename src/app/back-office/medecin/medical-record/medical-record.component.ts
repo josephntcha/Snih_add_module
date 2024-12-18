@@ -58,15 +58,15 @@ export class MedicalRecordComponent implements OnInit{
  
   ngOnInit(): void {
     this.getConnectedUserPermissionsOnComponent();
-    this.initializeForm(this.searcbForm);
+    this.initializeForm('searcbForm');
     this.selectForm = this.fb.group({
       searchMode: ['', Validators.required]
     });
   }
 
 
-  initializeForm(form: FormGroup){
-    if(form == this.searcbForm){
+  initializeForm(form: string){
+    if(form === 'searcbForm'){
       if(this.isByCode){
         this.searcbForm = this.fb.group({
           code: [null, Validators.required]
@@ -77,11 +77,11 @@ export class MedicalRecordComponent implements OnInit{
           lastName: [null, Validators.required]
         });
       }
-    }else if(form == this.transferForm){
+    }else if(form === 'transferForm'){
       this.transferForm = this.fb.group({
         speciality: [null, Validators.required]
       });
-    }else{
+    }else if(form === 'recordForm'){
       this.recordForm = this.fb.group({
         patientId: [null, Validators.required],
       });
@@ -113,10 +113,10 @@ export class MedicalRecordComponent implements OnInit{
   chooseSearchMode(){
     if(this.selectForm.controls['searchMode'].value === true){
       this.isByCode = true;
-      this.initializeForm(this.searcbForm);
+      this.initializeForm('searcbForm');
     }else if(this.selectForm.controls['searchMode'].value === false){
       this.isByCode = false;
-      this.initializeForm(this.searcbForm);
+      this.initializeForm('searcbForm');
     }
   }
 
@@ -167,8 +167,9 @@ export class MedicalRecordComponent implements OnInit{
   }
 
   createRecord(){
-    this.newRecord = true;
     this.getPatients();
+    this.initializeForm('recordForm');
+    this.newRecord = true;
     this.showModal()
   }
 
@@ -176,7 +177,7 @@ export class MedicalRecordComponent implements OnInit{
     this.medicalRecord = medicalRecord;
     this.newRecord = false;
     this.getSpecialities();
-    this.initializeForm(this.transferForm);
+    this.initializeForm('transferForm');
     this.showModal();
   }
 
@@ -262,7 +263,6 @@ export class MedicalRecordComponent implements OnInit{
 
   showModal(): void {
     this.isVisible = true;
-    this.initializeForm(this.recordForm);
   }
 
   handleCancel(): void {
@@ -272,7 +272,7 @@ export class MedicalRecordComponent implements OnInit{
 
   onSubmit(){
     if(this.recordForm.valid){
-      this.apiService.postMedicalRecord(this.recordForm.value.patientId).subscribe({
+      this.apiService.postMedicalRecord(this.recordForm.value.patientId, this.authService.userId).subscribe({
         next: (response) => {
           if (response.success == true) {
             Swal.fire({
@@ -360,7 +360,6 @@ export class MedicalRecordComponent implements OnInit{
         if(response.success){
           const currentUserPermissions: Permission[] = response.data;
           const permissionsCodeNames = currentUserPermissions.map(permission => permission.codeName);
-          console.log(permissionsCodeNames);
           
           if(permissionsCodeNames.includes("VIEW_RECORD")){
             this.canViewRecord = true;

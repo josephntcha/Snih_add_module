@@ -1,15 +1,10 @@
-<nav nz-menu  nzMode="horizontal" class="menu-right">
-
+<nav nz-menu nzMode="horizontal" class="menu-right">
   <li nz-menu-item class="menu-item-spacing">
     <button nz-button nzType="link" routerLink="/">ACCUEIL</button>
   </li>
 
   <li nz-menu-item class="menu-item-spacing">
     <button nz-button nzType="link" routerLink="/prendre-rdv">Prendre RDV</button>
-  </li>
-
-  <li nz-menu-item class="menu-item-spacing">
-      <button nz-button nzType="link"  [routerLink]="['/patient-medical-record']">Dossier Médical</button>
   </li>
  
   <li nz-menu-item class="menu-item-spacing">
@@ -19,92 +14,131 @@
   <li nz-menu-item class="menu-item-spacing">
     <button nz-button nzType="link" routerLink="/patient-connexion">connexion</button>
   </li>
-  
 </nav>
-<br><br><br>
-  <div nz-row class="mt-2">
-    <div nz-col nzSpan="18" nzOffset="3">
-      <!-- <a nz-button nzType="primary" routerLink="/je_connais_mon_medecin" class="float-left">Je connais mon médecin</a> -->
-      <nz-card class="mt-md-2">
-        <nz-card-meta>
-          <h4 nz-title>Prenez votre rendez-vous en toute sécurité</h4>
-        </nz-card-meta>
-        <nz-divider></nz-divider>
-        <form [formGroup]="Hospitalform" (ngSubmit)="onSubmit()">
-          <div nz-row>
-            <div nz-col nzSpan="12">
-                <div nz-form-item class="mt-4">
-                    <nz-form-label nzFor="doctor" nzSpan="7">Médecin</nz-form-label>
-                    <nz-form-control nzSpan="22">
-                      <nz-select formControlName="doctor" nzPlaceHolder="Sélectionner votre médecin">
-                        <nz-option *ngFor="let medecin of dataDoctors" [nzValue]="medecin" [nzLabel]="medecin.lastName + ' ' + medecin.firstName"></nz-option>
-                      </nz-select>
-                    </nz-form-control>
-                </div>
-                <div nz-form-item class="mt-4">
-                    <nz-form-label nzFor="hospital" nzSpan="6">Hôpital</nz-form-label>
-                    <nz-form-control nzSpan="22">
-                      <nz-select formControlName="hospital" nzPlaceHolder="Sélectionner l'hôpital">
-                        <nz-option *ngFor="let hospital of hospitals" [nzValue]="hospital.id" [nzLabel]="hospital.name"></nz-option>
-                      </nz-select>
-                    </nz-form-control>
-                  </div>
-                  <div nz-form-item class="mt-4">
-                    <nz-form-label nzFor="availability" nzSpan="6">Disponibilité</nz-form-label>
-                    <nz-form-control nzSpan="22">
-                      <nz-select formControlName="availability" nzPlaceHolder="Sélectionner une disponibilité">
-                        <nz-option *ngFor="let availability of availabilities" [nzValue]="availability" [nzLabel]="availability['day']['name'] + ' De ' + availability.startTime + ' A ' + availability.endTime"></nz-option>
-                      </nz-select>
-                    </nz-form-control>
-                  </div>
-                  <div nz-form-item class="mt-4">
-                    <nz-form-label nzFor="date" nzSpan="6">Date RDV</nz-form-label>
-                    <nz-form-control nzSpan="22">
-                      <nz-select formControlName="date" nzPlaceHolder="Sélectionner une date">
-                        <nz-option *ngFor="let day of days" [nzValue]="day" [nzLabel]="day | date: 'd MMMM y'"></nz-option>
-                      </nz-select>
-                    </nz-form-control>
-                  </div>
-                  <div nz-form-item class="mt-4">
-                    <nz-form-label nzFor="price" nzSpan="6">Prix</nz-form-label>
-                    <nz-form-control nzSpan="22">
-                      <input nz-input formControlName="price" [value]="priceBySpeciality" readonly />
-                    </nz-form-control>
-                  </div>
-              <input type="hidden" [value]="specialityId" formControlName="speciality">
-            </div>
-  
-            <div nz-col nzSpan="12">
-                <div nz-form-item class="mt-4">
-                    <nz-form-label nzFor="patientLastName" nzSpan="6">Votre nom</nz-form-label>
-                    <nz-form-control nzSpan="22">
-                      <input nz-input formControlName="patientLastName" />
-                    </nz-form-control>
-                  </div>
-                  <div nz-form-item class="mt-4">
-                    <nz-form-label nzFor="patientFirstName" nzSpan="6">Prénom</nz-form-label>
-                    <nz-form-control nzSpan="22">
-                      <input nz-input formControlName="patientFirstName" />
-                    </nz-form-control>
-                  </div>
-                  <div nz-form-item class="mt-4">
-                    <nz-form-label nzFor="patientEmail" nzSpan="6">Email</nz-form-label>
-                    <nz-form-control nzSpan="22">
-                      <input nz-input formControlName="patientEmail" />
-                    </nz-form-control>
-                  </div>
-                  <div nz-form-item class="mt-4">
-                    <nz-form-label nzFor="patientPhone" nzSpan="6">Téléphone</nz-form-label>
-                    <nz-form-control nzSpan="22">
-                      <input nz-input formControlName="patientPhone" />
-                    </nz-form-control>
-                  </div>
-            </div>
+
+<div nz-row nzJustify="center" class="mt-2 body">
+  <div nz-col 
+       nzXs="24" 
+       nzSm="22" 
+       nzMd="20" 
+       nzLg="18" 
+       nzXl="16">
+    <nz-card class="mt-md-2">
+      <h3 nz-typography>Prise de rendez-vous en connaissance de son médecin</h3>
+      <h4>Les champs avec le symbole (<span class="star">*</span>) sont obligatoires</h4>
+      <nz-divider></nz-divider>
+      
+      <form [formGroup]="Hospitalform" (ngSubmit)="onSubmit()">
+        <div nz-row [nzGutter]="{ xs: 8, sm: 16, md: 24 }">
+          <div nz-col nzXs="24" nzSm="12" nzMd="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>Médecin</nz-form-label>
+              <nz-form-control nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <nz-select formControlName="doctor" nzPlaceHolder="Sélectionner votre médecin">
+                  <nz-option *ngFor="let medecin of dataDoctors" 
+                             [nzValue]="medecin" 
+                             [nzLabel]="medecin.lastName + ' ' + medecin.firstName">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzRequired>Hôpital</nz-form-label>
+              <nz-form-control nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <nz-select formControlName="hospital" nzPlaceHolder="Sélectionner l'hôpital">
+                  <nz-option *ngFor="let hospital of hospitals" 
+                             [nzValue]="hospital.id" 
+                             [nzLabel]="hospital.name">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzRequired>Disponibilité</nz-form-label>
+              <nz-form-control nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <nz-select formControlName="availability" nzPlaceHolder="Sélectionner une disponibilité">
+                  <nz-option *ngFor="let availability of availabilities" 
+                             [nzValue]="availability" 
+                             [nzLabel]="availability['day']['name'] + ' De ' + availability.startTime + ' A ' + availability.endTime">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzRequired>Date RDV</nz-form-label>
+              <nz-form-control nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <nz-select formControlName="date" nzPlaceHolder="Sélectionner une date">
+                  <nz-option *ngFor="let day of days" 
+                             [nzValue]="day" 
+                             [nzLabel]="day | date: 'd MMMM y'">
+                  </nz-option>
+                </nz-select>
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzRequired>Prix</nz-form-label>
+              <nz-form-control nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <input nz-input formControlName="price" [value]="priceBySpeciality" readonly />
+              </nz-form-control>
+            </nz-form-item>
+
+            <input type="hidden" [value]="specialityId" formControlName="speciality">
           </div>
-          <br>
-          <button nz-button nzType="primary" class="right" type="submit" [disabled]="Hospitalform.invalid">Prendre RDV</button>
-        </form>
-      </nz-card>
-    </div>
-  </div>
   
+          <div nz-col nzXs="24" nzSm="12" nzMd="12">
+            <nz-form-item>
+              <nz-form-label nzRequired>Votre nom</nz-form-label>
+              <nz-form-control nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <input nz-input formControlName="patientLastName" placeholder="Doe" />
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzRequired>Prénom</nz-form-label>
+              <nz-form-control nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <input nz-input formControlName="patientFirstName" placeholder="John" />
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label>Email</nz-form-label>
+              <nz-form-control>
+                <input nz-input formControlName="patientEmail" placeholder="john@gmail.com" />
+              </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+              <nz-form-label nzRequired>Téléphone</nz-form-label>
+              <nz-form-control nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <input nz-input formControlName="patientPhone" placeholder="97000000" />
+              </nz-form-control>
+            </nz-form-item>
+          </div>
+        </div>
+
+        <div nz-row nzJustify="end" class="mt-3">
+          <button 
+            nz-button 
+            nzType="primary" 
+            type="submit" 
+            [disabled]="Hospitalform.invalid">
+            Prendre RDV
+          </button>
+        </div>
+      </form>
+
+      <div class="text-center mt-3">
+        <h3 nz-typography>
+          Vous ne connaissez pas votre médecin ? 
+          <a routerLink="/prendre-rdv" nz-button nzType="primary">
+            Je ne connais pas mon médecin
+          </a>
+        </h3>
+      </div>
+    </nz-card>
+  </div>
+</div>

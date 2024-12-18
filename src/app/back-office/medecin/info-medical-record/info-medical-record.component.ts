@@ -5,6 +5,9 @@ import Swal from 'sweetalert2';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Analysis, TypeConstant } from '../../../models/model';
 import { NzMessageService } from 'ng-zorro-antd/message';
+import { map } from 'rxjs';
+import { formatDate } from '@angular/common';
+import moment from 'moment';
 
 @Component({
   selector: 'app-info-medical-record',
@@ -22,6 +25,7 @@ export class InfoMedicalRecordComponent implements OnInit{
   allAnalyses: Analysis[] = [];
   allTypeConstants: TypeConstant[] = [];
   addAnalysis: boolean = false;
+  addAdditionalConstants: boolean = false;
 
   constructor(
     private fb: FormBuilder, 
@@ -190,10 +194,20 @@ export class InfoMedicalRecordComponent implements OnInit{
     );
   }
 
+  getSelectedConstantUnit(index: number): string | undefined {
+    const typeConstantId = this.constant.at(index).get('typeConstant')?.value;
+    if (typeConstantId) {
+      const selectedConstant = this.allTypeConstants.find(c => c.id === typeConstantId);
+      return selectedConstant?.unit;
+    }
+    return undefined;
+  }
+
   onSubmit(): void {
     if (this.medicalRecordForm.valid) {
       const formValue = this.medicalRecordForm.value;
 
+      // Transformation des analyses
       formValue.analyses_resultats = formValue.analyses_resultats.map((item: any) => ({
         analysis: { id: item.analysis },
         result: item.result
@@ -202,15 +216,15 @@ export class InfoMedicalRecordComponent implements OnInit{
       // Transformation des constants
       formValue.constants = formValue.constants.map((item: any) => ({
         typeConstant: { id: item.typeConstant },
-        valeur: item.valeur,
-        date: item.date
+        valeur: item.valeur
+        // date: item.date
       }));
 
       this.infoMedRecord = formValue;
 
     this.apiService.createInforMedicalRecord(this.infoMedRecord, this.recordId).subscribe({
-      next:response=>{
-        if (response.success==true) {
+      next:response =>{
+        if (response.success == true) {
          Swal.fire({
            title: 'Succès',
            text: "Données ajoutées avec succès",
@@ -219,9 +233,9 @@ export class InfoMedicalRecordComponent implements OnInit{
            showConfirmButton:false,
            timerProgressBar:true
          });
-         this.router.navigateByUrl('/back-office/medecin/medical-records/' + this.medicalRec.patient.id);
+         this.router.navigateByUrl('/back-office/medecin/view-medical-record/' + this.medicalRec.id);
         }else{
-          this.ngOnInit()
+          this.medicalRecordForm.reset();
           Swal.fire({
             title: 'Erreur',
             text: response.errorMessage,
@@ -268,6 +282,8 @@ export class InfoMedicalRecordComponent implements OnInit{
       next: (data) => {
         if(data != null){
           this.existingInfoMedRecord = data;
+          this.existingInfoMedRecord.date = moment(this.existingInfoMedRecord.date, 'DD-MM-YYYY HH:mm').toDate();
+          this.existingInfoMedRecord.date = new Date(Date.parse(this.existingInfoMedRecord.date));
           this.existingInfoMedRecord.analyses_resultats[0].result
         }
       },error: (err) => {
@@ -278,6 +294,10 @@ export class InfoMedicalRecordComponent implements OnInit{
 
   addAnalysisAndResults(): boolean{
     return this.addAnalysis = !this.addAnalysis;
+  }
+
+  addConstants(): boolean{
+    return this.addAdditionalConstants = !this.addAdditionalConstants;
   }
 
 }

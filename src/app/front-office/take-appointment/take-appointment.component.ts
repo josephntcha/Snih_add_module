@@ -253,7 +253,7 @@ export class TakeAppointmentComponent {
       api_key: "021734b06f6511ef86df8fbf72b655ad",
       sandbox: true,
       phone: this.patientPhone,
-    })
+    });
   }
 
   successHandler = (transactionData: any) => {
@@ -272,7 +272,8 @@ export class TakeAppointmentComponent {
             showConfirmButton: false,
             timerProgressBar: true 
           });
-          this.route.navigateByUrl("");
+          window.localStorage.setItem("username", response.data.patientUsername);
+          this.route.navigateByUrl("/patient-dashboard");
         } else {
           this.ngOnInit()
           Swal.fire({
