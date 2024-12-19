@@ -42,14 +42,11 @@ export class TakeAppointmentComponent {
   appointmentData: any;
   availabilityId!: number;
 
-  isVisible = false;
-  usernameForm!: FormGroup;
 
   constructor(private apiService: ApiServiceService, 
               private kkiapayService: KkiapayService, 
               private fromBuilder: FormBuilder, 
-              private route:Router,
-              private fb: FormBuilder){}
+              private route:Router){}
 
   mergeArraysWithoutDuplicates(A1: any[], B1: any[]): any[] {
     return [...new Set([...A1, ...B1])];
@@ -62,10 +59,10 @@ export class TakeAppointmentComponent {
     });
 
     this.Hospitalform = this.fromBuilder.group({
-      patientLastName: ['', Validators.required],
-      patientFirstName: ['', Validators.required],
+      patientLastName: ['', [Validators.required, Validators.minLength(3)]],
+      patientFirstName: ['', [Validators.required, Validators.minLength(3)]],
       patientEmail: [''],
-      patientPhone: ['', Validators.required],
+      patientPhone: ['', [Validators.required, Validators.minLength(8)]],
       date: ['', Validators.required],
       hospital: ['', Validators.required],
       speciality: ['', Validators.required],
@@ -256,27 +253,7 @@ export class TakeAppointmentComponent {
       api_key: "021734b06f6511ef86df8fbf72b655ad",
       sandbox: true,
       phone: this.patientPhone,
-    })
-  }
-
-  showModal(): void {
-    this.initializeForm();
-    this.isVisible = true;
-  }
-
-  handleCancel(): void {
-    this.isVisible = false;
-  }
-
-  initializeForm(){
-    this.usernameForm = this.fb.group({
-      username: ['', Validators.required]
     });
-  }
-
-  resetForm(event: Event){
-    event.preventDefault();
-    this.usernameForm.reset();
   }
 
   successHandler = (transactionData: any) => {
@@ -295,7 +272,8 @@ export class TakeAppointmentComponent {
             showConfirmButton: false,
             timerProgressBar: true 
           });
-          this.route.navigateByUrl("");
+          window.localStorage.setItem("username", response.data.patientUsername);
+          this.route.navigateByUrl("/patient-dashboard");
         } else {
           this.ngOnInit()
           Swal.fire({

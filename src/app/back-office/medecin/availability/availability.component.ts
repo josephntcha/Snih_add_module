@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { AuthService } from '../../../services/auth.service';
-import { Permission } from '../../../models/model';
+import { Permission, Building } from '../../../models/model';
 
 @Component({
   selector: 'app-availability',
@@ -68,9 +68,6 @@ export class AvailabilityComponent implements  OnInit{
       this.availabilities=response.data;
       
       });
-
- 
-
        this.apiService.getDays().subscribe(response=>{
         this.days=response;
         });
@@ -137,7 +134,6 @@ export class AvailabilityComponent implements  OnInit{
            
        });
 
-
   }
   
   getConnectedUserPermissionsOnComponent(){
@@ -186,6 +182,7 @@ export class AvailabilityComponent implements  OnInit{
         Availibility: hospitalId,
         maxNumberOfAppointments: availability.maxNumberOfAppointments,
         room: availability.room,
+        buildingId: availability.building,
         period: availability.period
       });
     this.isVisible = true;
@@ -203,17 +200,16 @@ handleOk(): void {
 
   Submit(){   
     
-    const data={
-                    startTime:this.availabiltyForm.value.startTime,
-                    endTime:this.availabiltyForm.value.endTime,
-                    frequency:this.availabiltyForm.value.frequency,
-                    orderOfDay:this.availabiltyForm.value.orderOfDay,
-                    maxNumberOfAppointments:this.availabiltyForm.value.maxNumberOfAppointments,
-                    room:this.availabiltyForm.value.room,
-                    period:this.availabiltyForm.value.period
-                }
-    
-                
+    const data = {
+        startTime:this.availabiltyForm.value.startTime,
+        endTime:this.availabiltyForm.value.endTime,
+        frequency:this.availabiltyForm.value.frequency,
+        orderOfDay:this.availabiltyForm.value.orderOfDay,
+        maxNumberOfAppointments:this.availabiltyForm.value.maxNumberOfAppointments,
+        room:this.availabiltyForm.value.room,
+        buildingId: this.availabiltyForm.value.building,
+        period:this.availabiltyForm.value.period
+      }                
     
      this.apiService.putAvailability(this.availability.id,this.availabiltyForm.value.day,this.doctorId,this.availabiltyForm.value.hospital,data).subscribe({
          next:response=>{
@@ -222,7 +218,7 @@ handleOk(): void {
                  this.availabilities=response.data;
              });
 
-             if (response.success==true) {
+             if (response.success == true) {
                  Swal.fire({
                      title: 'Modification effectuée',
                      text: 'Opération réussie',
@@ -248,9 +244,6 @@ handleOk(): void {
              });
          }
      })
-               
-                
-
   }
 
 }

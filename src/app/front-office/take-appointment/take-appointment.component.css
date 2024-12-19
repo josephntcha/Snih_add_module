@@ -15,4 +15,28 @@
     background: #1890ff;
   }
 
+  .star {
+    color: red;
+  }
+  
+  .body {
+    background-color: rgba(195, 225, 24, 0.128);
+  }
+
+  @media (max-width: 768px) {
+    .menu-right {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  
+    .menu-item-spacing {
+      margin: 5px;
+    }
+  
+    .menu-right li {
+      flex: 0 0 auto;
+    }
+  }
+
   

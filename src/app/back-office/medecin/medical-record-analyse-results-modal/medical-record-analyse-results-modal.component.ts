@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import Swal from 'sweetalert2';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { NZ_MODAL_DATA, NzModalRef } from 'ng-zorro-antd/modal';
 import { NzMessageService } from 'ng-zorro-antd/message';
@@ -147,54 +147,25 @@ export class MedicalRecordAnalyseResultsModalComponent implements OnInit{
       if(!this.isDataFromFile){
         const formValue = this.analysisForm.value;
         formValue.analyses_resultats = formValue.analyses_resultats.map((item: any) => ({
-          analysis: { id: item.analysis },
+          analysis: { id: item.analysis, name: item.analysis.name },
           result: item.result
-        }));
+        }));        
 
-        this.infoMedRecord = formValue;
+        this.infoMedRecord = formValue;        
 
         this.apiService.addAnalysisResult(this.infoMedRecord, this.recordId).subscribe({
           next: response => {
             if (response.success == true) {
               this.analysisForm.reset()
-              Swal.fire({
-                title: 'Succès',
-                text: "Données ajoutées avec succès",
-                icon: 'success',
-                timer:4000,
-                showConfirmButton:false,
-                timerProgressBar:true
-              });
+              this.showNotification('success', "Données ajoutées avec succès");
             }else{
               this.analysisForm.reset()
-              Swal.fire({
-                title: 'Erreur',
-                text: response.errorMessage,
-                icon: 'info',
-                timer:6000,
-                showConfirmButton:false,
-                timerProgressBar:true
-              });
-              // Swal.fire({
-              //   title: 'Succès',
-              //   text: "Données ajoutées avec succès",
-              //   icon: 'success',
-              //   timer: 4000,
-              //   showConfirmButton: false,
-              //   timerProgressBar: true
-              // });
+              this.showNotification('error', response.errorMessage)
             }
             this.handleCancel();
           },
           error: err=>{
-            Swal.fire({
-              title: 'Erreur',
-              text: "Une erreur inconnue s'est produite",
-              icon: 'error',
-              timer: 6000,
-              showConfirmButton: false,
-              timerProgressBar: true
-            });
+            this.showNotification('error', "Une erreur inconnue s'est produite");
           }
         });
       }else{
@@ -203,14 +174,7 @@ export class MedicalRecordAnalyseResultsModalComponent implements OnInit{
           formData.append('file', this.selectedFile);
           
           this.apiService.addAnalysisResultFromFile(formData, this.recordId).subscribe(response => {
-            Swal.fire({
-              title: 'Succès',
-              text: "Données ajoutées avec succès",
-              icon: 'success',
-              timer:4000,
-              showConfirmButton:false,
-              timerProgressBar:true
-            });
+            this.showNotification('success', "Données ajoutées avec succès");
             this.handleCancel()
             // next: () => {
             //   Swal.fire({
@@ -239,6 +203,18 @@ export class MedicalRecordAnalyseResultsModalComponent implements OnInit{
     } else {
       console.log('Formulaire invalide');
     }
+  }
+
+
+  showNotification(icon: 'success' | 'error', text: string){
+    Swal.fire({
+      title: '',
+      text,
+      icon,
+      timer: icon === 'success' ? 3500 : 4500,
+      showConfirmButton: false,
+      timerProgressBar: true
+    });
   }
 
 }

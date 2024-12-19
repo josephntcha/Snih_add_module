@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { log } from 'ng-zorro-antd/core/logger';
 import { ApiServiceService } from '../../services/api-service.service';
+import { addKkiapayListener, openKkiapayWidget, removeKkiapayListener } from 'kkiapay';
 
 @Component({
   selector: 'app-known-doctor',
@@ -12,17 +13,23 @@ import { ApiServiceService } from '../../services/api-service.service';
 })
 export class KnownDoctorComponent implements OnInit{
 
-  Hospitalform!:FormGroup;
-  dataDoctors:any;
-  hospitals:any;
-  availabilities:any;
-  doctorId:any;
-  specialityId:any;
-  days:any;
-  priceBySpeciality:number=0;
-  selectedDoctor:any;
-  selectedAvailability:any;
+  Hospitalform!: FormGroup;
+  dataDoctors: any;
+  hospitals: any;
+  availabilities: any;
+  doctorId: any;
+  specialityId: any;
+  days: any;
+  priceBySpeciality: number = 0;
+  patientFirstName = "";
+  patientLastName = "";
+  patientPhone = "97000000";
+  patientEmail = "";
+  selectedDoctor: any;
+  selectedAvailability: any;
   hospitalId:any;
+  availabilityId: any;
+  appointmentData: any;
 
   constructor(private apiService:ApiServiceService, private fromBuilder:FormBuilder, private route:Router){}
 
@@ -60,33 +67,27 @@ export class KnownDoctorComponent implements OnInit{
 
     this.Hospitalform=this.fromBuilder.group(
            {
-             patientLastName:['',Validators.required],
-             patientFirstName:['',Validators.required],
-             patientEmail:[''],
-             patientPhone:['',Validators.required],
-             doctor:['',Validators.required],
-             hospital:['',Validators.required],
-             speciality:[''],
-             availability:['',Validators.required],
-             date:['',Validators.required],
-             price:['']
-           }
-         );   
+             patientLastName:['', [Validators.required, Validators.minLength(3)]],
+             patientFirstName: ['', [Validators.required, Validators.minLength(3)]],
+             patientEmail: [''],
+             patientPhone: ['', [Validators.required, Validators.minLength(8)]],
+             doctor: ['', Validators.required],
+             hospital: ['', Validators.required],
+             speciality: [''],
+             availability: ['', Validators.required],
+             date: ['', Validators.required],
+             price: ['']
+           });
  
-           this.apiService.getDataDoctors().subscribe(response=>{
-           this.dataDoctors=response
-        
-           
-           
-            });
+          this.apiService.getDataDoctors().subscribe(response=>{
+            this.dataDoctors=response;
+          });
  
            this.Hospitalform.get('doctor')?.valueChanges.subscribe(selectedDoctorId=>{
              this.specialityId=selectedDoctorId.speciality.id;
              this.apiService.getDataHospitalsByDoctor(selectedDoctorId.id).subscribe(response=>{
              this.hospitals=response; 
              this.doctorId=selectedDoctorId.id;
- 
-         
  
             });
           }); 
@@ -120,19 +121,23 @@ export class KnownDoctorComponent implements OnInit{
                 })
              
            }
-      
          
          });
- 
+
+    addKkiapayListener('success', (response: any) => this.successHandler(response));
    
-   }
+  }
  
 
-   onSubmit(){    
+  ngOnDestroy(){
+    removeKkiapayListener('success')
+  }
+
+  onSubmit(){
     if (this.Hospitalform.valid) {
       Swal.fire({
         title: 'Prendre RDV!',
-        text: "Voulez-vous vraiment donner ce rendez-vous?",
+        text: "Voulez-vous vraiment demander ce rendez-vous?",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -140,36 +145,104 @@ export class KnownDoctorComponent implements OnInit{
         confirmButtonText: 'oui!',
         cancelButtonText: 'non'
       }).then((result) => {
-        if (result.isConfirmed) {
-          this.apiService.postAppointment(this.Hospitalform.value.availability.id,this.Hospitalform.value.hospital,this.Hospitalform.value).subscribe({
-            next:response=>{
-              if (response.success) {
+        if(result.isConfirmed){
+          this.apiService.testAppointmentSaving(
+            this.Hospitalform.value.availability.id, 
+            this.Hospitalform.value.hospital, 
+            this.Hospitalform.value
+          ).subscribe({
+            next: (data) => {
+              if(data.data){
+                this.availabilityId = this.Hospitalform.value.availability.id;
+                this.hospitalId = this.Hospitalform.value.hospital;
+                this.appointmentData = this.Hospitalform.value;
+
+                this.patientFirstName = this.Hospitalform.value.patientFirstName;
+                this.patientLastName = this.Hospitalform.value.patientLastName;
+                this.patientEmail = this.Hospitalform.value.patientEmail;
+                this.patientPhone = this.Hospitalform.value.patientPhone;  
+    
+                // Initier le paiement
+                this.open();
+              }else{
                 Swal.fire({
-                  title: 'RDV prit',
-                  text: response.code,
-                  icon: 'success',
-                  timer:3500,
-                  showConfirmButton:false,
-                  timerProgressBar:true 
+                  title: "",
+                  text: data.errorMessage,
+                  icon: 'warning',
+                  timer: 5000,
+                  showConfirmButton: false,
+                  timerProgressBar: true 
                 });
               }
             },
-            error:error=>{
-              console.log(error);
+            error: (err) => {
+              console.error('Erreur lors de la vérification du rendez-vous:', err);
             }
-           })
+          });
         }
       })
-    }else{
-      Swal.fire({
-        title: 'Le formulaire n\'est pas valide',
-        text: '',
-        icon: 'error',
-        timer: 3500,
-        showConfirmButton: false,
-        timerProgressBar: true 
-      });
+      
     }
+  }
+
+
+  open() {
+    openKkiapayWidget({
+      amount: this.priceBySpeciality,
+      fullname: this.patientFirstName + ' ' + this.patientLastName,
+      email: this.patientEmail,
+      api_key: "021734b06f6511ef86df8fbf72b655ad",
+      sandbox: true,
+      phone: this.patientPhone,
+    })
+  }
+
+
+  successHandler = (transactionData: any) => {
+
+    if (!this.availabilityId || !this.hospitalId || !this.appointmentData) {
+      console.error('Données manquantes pour le rendez-vous');
+      return;
+    }
+
+    this.apiService.postAppointment(this.availabilityId, this.hospitalId, this.appointmentData).subscribe({
+      next: response => {
+        if (response.success) {
+          Swal.fire({
+            title: 'Rendez-vous pris avec succès',
+            text: '',
+            icon: 'success',
+            timer: 3500,
+            showConfirmButton: false,
+            timerProgressBar: true 
+          });
+          window.localStorage.setItem("username", response.data.patientUsername);
+          this.route.navigateByUrl("/patient-dashboard");
+        } else {
+          this.ngOnInit()
+          Swal.fire({
+            title: "Erreur",
+            text: response.errorMessage || 'Une erreur est survenue',
+            icon: 'warning',
+            timer: 6000,
+            showConfirmButton: false,
+            timerProgressBar: true 
+          });
+        }
+      },
+      error: error => {
+        this.ngOnInit()
+        console.error('Erreur lors de l\'enregistrement du rendez-vous:', error);
+        Swal.fire({
+          title: "Erreur",
+          text: 'Une erreur est survenue lors de l\'enregistrement du rendez-vous',
+          icon: 'error',
+          timer: 6000,
+          showConfirmButton: false,
+          timerProgressBar: true 
+        });
+      }
+    });
   }
 
 }
