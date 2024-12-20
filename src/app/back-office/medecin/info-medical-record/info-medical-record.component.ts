@@ -42,8 +42,8 @@ export class InfoMedicalRecordComponent implements OnInit{
     this.getCurrentDayInfoMedRecord(this.recordId);
 
     this.medicalRecordForm = this.fb.group({
-      diagnostique: ['', Validators.required],
-      traitement: ['', Validators.required],
+      diagnostiques: ['', Validators.required],
+      traitements: ['', Validators.required],
       analyses_resultats: this.fb.array([]),
       constants: this.fb.array([])
     });
@@ -59,7 +59,7 @@ export class InfoMedicalRecordComponent implements OnInit{
     this.apiService.getTypeConstants().subscribe(data => {
       this.allTypeConstants = data;
       if (this.constant.length === 0) {
-        this.addConstant();
+        this.addAnotherConstant();
       }
     });
   }
@@ -88,16 +88,16 @@ export class InfoMedicalRecordComponent implements OnInit{
 
   createAnalysisResult(): FormGroup {
     return this.fb.group({
-      analysis: [null],
-      result: ['']
+      analysis: [null, [this.addAnalysis ? Validators.required : null]],
+      result: ['', [this.addAnalysis ? Validators.required : null]]
     });
     
   }
 
   createConstant(): FormGroup {
     return this.fb.group({
-      typeConstant: [null],
-      valeur: ['']
+      typeConstant: [null, [this.addAdditionalConstants ? Validators.required : null]],
+      valeur: ['', [this.addAdditionalConstants ? Validators.required : null]]
     });
     
   }
@@ -111,18 +111,11 @@ export class InfoMedicalRecordComponent implements OnInit{
       this.analysisResults.push(this.createAnalysisResult());
       this.updateAvailableOptions();
     } else {
-      Swal.fire({
-        title: 'Info',
-        text: 'Toutes les analyses disponibles ont déjà été ajoutées.',
-        icon: 'info',
-        timer: 3000,
-        showConfirmButton: false,
-        timerProgressBar: true
-      });
+      this.showNotification('info', 'Toutes les analyses disponibles ont déjà été ajoutées.');
     }
   }
 
-  addConstant(): void {
+  addAnotherConstant(): void {
     const selectedConstants = this.constant.controls
       .map(control => control.get('typeConstant')?.value)
       .filter(value => value !== null && value !== undefined);
@@ -130,14 +123,7 @@ export class InfoMedicalRecordComponent implements OnInit{
     if (selectedConstants.length < this.allTypeConstants.length) {
       this.constant.push(this.createConstant());
     } else {
-      Swal.fire({
-        title: 'Info',
-        text: 'Toutes les constantes disponibles ont déjà été ajoutées.',
-        icon: 'info',
-        timer: 4500,
-        showConfirmButton: false,
-        timerProgressBar: true
-      });
+      this.showNotification('info', 'Toutes les constantes disponibles ont déjà été ajoutées.');
     }
   }
 
@@ -167,95 +153,60 @@ export class InfoMedicalRecordComponent implements OnInit{
   }
 
   // Récupérer les analysis disponibles en excluant celles déjà sélectionnées
-  getAvailableAnalyses(index: number): Analysis[] {
-    const currentValue = this.analysisResults.at(index).get('analysis')?.value;
+  getAvailableAnalyses(index: number): any[] {
+    const currentAnalysis = this.analysisResults.at(index).get('analysis')?.value;
     const otherSelectedAnalyses = this.analysisResults.controls
       .filter((_, i) => i !== index)
       .map(control => control.get('analysis')?.value)
       .filter(value => value !== null && value !== undefined);
 
     return this.allAnalyses.filter(analysis => 
-      !otherSelectedAnalyses.includes(analysis.id) || 
-      analysis.id === currentValue
+      !otherSelectedAnalyses.some(selected => selected.id === analysis.id) || 
+      (currentAnalysis && currentAnalysis.id === analysis.id)
     );
   }
 
   // Récupérer les constantes disponibles en excluant celles déjà sélectionnées
   getAvailableConstants(index: number): TypeConstant[] {
-    const currentValue = this.constant.at(index).get('typeConstant')?.value;
+    const currentConstant = this.constant.at(index).get('typeConstant')?.value;
     const otherSelectedConstants = this.constant.controls
-      .filter((_, i) => i !== index) // Exclure la constante courante
+      .filter((_, i) => i !== index)
       .map(control => control.get('typeConstant')?.value)
       .filter(value => value !== null && value !== undefined);
 
     return this.allTypeConstants.filter(constant => 
-      !otherSelectedConstants.includes(constant.id) || 
-      constant.id === currentValue
+      !otherSelectedConstants.some(selected => selected.id === constant.id) || 
+      (currentConstant && currentConstant.id === constant.id)
     );
   }
 
   getSelectedConstantUnit(index: number): string | undefined {
-    const typeConstantId = this.constant.at(index).get('typeConstant')?.value;
-    if (typeConstantId) {
-      const selectedConstant = this.allTypeConstants.find(c => c.id === typeConstantId);
-      return selectedConstant?.unit;
-    }
-    return undefined;
+    const typeConstant = this.constant.at(index).get('typeConstant')?.value;
+    return typeConstant?.unit;
   }
 
   onSubmit(): void {
     if (this.medicalRecordForm.valid) {
       const formValue = this.medicalRecordForm.value;
 
-      // Transformation des analyses
-      formValue.analyses_resultats = formValue.analyses_resultats.map((item: any) => ({
-        analysis: { id: item.analysis },
-        result: item.result
-      }));
+      formValue.diagnostiques = [formValue.diagnostiques];
+      formValue.traitements = [formValue.traitements];
 
-      // Transformation des constants
-      formValue.constants = formValue.constants.map((item: any) => ({
-        typeConstant: { id: item.typeConstant },
-        valeur: item.valeur
-        // date: item.date
-      }));
-
-      this.infoMedRecord = formValue;
+      this.infoMedRecord = formValue;      
 
     this.apiService.createInforMedicalRecord(this.infoMedRecord, this.recordId).subscribe({
       next:response =>{
         if (response.success == true) {
-         Swal.fire({
-           title: 'Succès',
-           text: "Données ajoutées avec succès",
-           icon: 'success',
-           timer:4000,
-           showConfirmButton:false,
-           timerProgressBar:true
-         });
+         this.showNotification('success', "Données ajoutées avec succès");
          this.router.navigateByUrl('/back-office/medecin/view-medical-record/' + this.medicalRec.id);
         }else{
           this.medicalRecordForm.reset();
-          Swal.fire({
-            title: 'Erreur',
-            text: response.errorMessage,
-            icon: 'info',
-            timer:4000,
-            showConfirmButton:false,
-            timerProgressBar:true
-          });
+          this.showNotification('error', response.errorMessage);
         }
        },
       error: err=>{
         this.ngOnInit()
-        Swal.fire({
-          title: 'Erreur',
-          text: "Une erreur inconnue s'est produite",
-          icon: 'error',
-          timer:4000,
-          showConfirmButton:false,
-          timerProgressBar:true
-        });
+        this.showNotification('error', "Une erreur inconnue s'est produite");
        }
     });
     } else {
@@ -293,11 +244,27 @@ export class InfoMedicalRecordComponent implements OnInit{
   }
 
   addAnalysisAndResults(): boolean{
-    return this.addAnalysis = !this.addAnalysis;
+    this.addAnalysis = !this.addAnalysis;
+    this.createAnalysisResult();
+    return this.addAnalysis;
   }
 
   addConstants(): boolean{
-    return this.addAdditionalConstants = !this.addAdditionalConstants;
+    this.addAdditionalConstants = !this.addAdditionalConstants;
+    this.createConstant();
+    return this.addAdditionalConstants;
+  }
+
+
+  showNotification(icon: 'success' | 'info' | 'error', text: string){
+    Swal.fire({
+      title: '',
+      text,
+      icon,
+      timer: 4000,
+      showConfirmButton: false,
+      timerProgressBar: true
+    });
   }
 
 }

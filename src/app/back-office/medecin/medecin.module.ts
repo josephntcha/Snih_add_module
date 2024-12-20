@@ -37,6 +37,7 @@ import { NzSpaceModule } from 'ng-zorro-antd/space';
 import { ViewMedicalRecordComponent } from './view-medical-record/view-medical-record.component';
 import { NzListModule } from 'ng-zorro-antd/list';
 import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
+import { MedicalConstantsComponent } from './medical-constants/medical-constants.component';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import { NzPageHeaderModule } from 'ng-zorro-antd/page-header';
     MedicalRecordAnalyseResultsModalComponent,
     MedicalRecordConstantsModalComponent,
     InfoMedicalRecordComponent,
-    ViewMedicalRecordComponent
+    ViewMedicalRecordComponent,
+    // MedicalConstantsComponent
   ],
   imports: [
     RouterLink,

@@ -4,7 +4,7 @@
         <button *ngIf="canCreateRecord" (click)="createRecord()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un dossier</button>
 
         <!-- Seacch mode form -->
-        <form *ngIf="canSearchRecords" [formGroup]="selectForm">
+        <br><br><form *ngIf="canSearchRecords" [formGroup]="selectForm">
             <nz-form-item>
                 <nz-form-label nzSpan="7" nzRequired>Mode de recherche</nz-form-label>
                 <nz-form-control nzSpan="12" nzErrorTip="Ce champ est obligatoire">

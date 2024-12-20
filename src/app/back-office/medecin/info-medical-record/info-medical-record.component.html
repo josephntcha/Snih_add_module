@@ -27,12 +27,12 @@
                [formGroupName]="i" nz-row nzGutter="16">
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>Type de Constante</nz-form-label>
+                <nz-form-label nzRequired>Type de Constante</nz-form-label>
                 <nz-form-control>
                   <nz-select formControlName="typeConstant" nzPlaceHolder="Sélectionnez une constante">
                     <nz-option 
                       *ngFor="let typeConstant of getAvailableConstants(i)" 
-                      [nzValue]="typeConstant.id" 
+                      [nzValue]="typeConstant" 
                       [nzLabel]="typeConstant.name">
                     </nz-option>
                   </nz-select>
@@ -41,7 +41,7 @@
             </div>
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>Valeur</nz-form-label>
+                <nz-form-label nzRequired>Valeur</nz-form-label>
                 <nz-form-control>
                   <nz-input-group [nzAddOnAfter]="getSelectedConstantUnit(i)">
                     <input nz-input formControlName="valeur" placeholder="Valeur" />
@@ -53,7 +53,7 @@
   
           <nz-form-item *ngIf="constant.length < allTypeConstants.length">
             <nz-form-control>
-              <button nz-button nzType="dashed" (click)="addConstant()">
+              <button nz-button nzType="dashed" (click)="addAnotherConstant()">
                 <i nz-icon nzType="plus"></i>Ajouter Constante
               </button>
             </nz-form-control>
@@ -66,7 +66,7 @@
     <nz-form-item>
       <nz-form-label>Diagnostique</nz-form-label>
       <nz-form-control>
-        <textarea nz-input formControlName="diagnostique" rows="4"></textarea>
+        <textarea nz-input formControlName="diagnostiques" rows="4"></textarea>
       </nz-form-control>
     </nz-form-item>
   
@@ -92,12 +92,12 @@
                [formGroupName]="i" nz-row nzGutter="16">
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>Analyse</nz-form-label>
+                <nz-form-label nzRequired>Analyse</nz-form-label>
                 <nz-form-control>
                   <nz-select formControlName="analysis" nzPlaceHolder="Sélectionnez une analyse">
                     <nz-option 
                       *ngFor="let availableAnalysis of getAvailableAnalyses(i)" 
-                      [nzValue]="availableAnalysis.id" 
+                      [nzValue]="availableAnalysis" 
                       [nzLabel]="availableAnalysis.name">
                     </nz-option>
                   </nz-select>
@@ -106,7 +106,7 @@
             </div>
             <div nz-col nzSpan="12">
               <nz-form-item>
-                <nz-form-label>Résultat</nz-form-label>
+                <nz-form-label nzRequired>Résultat</nz-form-label>
                 <nz-form-control>
                   <input nz-input formControlName="result" placeholder="Résultat" />
                 </nz-form-control>
@@ -129,7 +129,7 @@
     <nz-form-item>
       <nz-form-label>Traitement prescrit</nz-form-label>
       <nz-form-control>
-        <textarea nz-input formControlName="traitement" rows="4"></textarea>
+        <textarea nz-input formControlName="traitements" rows="4"></textarea>
       </nz-form-control>
     </nz-form-item>
   
