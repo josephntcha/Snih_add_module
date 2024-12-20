@@ -90,7 +90,6 @@ loadAppointments() {
 
         this.apiService.getBuildings(selectedHospitalId).subscribe(response=>{
           this.buildings=response;
-          console.log(this.buildings);
           
         })
 
@@ -105,6 +104,7 @@ loadAppointments() {
                
             
               for (let index2 = 0; index2 < response.length; index2++) {
+                if(this.appointmentform.get('building')?.value != ""){
                  for (let index3 = 0; index3 < this.rooms.length; index3++) {
 
                   if ((response[index2].day.id==this.appointmentform.get('day')?.value) && 
@@ -115,6 +115,7 @@ loadAppointments() {
                   this.rooms=this.rooms.filter((room:any)=> room.room !== response[index2].room)                     
                   }
                  }
+                }
                  
               }
           
