@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ApiServiceService } from '../../services/api-service.service';
 import { AuthService } from '../../services/auth.service';
 import Swal from 'sweetalert2';
@@ -13,10 +12,7 @@ export class PatientMedicalRecordComponent implements OnInit{
   patientId: any;
   medicalRec: any;
 
-  constructor(private route: ActivatedRoute,
-              private apiService: ApiServiceService,
-              private router:Router,
-              private authService: AuthService){}
+  constructor(private apiService: ApiServiceService, private authService: AuthService){}
 
 
   ngOnInit(): void {
@@ -60,9 +56,7 @@ export class PatientMedicalRecordComponent implements OnInit{
   }
 
   deconnexion() {
-
-    localStorage.removeItem('token');
-    this.router.navigateByUrl("/");
+    this.authService.logout();
   }
 
 

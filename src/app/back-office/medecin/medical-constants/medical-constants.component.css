@@ -1,0 +1,65 @@
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .key {
+    font-weight: bold;
+    text-align: left;
+    color: #34495e;
+  }
+  
+  .value {
+    text-align: left;
+    color: #2c3e50;
+  }
+
+
+.grid .key, .grid .value {
+    padding: 8px 0;
+  }
+  
+  .grid .value {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .value {
+    background-color: #f8f9fa;
+  }
+  
+  .key {
+    background-color: #ecf0f1;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .key, .value {
+      text-align: left;
+    }
+  }
+
+  .date {
+    padding-bottom: 15px;
+    text-align: center;
+    font-size: 20px;
+  }
+
+  .constDate {
+    display: block;
+    margin: auto;
+    padding-bottom: 15px;
+  }
+
+  .unit {
+    padding: 10px;
+  }

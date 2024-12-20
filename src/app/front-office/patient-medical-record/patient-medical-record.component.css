@@ -97,4 +97,20 @@
       text-align: left;
     }
   }
+
+  .date {
+    padding-bottom: 15px;
+    text-align: center;
+    font-size: 20px;
+  }
+
+  .constDate {
+    display: block;
+    margin: auto;
+    padding-bottom: 15px;
+  }
+
+  .unit {
+    padding: 10px;
+  }
   

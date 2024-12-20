@@ -16,12 +16,17 @@ import { BackOfficeModule } from './back-office/back-office.module';
 import { MedecinModule } from './back-office/medecin/medecin.module';
 import { FrontOfficeModule } from './front-office/front-office.module';
 import { authInterceptor } from './auth/auth.interceptor';
+import { MedicalConstantsComponent } from './back-office/medecin/medical-constants/medical-constants.component';
 
 registerLocaleData(en);
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    MedicalConstantsComponent
+  ],
+  exports: [
+    MedicalConstantsComponent
   ],
   imports: [
     AuthModule,

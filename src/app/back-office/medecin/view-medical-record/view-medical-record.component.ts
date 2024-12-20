@@ -28,7 +28,7 @@ export class ViewMedicalRecordComponent implements OnInit{
     this.apiService.getMedicalRecord(this.medicalRecordId).subscribe({
       next: (data) => {
         if(data.success == true){
-          this.medicalRec = data.data
+          this.medicalRec = data.data          
 
           if(this.medicalRec.date_creation != null){
             this.medicalRec.date_creation = this.convertToDate(this.medicalRec.date_creation);

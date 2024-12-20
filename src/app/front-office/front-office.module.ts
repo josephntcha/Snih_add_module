@@ -4,9 +4,6 @@ import { CommonModule, NgClass, NgFor, NgIf } from '@angular/common';
 import { FrontOfficeRoutingModule } from './front-office-routing.module';
 import { TakeAppointmentComponent } from './take-appointment/take-appointment.component';
 
-
-import { NzAvatarModule } from 'ng-zorro-antd/avatar';
-import { NzBadgeModule } from 'ng-zorro-antd/badge';
 import { NzBreadCrumbModule } from 'ng-zorro-antd/breadcrumb';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzCardModule } from 'ng-zorro-antd/card';
@@ -33,8 +30,6 @@ import { PatientDashboardComponent } from './patient-dashboard/patient-dashboard
 import { KnownDoctorComponent } from './known-doctor/known-doctor.component';
 import { PatientMedicalRecordComponent } from './patient-medical-record/patient-medical-record.component';
 import { LandingPageComponent } from './landing-page/landing-page.component';
-import { NzAlertModule } from 'ng-zorro-antd/alert';
-import { NzCheckboxModule } from 'ng-zorro-antd/checkbox';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 
 

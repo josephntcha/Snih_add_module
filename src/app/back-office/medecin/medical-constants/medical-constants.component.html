@@ -1,0 +1,18 @@
+<!-- <div *ngFor="let group of getGroupedConstants()">
+    <div class="constDate">
+      {{group[1][0].date | date: "dd-MM-yyyy à HH:mm "}}
+    </div>
+    <div *ngFor="let constant of group[1]" class="grid">
+      <div class="key">{{ constant.typeConstant.name }} :</div>
+      <div class="value">{{ constant.valeur}} <span class="unit">{{constant.typeConstant.unit}}</span></div>
+    </div>
+  </div> -->
+  <ng-container *ngFor="let group of groupedConstants">
+    <div class="constDate">
+      {{group.date | date: "dd-MM-yyyy à HH:mm"}}
+    </div>
+    <div *ngFor="let constant of group.constants" class="grid">
+      <div class="key">{{ constant.typeConstant.name }} :</div>
+      <div class="value">{{ constant.valeur }} <span class="unit">{{ constant.typeConstant.unit }}</span></div>
+    </div>
+  </ng-container>

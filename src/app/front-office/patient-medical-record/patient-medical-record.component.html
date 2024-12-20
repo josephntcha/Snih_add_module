@@ -35,20 +35,41 @@
 
     <h4>Informations médicales</h4>
     <div *ngFor="let info of medicalRec.infoMedicalRecords" class="info-record">
-      <div class="grid">
-        <div class="key">Diagnostic :</div>
-        <div class="value">{{ info.diagnostique }}</div>
-        
-        <div class="key">Date :</div>
-        <div class="value">{{ info.date | date:'dd-MM-yyyy' }}</div>
-        
-        <div class="key">Traitement :</div>
-        <div class="value">{{ info.traitement }}</div>
+      <!-- Date -->
+      <div  *ngIf="info.diagnostiques.length != 0 || info.traitements.length != 0 || 
+            info.analyses_resultats.length != 0 || info.constants.length != 0"
+        class="date" >{{ info.date | date:'dd-MM-yyyy' }}
       </div>
 
+      <!-- Affichage des diagnostiques -->
+      <h4 *ngIf="info.diagnostiques.length != 0">Diagnostiques</h4>
+      <div *ngFor="let diag of info.diagnostiques" class="grid">
+          <div class="key">N° {{ info.diagnostiques.indexOf(diag) +1 }} :</div>
+          <div class="value">{{ diag }}</div>
+      </div>
+
+      <!-- Affichage des traitements -->
+      <h4 *ngIf="info.traitements.length != 0">Traitements</h4>
+      <div *ngFor="let trait of info.traitements" class="grid">
+          <div class="key">N° {{ info.traitements.indexOf(trait) +1 }} :</div>
+          <div class="value">{{ trait }}</div>
+      </div>
+
+      <!-- Affichage des constantes -->
+      <h4 *ngIf="info.constants.length != 0">Constantes</h4>
+      <!-- <div *ngFor="let constant of info.constants">
+        <div class="constDate">{{constant.date | date: "dd-MM-yyyy à HH:mm "}}</div>
+        <div class="grid">
+          <div class="key">{{ constant.typeConstant.name }} :</div>
+          <div class="value">{{ constant.valeur}} <span class="unit">{{constant.typeConstant.unit}}</span></div>
+        </div>
+      </div> -->
+      <app-medical-constants [constants]="info.constants"></app-medical-constants>
+
+
       <!-- Affichage des analyses -->
-      <h4>Analyses</h4>
-      <div class="grid">
+      <h4 *ngIf="info.analyses_resultats.length != 0">Analyses</h4>
+      <div *ngIf="info.analyses_resultats.length != 0" class="grid">
         <div class="key">Analyse</div>
         <div class="value">Résultat</div>
       </div>
@@ -56,15 +77,6 @@
           <div class="key">{{ analyse.analysis.name }} :</div>
           <div class="value">{{ analyse.result }}</div>
       </div>
-
-      <!-- Affichage des constantes -->
-      <h4>Constantes</h4>
-      <!-- <div class="grid"> -->
-        <div *ngFor="let constant of info.constants" class="grid">
-          <div class="key">{{ constant.typeConstant.name }} :</div>
-          <div class="value">{{ constant.valeur }}</div>
-        </div>
-      <!-- </div> -->
     </div>
   </div>
 </div>

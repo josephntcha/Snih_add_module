@@ -19,7 +19,7 @@ export interface TypeConstant {
 export interface Constant {
   id: number;
   valeur: string;
-  date: string;
+  date: Date;
   typeConstant: TypeConstant;
 }
 
