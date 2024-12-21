@@ -136,6 +136,7 @@ loadAppointments() {
          endTime:this.appointmentform.value.endTime,
          maxNumberOfAppointments:this.appointmentform.value.maxNumberOfAppointments,
          frequency:this.appointmentform.value.frequency,
+         building:this.appointmentform.value.building,
          room:this.appointmentform.value.room,
          period:this.appointmentform.value.period,
          orderOfDay:this.appointmentform.value.orderOfDay,
@@ -152,7 +153,7 @@ loadAppointments() {
                  timerProgressBar:true 
                });
 
-               this.route.navigateByUrl("/back-office/medecin/availability/availability");
+               this.route.navigateByUrl("/back-office/medecin/availability");
            },
            error:error=>{
              console.log(error);

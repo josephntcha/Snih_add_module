@@ -198,7 +198,6 @@ getAppointmentCount(day: Date): { follow: number; notFollow: number } {
   
   const followCount = appointmentsForDate.filter((appointment:any) => appointment.followed).length;
   const notFollowCount = appointmentsForDate.filter((appointment:any) => !appointment.followed).length;
- 
   
  
    

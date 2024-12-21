@@ -227,13 +227,13 @@ export class ApiServiceService {
   }
 
 
-  followAppointment(appointmentId:number,newDate:any){
+  followAppointment(appointmentId:number,newDate:any,availabilityId:any,doctorId:number){
     let params = new HttpParams().set("newDate", newDate);
-    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/follow?newDate=${newDate}`,{});
+    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/follow/availability/${availabilityId}/doctor/${doctorId}?newDate=${newDate}`,null);
   }
 
-   postponeAppointment(appointmentId:number,nouvelleDate:any){
-    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/postpone?newDate=${nouvelleDate}`,null);
+   postponeAppointment(appointmentId:number,nouvelleDate:any,availabilityId:any,doctorId:any){
+    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/availability/${availabilityId}/doctor/${doctorId}/postpone?newDate=${nouvelleDate}`,null);
 
   }
 
