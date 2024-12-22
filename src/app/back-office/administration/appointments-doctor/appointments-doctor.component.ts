@@ -5,6 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import Swal from 'sweetalert2';
 import { AuthService } from '../../../services/auth.service';
 import { ApiServiceService } from '../../../services/api-service.service';
+import moment from 'moment';
 
 @Component({
   selector: 'app-appointments-doctor',
@@ -24,6 +25,8 @@ rightCancel:boolean=false;
 secretary: any;
 availabilities:any;
 doctors:any[]=[];
+days:any;
+formattedDatePostpone: string | null | undefined;
 
 constructor(private apiService:ApiServiceService,private datePipe: DatePipe,private route:ActivatedRoute,private router:Router,private authService:AuthService){}
 
@@ -78,6 +81,8 @@ constructor(private apiService:ApiServiceService,private datePipe: DatePipe,priv
     
 }
 
+
+
 confirmAppointment(appointment: any) {
   this.apiService.confirmAppointment(appointment.id).subscribe(updatedAppointment=>{
      
@@ -109,58 +114,86 @@ showConfirmationDialog(appointment:any) {
 }
 
 
-postponeAppointment(id: any,newDate:any) {
-  this.apiService.postponeAppointment(id,newDate).subscribe(response=>{
-    
-    for (let index = 0; index < this.appointments.length; index++) {
-      const element = this.appointments[index]['id'];
-      if (element==response.data['id']) {
-        this.appointments[index] = response.data; 
-      }
-    }
+postponeAppointment(id: any,newDate:any,availabilityId:any, doctorId:any) {
+  this.apiService.postponeAppointment(id,newDate,availabilityId,doctorId).subscribe(response=>{
 
   })
 }
 
 showpostponeDialog(appointment:any) {
-Swal.fire({
-  title: 'reporter ce rendez-vous!',
-  text: "Veuillez reporter ou annuler le RDV",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonColor: '#3085d6',
-  cancelButtonColor: '#d33',
-  confirmButtonText: 'Confirmer!',
-  cancelButtonText: 'Annuler'
-}).then((result) => {
-  if (result.isConfirmed) {
-      Swal.fire({
-      title: 'Saisissez une nouvelle date',
-      text: "Veuillez saissir  la nouvelle date du  RDV",
+ this.apiService.getAvailabilitiesByDoctorAndHospital(this.doctorId,this.hospitalId).subscribe(response=>{
+    this.availabilities=response; 
+    
+    Swal.fire({
+      title: 'Date de repport',
+      text: "Veuillez sélectionner la date pour le repport",
       icon: 'warning',
-      input: 'date',  
-      inputPlaceholder: 'Nouvelle date de RDV', 
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Confirmer!',
       cancelButtonText: 'Annuler',
-      customClass: {
-          input: 'w-50' 
-        },
+      html: `
+       <select id="availability" class="custom-select" style="width: 100%; padding: 6px 12px; font-size: 1rem; line-height: 1.5; color: #495057; background-color: #fff; border: 1px solid #ced4da; border-radius: 0.25rem;">
+        <option value="">Choisissez une disponibilité </option>
+        ${this.availabilities.map((availability: any, index: number) => 
+          `<option value="${index}">${availability.day.name} || ${availability.startTime} à ${availability.endTime}</option>`
+        ).join('')}
+      </select>
+     <br><br>
+      <select id="days" class="custom-select" disabled style="width: 100%; padding: 6px 12px; font-size: 1rem; line-height: 1.5; color: #495057; background-color: #e9ecef; border: 1px solid #ced4da; border-radius: 0.25rem;">
+        <option value="">Choisissez un jour</option>
+      </select>
+      `,
+      didOpen: () => {
+        const availabilitySelect = document.getElementById('availability') as HTMLSelectElement;
+        const daysSelect = document.getElementById('days') as HTMLSelectElement;
   
+        availabilitySelect.addEventListener('change', (event) => {
+          const selectedIndex = (event.target as HTMLSelectElement).value;
+          const selectedAvailability = this.availabilities[parseInt(selectedIndex)]; 
+          if (selectedIndex) {
+             this.apiService.getDaysForAvailability(selectedAvailability.day.id,selectedAvailability.period).subscribe(response => {
+               this.days = response.data;
+               daysSelect.innerHTML = this.days.map((day: any) => `<option value="${day}">${this.datePipe.transform(day, 'd MMMM y', 'fr-FR')}</option>`).join('');
+               daysSelect.disabled = false;
+               daysSelect.style.backgroundColor = '#fff';
+             });
+          } else {
+            daysSelect.innerHTML = `<option value="">-- Choisissez un jour --</option>`;
+            daysSelect.disabled = true;
+            daysSelect.style.backgroundColor = '#e9ecef'; 
+          }
+        });
+  
+      },
+      preConfirm: () => {
+        const index = (document.getElementById('availability') as HTMLSelectElement).value;
+        const selectedAvailability = this.availabilities[parseInt(index)]; 
+        const selectedDay = (document.getElementById('days') as HTMLSelectElement).value;
+  
+        if (!selectedAvailability || !selectedDay) {
+          Swal.showValidationMessage('Veuillez sélectionner une disponibilité et un jour');
+          return false;
+        }
+  
+        return {
+          selectedAvailability,
+          selectedDay
+        };
+      }
     }).then((result) => {
       if (result.isConfirmed) {
-
-        this.formattedDate = this.datePipe.transform(result.value, 'yyyy/MM/dd'); 
-        this.postponeAppointment(appointment.id,this.formattedDate);
+       
+        this.formattedDatePostpone = this.datePipe.transform(result.value.selectedDay, 'yyyy/MM/dd');
+        this.postponeAppointment(appointment.id,this.formattedDatePostpone,result.value.selectedAvailability.id,this.doctorId);
       }
     });
-  }
-});
+   });
 
 
 }
+
 
 
 deleteAppointment(id: any) {

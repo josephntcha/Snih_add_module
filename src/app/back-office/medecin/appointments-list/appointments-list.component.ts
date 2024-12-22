@@ -226,10 +226,10 @@ confirmAppointment(appointment: any) {
 }
 
 
-  postponeAppointment(id: any,newDate:any) {
-    this.apiService.postponeAppointment(id,newDate).subscribe(response=>{
+  postponeAppointment(id: any,newDate:any,availabilityId:any, doctorId:any) {
+    this.apiService.postponeAppointment(id,newDate,availabilityId,doctorId).subscribe(response=>{
   
-      this.filterAppointment('ASKED');
+      this.filterAppointment('POSTPONE');
     })
   }
 
@@ -266,7 +266,7 @@ showpostponeDialog(appointment:any) {
           const selectedIndex = (event.target as HTMLSelectElement).value;
           const selectedAvailability = this.availabilities[parseInt(selectedIndex)]; 
           if (selectedIndex) {
-             this.apiService.getDaysForAvailability(selectedAvailability.id,selectedAvailability.period).subscribe(response => {
+             this.apiService.getDaysForAvailability(selectedAvailability.day.id,selectedAvailability.period).subscribe(response => {
                this.days = response.data;
                daysSelect.innerHTML = this.days.map((day: any) => `<option value="${day}">${this.datePipe.transform(day, 'd MMMM y', 'fr-FR')}</option>`).join('');
                daysSelect.disabled = false;
@@ -281,7 +281,8 @@ showpostponeDialog(appointment:any) {
   
       },
       preConfirm: () => {
-        const selectedAvailability = (document.getElementById('availability') as HTMLSelectElement).value;
+        const index = (document.getElementById('availability') as HTMLSelectElement).value;
+        const selectedAvailability = this.availabilities[parseInt(index)]; 
         const selectedDay = (document.getElementById('days') as HTMLSelectElement).value;
   
         if (!selectedAvailability || !selectedDay) {
@@ -298,7 +299,8 @@ showpostponeDialog(appointment:any) {
       if (result.isConfirmed) {
        
         this.formattedDatePostpone = this.datePipe.transform(result.value.selectedDay, 'yyyy/MM/dd');
-        this.postponeAppointment(appointment.id,this.formattedDatePostpone);
+
+        this.postponeAppointment(appointment.id,this.formattedDatePostpone,result.value.selectedAvailability.id,this.doctorId);
       }
     });
    });
@@ -360,8 +362,9 @@ deleteAppointment(id: any) {
         availabilitySelect.addEventListener('change', (event) => {
           const selectedIndex = (event.target as HTMLSelectElement).value;
           const selectedAvailability = this.availabilities[parseInt(selectedIndex)]; 
+          
           if (selectedIndex) {
-            this.apiService.getDaysForAvailability(selectedAvailability.id,selectedAvailability.period).subscribe(response => {
+            this.apiService.getDaysForAvailability(selectedAvailability.day.id,selectedAvailability.period).subscribe(response => {
               this.days = response.data;
   
               daysSelect.innerHTML = this.days.map((day: any) => `<option value="${day}">${this.datePipe.transform(day, 'd MMMM y', 'fr-FR')}</option>`).join('');
@@ -377,7 +380,9 @@ deleteAppointment(id: any) {
   
       },
       preConfirm: () => {
-        const selectedAvailability = (document.getElementById('availability') as HTMLSelectElement).value;
+        
+        const index = (document.getElementById('availability') as HTMLSelectElement).value;
+        const selectedAvailability = this.availabilities[parseInt(index)]; 
         const selectedDay = (document.getElementById('days') as HTMLSelectElement).value;
   
         if (!selectedAvailability || !selectedDay) {
@@ -387,17 +392,17 @@ deleteAppointment(id: any) {
   
         return {
           selectedAvailability,
-          selectedDay
+          selectedDay,
         };
       }
     }).then((result) => {
       if (result.isConfirmed) {
-       
+        console.log(result.value.selectedAvailability.id)
         this.formattedDateFollow = this.datePipe.transform(result.value.selectedDay, 'yyyy/MM/dd');
-        this.apiService.followAppointment(appointment.id,this.formattedDateFollow).subscribe(response=>{
-         this.filterAppointment('CONFIRMED');
+         this.apiService.followAppointment(appointment.id,this.formattedDateFollow,result.value.selectedAvailability.id,this.doctorId).subscribe(response=>{
+          this.filterAppointment('CONFIRMED');
                 
-         });
+          });
 
       }
     });

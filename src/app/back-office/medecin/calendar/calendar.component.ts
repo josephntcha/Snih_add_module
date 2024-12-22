@@ -67,6 +67,7 @@ loadAppointments() {
 
     this.apiService.getAvailabilitiesByDoctorAndHospital(this.DoctorId,this.hospitals[0].id).subscribe(response=>{
       this.availabilities=response;
+      console.log(this.availabilities)
     });
     
    });
@@ -197,7 +198,6 @@ getAppointmentCount(day: Date): { follow: number; notFollow: number } {
   
   const followCount = appointmentsForDate.filter((appointment:any) => appointment.followed).length;
   const notFollowCount = appointmentsForDate.filter((appointment:any) => !appointment.followed).length;
- 
   
  
    
