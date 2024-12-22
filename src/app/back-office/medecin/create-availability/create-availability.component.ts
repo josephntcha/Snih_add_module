@@ -143,7 +143,8 @@ loadAppointments() {
          }
           this.apiService.postAvailability(this.appointmentform.value.day,this.doctorId,this.appointmentform.value.hospital,data).subscribe({
            next:response=>{
-          
+            console.log(response);
+            if (response.success == true) {
              Swal.fire({
                  title: 'Disponibilité définie',
                  text: 'Operation reussite',
@@ -154,6 +155,16 @@ loadAppointments() {
                });
 
                this.route.navigateByUrl("/back-office/medecin/availability");
+            }else{
+                   Swal.fire({
+                    title: 'Non Modifié',
+                    text: response.errorMessage,
+                    icon: 'success',
+                    timer: 3500,
+                    showConfirmButton: false,
+                    timerProgressBar: true
+                  });
+             }
            },
            error:error=>{
              console.log(error);

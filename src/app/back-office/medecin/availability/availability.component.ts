@@ -213,7 +213,7 @@ handleOk(): void {
     
      this.apiService.putAvailability(this.availability.id,this.availabiltyForm.value.day,this.doctorId,this.availabiltyForm.value.hospital,data).subscribe({
          next:response=>{
-
+            console.log(response);
              this.apiService.getDoctorAvailabilities(this.doctorId).subscribe(response=>{
                  this.availabilities=response.data;
              });
@@ -228,6 +228,15 @@ handleOk(): void {
                      timerProgressBar: true
                  });
 
+             }else{
+                Swal.fire({
+                  title: 'Non Modifié',
+                  text: response.errorMessage,
+                  icon: 'success',
+                  timer: 3500,
+                  showConfirmButton: false,
+                  timerProgressBar: true
+                });
              }
 
              this.isVisible = false;
