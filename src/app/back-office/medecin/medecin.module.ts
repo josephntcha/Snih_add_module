@@ -51,7 +51,10 @@ import { MedicalConstantsComponent } from './medical-constants/medical-constants
     MedicalRecordConstantsModalComponent,
     InfoMedicalRecordComponent,
     ViewMedicalRecordComponent,
-    // MedicalConstantsComponent
+    MedicalConstantsComponent
+  ],
+  exports: [
+    MedicalConstantsComponent
   ],
   imports: [
     RouterLink,

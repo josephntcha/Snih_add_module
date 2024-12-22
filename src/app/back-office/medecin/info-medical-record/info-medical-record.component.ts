@@ -4,9 +4,6 @@ import { ApiServiceService } from '../../../services/api-service.service';
 import Swal from 'sweetalert2';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Analysis, TypeConstant } from '../../../models/model';
-import { NzMessageService } from 'ng-zorro-antd/message';
-import { map } from 'rxjs';
-import { formatDate } from '@angular/common';
 import moment from 'moment';
 
 @Component({
@@ -31,8 +28,7 @@ export class InfoMedicalRecordComponent implements OnInit{
     private fb: FormBuilder, 
     private route: ActivatedRoute, 
     private router: Router, 
-    private apiService: ApiServiceService,
-    private message: NzMessageService
+    private apiService: ApiServiceService
   ) {}
 
   ngOnInit(): void {
@@ -58,9 +54,9 @@ export class InfoMedicalRecordComponent implements OnInit{
   getTypeConstants(): void{
     this.apiService.getTypeConstants().subscribe(data => {
       this.allTypeConstants = data;
-      if (this.constant.length === 0) {
-        this.addAnotherConstant();
-      }
+      // if (this.constant.length === 0) {
+      //   this.addAnotherConstant();
+      // }
     });
   }
 
@@ -71,9 +67,9 @@ export class InfoMedicalRecordComponent implements OnInit{
       this.analysis = [...this.allAnalyses];
       
       // Ajouter un champ initial si aucune analyse n'est sélectionnée
-      if (this.analysisResults.length === 0) {
-        this.addAnalysisResult();
-      }
+      // if (this.analysisResults.length === 0) {
+      //   this.addAnalysisResult();
+      // }
     });
   }
 
@@ -88,16 +84,16 @@ export class InfoMedicalRecordComponent implements OnInit{
 
   createAnalysisResult(): FormGroup {
     return this.fb.group({
-      analysis: [null, [this.addAnalysis ? Validators.required : null]],
-      result: ['', [this.addAnalysis ? Validators.required : null]]
+      analysis: [null, this.addAnalysis ? Validators.required : null],
+      result: ['', this.addAnalysis ? Validators.required : null]
     });
     
   }
 
   createConstant(): FormGroup {
     return this.fb.group({
-      typeConstant: [null, [this.addAdditionalConstants ? Validators.required : null]],
-      valeur: ['', [this.addAdditionalConstants ? Validators.required : null]]
+      typeConstant: [null, this.addAdditionalConstants ? Validators.required : null],
+      valeur: ['', this.addAdditionalConstants ? Validators.required : null]
     });
     
   }
@@ -196,7 +192,7 @@ export class InfoMedicalRecordComponent implements OnInit{
 
     this.apiService.createInforMedicalRecord(this.infoMedRecord, this.recordId).subscribe({
       next:response =>{
-        if (response.success == true) {
+        if (response && response.success == true) {
          this.showNotification('success', "Données ajoutées avec succès");
          this.router.navigateByUrl('/back-office/medecin/view-medical-record/' + this.medicalRec.id);
         }else{
@@ -233,9 +229,9 @@ export class InfoMedicalRecordComponent implements OnInit{
       next: (data) => {
         if(data != null){
           this.existingInfoMedRecord = data;
-          this.existingInfoMedRecord.date = moment(this.existingInfoMedRecord.date, 'DD-MM-YYYY HH:mm').toDate();
-          this.existingInfoMedRecord.date = new Date(Date.parse(this.existingInfoMedRecord.date));
-          this.existingInfoMedRecord.analyses_resultats[0].result
+          this.existingInfoMedRecord.date = moment(this.existingInfoMedRecord.date, 'DD-MM-YYYY').toDate();
+          // this.existingInfoMedRecord.date = new Date(Date.parse(this.existingInfoMedRecord.date));
+          // this.existingInfoMedRecord.analyses_resultats[0].result
         }
       },error: (err) => {
         console.log(err.message);

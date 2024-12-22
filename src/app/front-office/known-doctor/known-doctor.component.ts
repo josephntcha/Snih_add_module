@@ -25,6 +25,7 @@ export class KnownDoctorComponent implements OnInit{
   patientLastName = "";
   patientPhone = "97000000";
   patientEmail = "";
+  defaultMail = "defaultmail@gmail.com";
   selectedDoctor: any;
   selectedAvailability: any;
   hospitalId:any;
@@ -159,7 +160,7 @@ export class KnownDoctorComponent implements OnInit{
 
                 this.patientFirstName = this.Hospitalform.value.patientFirstName;
                 this.patientLastName = this.Hospitalform.value.patientLastName;
-                this.patientEmail = this.Hospitalform.value.patientEmail;
+                this.patientEmail = this.Hospitalform.value.patientEmail ? this.Hospitalform.value.patientEmail : this.defaultMail;
                 this.patientPhone = this.Hospitalform.value.patientPhone;  
     
                 // Initier le paiement

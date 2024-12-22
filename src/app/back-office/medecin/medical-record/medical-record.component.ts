@@ -271,7 +271,7 @@ export class MedicalRecordComponent implements OnInit{
 
 
   onSubmit(){
-    if(this.recordForm.valid){
+    if(this.newRecord && this.recordForm.valid){
       this.apiService.postMedicalRecord(this.recordForm.value.patientId, this.authService.userId).subscribe({
         next: (response) => {
           if (response.success == true) {

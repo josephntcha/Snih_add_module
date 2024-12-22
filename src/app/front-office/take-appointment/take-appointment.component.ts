@@ -34,6 +34,7 @@ export class TakeAppointmentComponent {
   patientLastName = "";
   patientPhone = "97000000";
   patientEmail = "";
+  defaultMail = "defaultmail@gmail.com";
   selectedAvailability: any;
   daysH: any = [];
   daysM: any = [];
@@ -210,7 +211,7 @@ export class TakeAppointmentComponent {
 
                   this.patientFirstName = this.Hospitalform.value.patientFirstName;
                   this.patientLastName = this.Hospitalform.value.patientLastName;
-                  this.patientEmail = this.Hospitalform.value.patientEmail;
+                  this.patientEmail = this.Hospitalform.value.patientEmail ? this.Hospitalform.value.patientEmail : this.defaultMail;
                   this.patientPhone = this.Hospitalform.value.patientPhone;                  
       
                   // Initier le paiement

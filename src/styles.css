@@ -1,1 +1,15 @@
 /* You can add global styles to this file, and also import other style files */
+
+.ant-form-item-required::after {
+  content: '*' !important;
+  display: inline-block;
+  margin-left: 4px !important;
+  color: #ff4d4f;
+  font-size: 14px;
+  font-family: SimSun, sans-serif;
+  line-height: 1;
+}
+
+.ant-form-item-required::before {
+  display: none !important;
+}

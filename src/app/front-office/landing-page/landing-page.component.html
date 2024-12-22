@@ -102,10 +102,33 @@
       </ul>
     </nz-dropdown-menu>
 
-    <button nz-button class="action-button rdv-btn" routerLink="/prendre-rdv">
+    <!-- <button nz-button class="action-button rdv-btn" routerLink="/prendre-rdv">
       <span nz-icon nzType="calendar"></span>
       Prendre RDV
+    </button> -->
+
+
+
+    <button nz-button 
+        class="action-button rdv-btn" 
+        nz-dropdown 
+        [nzDropdownMenu]="menu2"
+        [nzPlacement]="'bottomCenter'"
+        [nzOverlayClassName]="'custom-dropdown'">
+      <!-- <span nz-icon nzType="calendar"></span> -->
+      <span>Prendre Rendez-vous</span>
+      <span nz-icon nzType="down"></span>
     </button>
+    <nz-dropdown-menu #menu2="nzDropdownMenu">
+      <ul nz-menu nzSelectable>
+        <li nz-menu-item routerLink="/je_connais_mon_medecin">
+          Je connais mon médecin
+        </li>
+        <li nz-menu-item routerLink="/prendre-rdv">
+          Je ne connais pas mon médecin
+        </li>
+      </ul>
+    </nz-dropdown-menu>
   </div>
 </div>
    
