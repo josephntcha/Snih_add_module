@@ -111,41 +111,16 @@ loadAvailabilityAndAppiontment(){
   this.apiService.getAvailabilitiesByDoctorAndHospital(this.authService.userId,this.hospitalId).subscribe(response=>{
     this.availabilities=response;
 
-    const availability = this.availabilities.find((availability: any) => {
-
-      if(availability['day']['id']==7){
-          availability['day']['id']==0;
-          }
-        const jourIndex = availability['day']['id']; 
-        const dayIndex = moment(this.day).day(); 
+    const availability=this.availabilities.filter((availability:any)=>availability.id==this.availabilityId.id);
      
-        if (jourIndex !== dayIndex) {
-          return false;
-        }
-    
-        const periode = availability['period'];
-        const currentDate = moment();
-        const dayDate = moment(this.day);
-    
-        const startMonth = currentDate.clone().startOf('month');
-        const endMonth = currentDate.clone().add(periode - 1, 'months').endOf('month');
-    
-        return dayDate.isBetween(startMonth, endMonth, null, '[]');
-      
-    });
-    this.appointments =availability.appointments.filter((appointment: any) =>moment(appointment.newDate).isSame(this.day, 'day'));
+    this.appointments =availability[0].appointments.filter((appointment: any) =>moment(appointment.newDate).isSame(this.day, 'day'));
     
 })
 }
 
 loadAvailabilityAndAppiontment2(){
-
-  this.apiService.getAvailabilitiesByDoctorAndHospital(this.authService.userId,this.hospitalId).subscribe(response=>{
-    this.availabilities2=response;
-     
-  
-    this.appointments2 =this.availabilities2[this.availabilityId.id-1].appointments.filter((appointment: any) =>moment(appointment.newDate).isSame(this.day, 'day'))[0];
-})
+    
+    this.appointments2 =this.availabilityId.appointments.filter((appointment: any) =>moment(appointment.newDate).isSame(this.day, 'day'))[0];
 }
 
 
@@ -427,30 +402,8 @@ filterAppointment(status: string) {
   this.apiService.getAvailabilitiesByDoctorAndHospital(this.authService.userId,this.hospitalId).subscribe(response=>{
     this.availabilities=response;
 
-    const availability = this.availabilities.find((availability: any) => {
-
-      if(availability['day']['id']==7){
-          availability['day']['id']==0;
-          }
-        const jourIndex = availability['day']['id']; 
-        const dayIndex = moment(this.day).day(); 
-     
-        if (jourIndex !== dayIndex) {
-          return false;
-        }
-    
-        const periode = availability['period'];
-        const currentDate = moment();
-        const dayDate = moment(this.day);
-    
-        const startMonth = currentDate.clone().startOf('month');
-        const endMonth = currentDate.clone().add(periode - 1, 'months').endOf('month');
-    
-        return dayDate.isBetween(startMonth, endMonth, null, '[]');
-      
-    });
-    this.appointments =availability.appointments.filter((appointment: any) =>moment(appointment.newDate).isSame(this.day, 'day'));
-
+    const availability=this.availabilities.filter((availability:any)=>availability.id==this.availabilityId.id);
+    this.appointments =availability[0].appointments.filter((appointment: any) =>moment(appointment.newDate).isSame(this.day, 'day'));
     this.appointments = this.appointments.filter((appointment: any) => 
       appointment.status?.toLowerCase() === status.toLowerCase()
     );
