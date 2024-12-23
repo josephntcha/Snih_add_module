@@ -231,7 +231,7 @@ handleOk(): void {
                 Swal.fire({
                   title: 'Non Modifié',
                   text: response.errorMessage,
-                  icon: 'success',
+                  icon: 'warning',
                   timer: 3500,
                   showConfirmButton: false,
                   timerProgressBar: true
