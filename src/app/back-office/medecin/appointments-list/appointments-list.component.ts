@@ -20,7 +20,7 @@ export class AppointmentsListComponent {
 checkForm!:FormGroup;
 secretaryForm!:FormGroup;  
 appointments: any[] = [];
-appointmentId:any;
+availabilityId:any;
 newDate!:Date;
 formattedDate: string | null | undefined;
 formattedDateFollow: string | null | undefined;
@@ -30,6 +30,8 @@ hospitalId:any;
 specialityId:any;
 doctorId: any;
 availabilities: any;
+availabilities2: any;
+appointments2:any;
 days:any;
 originalAppointments: any[] = [];
 secretaries: any;
@@ -76,13 +78,15 @@ ngOnInit(): void {
   
 
   this.route.queryParams.subscribe(params => {
-    this.appointmentId  = JSON.parse(params['availability']);
+    this.availabilityId  = JSON.parse(params['availability']);
     this.day = params['date'];
     this.hospitalId = params['hospitalId'];
     this.specialityId = params['specialityId'];
   });
 
   this.filterAppointment('ASKED');
+  this.loadAvailabilityAndAppiontment2()
+
   //this.loadAppointmentsByAvailability(); 
     
 
@@ -132,8 +136,16 @@ loadAvailabilityAndAppiontment(){
     this.appointments =availability.appointments.filter((appointment: any) =>moment(appointment.newDate).isSame(this.day, 'day'));
     
 })
+}
 
+loadAvailabilityAndAppiontment2(){
 
+  this.apiService.getAvailabilitiesByDoctorAndHospital(this.authService.userId,this.hospitalId).subscribe(response=>{
+    this.availabilities2=response;
+     
+  
+    this.appointments2 =this.availabilities2[this.availabilityId.id-1].appointments.filter((appointment: any) =>moment(appointment.newDate).isSame(this.day, 'day'))[0];
+})
 }
 
 
