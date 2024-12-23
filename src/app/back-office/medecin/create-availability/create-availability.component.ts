@@ -143,7 +143,6 @@ loadAppointments() {
          }
           this.apiService.postAvailability(this.appointmentform.value.day,this.doctorId,this.appointmentform.value.hospital,data).subscribe({
            next:response=>{
-            console.log(response);
             if (response.success == true) {
              Swal.fire({
                  title: 'Disponibilité définie',

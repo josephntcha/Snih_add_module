@@ -1,7 +1,7 @@
 <div class="container" *ngIf="canViewListAppointment">
     <div nz-row>
   
-      <div nz-col [nzSpan]="12" class="h3">Liste des RDV pour le {{ appointments[0]?.date | date:'fullDate' }}</div>
+      <div nz-col [nzSpan]="12" class="h3">Liste des RDV pour le {{ appointments[0]?.newDate | date:'fullDate':'':'fr'}}</div>
       <button *ngIf="canGiveRightToSecretaire" nz-button nzType="primary" (click)="showModal()" class="availability">Donner des autorisations au service Sécretariat</button>
  
   
@@ -79,7 +79,7 @@
           <td>{{ appointment.patientFirstName }}</td>
           <td>{{ appointment.patientEmail }}</td>
           <td>{{ appointment.patientPhone }}</td>
-          <td>{{ appointment.newDate | date: 'd MMMM y' }}</td>
+          <td>{{ appointment.newDate | date: 'd MMMM y':'':'fr'}}</td>
           <td>
             <ng-container *ngIf="appointment.status === 'ASKED'">En attente</ng-container>
             <ng-container *ngIf="appointment.status === 'POSTPONE'">Reporté</ng-container>

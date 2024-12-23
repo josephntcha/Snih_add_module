@@ -16,8 +16,10 @@ import { BackOfficeModule } from './back-office/back-office.module';
 import { MedecinModule } from './back-office/medecin/medecin.module';
 import { FrontOfficeModule } from './front-office/front-office.module';
 import { authInterceptor } from './auth/auth.interceptor';
+import localeFr from '@angular/common/locales/fr';
 
-registerLocaleData(en);
+// registerLocaleData(en);
+registerLocaleData(localeFr, 'fr');
 
 @NgModule({
   declarations: [

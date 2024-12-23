@@ -24,8 +24,13 @@
           <td>{{ appointment.patientLastName }}</td>
           <td>{{ appointment.patientFirstName }}</td>
           <td>{{ appointment.patientEmail }}</td>
-          <td>{{ appointment.date | date:'short' }}</td>
-          <td>{{ appointment.status }}</td>
+          <td>{{ appointment.date | date:'d MMMM y':'':'fr'}}</td>
+          <td>
+            <ng-container *ngIf="appointment.status === 'ASKED'">En attente</ng-container>
+            <ng-container *ngIf="appointment.status === 'POSTPONE'">Reporté</ng-container>
+            <ng-container *ngIf="appointment.status === 'CONFIRMED'">Confirmé</ng-container>
+            <ng-container *ngIf="appointment.status === 'CANCEL'">Annulé</ng-container>
+          </td>
           <td>
             <button *ngIf="rightConfirm" nz-button nzType="primary" nzSize="small" (click)="showConfirmationDialog(appointment)">Confirmer</button>
             <button *ngIf="rightPostpone" nz-button nzType="default" nzSize="small" class="reporter" (click)="showpostponeDialog(appointment)">Reporter</button>

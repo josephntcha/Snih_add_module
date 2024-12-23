@@ -289,7 +289,6 @@ export class TakeAppointmentComponent {
       },
       error: error => {
         this.ngOnInit()
-        // console.error('Erreur lors de l\'enregistrement du rendez-vous:', error);
         Swal.fire({
           title: "Erreur",
           text: 'Une erreur est survenue lors de l\'enregistrement du rendez-vous',

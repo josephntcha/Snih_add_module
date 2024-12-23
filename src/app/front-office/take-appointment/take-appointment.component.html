@@ -75,7 +75,7 @@
                   <nz-select formControlName="date" nzPlaceHolder="Sélectionner une date">
                     <nz-option *ngFor="let day of days" 
                                [nzValue]="day" 
-                               [nzLabel]="(day | date: 'd MMMM y')">
+                               [nzLabel]="(day | date: 'd MMMM y':'':'fr')">
                     </nz-option>
                   </nz-select>
                 </nz-form-control>

@@ -5,7 +5,7 @@
         <i nz-icon nzType="left"></i>
       </button>
 
-      <span class="month-title">{{ currentMonth | date: 'MMMM y' }}</span>
+      <span class="month-title">{{ currentMonth | date: 'MMMM y':'':'fr'}}</span>
 
       <form [formGroup]="Hospitalform" class="">
         <div nz-row class="row">
@@ -50,7 +50,7 @@
   
             <span *ngIf="hasAvailability(day) && getAppointmentCount(day).notFollow > 0" 
                   class="appointments-count not-follow" 
-                  style="color: rgb(17, 27, 0); font-weight: bold;">
+                  style="color: rgb(63, 13, 246); font-weight: bold;">
               {{ getAppointmentCount(day).notFollow }} RDV
             </span>
             <br>

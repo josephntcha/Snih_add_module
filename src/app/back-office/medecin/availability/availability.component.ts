@@ -213,7 +213,6 @@ handleOk(): void {
     
      this.apiService.putAvailability(this.availability.id,this.availabiltyForm.value.day,this.doctorId,this.availabiltyForm.value.hospital,data).subscribe({
          next:response=>{
-            console.log(response);
              this.apiService.getDoctorAvailabilities(this.doctorId).subscribe(response=>{
                  this.availabilities=response.data;
              });

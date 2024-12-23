@@ -37,7 +37,6 @@ export class KnownDoctorComponent implements OnInit{
 
   checkAvailabilityAndRemoveDays() {
     if (!this.availabilities || !this.days) {
-        console.log("pas de données");
         
       }
      this.availabilities.forEach((availability:any) => {
@@ -202,7 +201,6 @@ export class KnownDoctorComponent implements OnInit{
   successHandler = (transactionData: any) => {
 
     if (!this.availabilityId || !this.hospitalId || !this.appointmentData) {
-      console.error('Données manquantes pour le rendez-vous');
       return;
     }
 

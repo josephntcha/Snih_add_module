@@ -268,7 +268,7 @@ showpostponeDialog(appointment:any) {
           if (selectedIndex) {
              this.apiService.getDaysForAvailability(selectedAvailability.day.id,selectedAvailability.period).subscribe(response => {
                this.days = response.data;
-               daysSelect.innerHTML = this.days.map((day: any) => `<option value="${day}">${this.datePipe.transform(day, 'd MMMM y', 'fr-FR')}</option>`).join('');
+               daysSelect.innerHTML = this.days.map((day: any) => `<option value="${day}">${this.datePipe.transform(day, 'd MMMM y', '', 'fr')}</option>`).join('');
                daysSelect.disabled = false;
                daysSelect.style.backgroundColor = '#fff';
              });
@@ -367,7 +367,7 @@ deleteAppointment(id: any) {
             this.apiService.getDaysForAvailability(selectedAvailability.day.id,selectedAvailability.period).subscribe(response => {
               this.days = response.data;
   
-              daysSelect.innerHTML = this.days.map((day: any) => `<option value="${day}">${this.datePipe.transform(day, 'd MMMM y', 'fr-FR')}</option>`).join('');
+              daysSelect.innerHTML = this.days.map((day: any) => `<option value="${day}">${this.datePipe.transform(day, 'd MMMM y', '', 'fr')}</option>`).join('');
               daysSelect.disabled = false;
               daysSelect.style.backgroundColor = '#fff';
             });
@@ -397,7 +397,6 @@ deleteAppointment(id: any) {
       }
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log(result.value.selectedAvailability.id)
         this.formattedDateFollow = this.datePipe.transform(result.value.selectedDay, 'yyyy/MM/dd');
          this.apiService.followAppointment(appointment.id,this.formattedDateFollow,result.value.selectedAvailability.id,this.doctorId).subscribe(response=>{
           this.filterAppointment('CONFIRMED');

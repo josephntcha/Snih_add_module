@@ -67,7 +67,6 @@ loadAppointments() {
 
     this.apiService.getAvailabilitiesByDoctorAndHospital(this.DoctorId,this.hospitals[0].id).subscribe(response=>{
       this.availabilities=response;
-      console.log(this.availabilities)
     });
     
    });
