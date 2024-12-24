@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { log } from 'ng-zorro-antd/core/logger';
 import { ApiServiceService } from '../../services/api-service.service';
 import { addKkiapayListener, openKkiapayWidget, removeKkiapayListener } from 'kkiapay';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-known-doctor',
@@ -25,7 +26,7 @@ export class KnownDoctorComponent implements OnInit{
   patientLastName = "";
   patientPhone = "97000000";
   patientEmail = "";
-  defaultMail = "defaultmail@gmail.com";
+  defaultMail = environment.defaultMailForAppointments;
   selectedDoctor: any;
   selectedAvailability: any;
   hospitalId:any;

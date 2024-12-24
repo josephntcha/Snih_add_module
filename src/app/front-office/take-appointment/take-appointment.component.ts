@@ -10,6 +10,7 @@ import {
   addKkiapayListener,
   removeKkiapayListener,
 } from "kkiapay";
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-take-appointment',
@@ -34,7 +35,7 @@ export class TakeAppointmentComponent {
   patientLastName = "";
   patientPhone = "97000000";
   patientEmail = "";
-  defaultMail = "defaultmail@gmail.com";
+  defaultMail = environment.defaultMailForAppointments;
   selectedAvailability: any;
   daysH: any = [];
   daysM: any = [];

@@ -44,13 +44,13 @@
 
 
 
- <nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout d'une constante" (nzOnCancel)="handleCancel()">
+ <nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout d'un type d'analyse" (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
         <form [formGroup]="analysisForm" (ngSubmit)="onSubmit()">
             <nz-form-item>
-                <nz-form-label nzSpan="8" nzRequired >Nom de la constante</nz-form-label>
+                <nz-form-label nzSpan="8" nzRequired >Nom de l'analyse</nz-form-label>
                 <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="name" placeholder="Entrez le nom de la constante">
+                    <input nz-input formControlName="name" placeholder="Entrez le nom de l'analyse">
                 </nz-form-control>
             </nz-form-item>
             <nz-form-item>
