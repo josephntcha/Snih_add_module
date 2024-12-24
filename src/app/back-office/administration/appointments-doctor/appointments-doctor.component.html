@@ -1,6 +1,6 @@
 <div *ngFor="let availability of availabilities" class="container-fluid mt-3 p-5 bg-light">
     <div class="row">
-      <div class="col-6 h3">Liste des RDV pour le {{ availability.appointments[0]?.date | date:'fullDate' }}</div>
+      <div class="col-6 h3">Liste des RDV pour le {{ availability.appointments[0]?.date | date:'fullDate':'':'fr' }}</div>
     </div>
   
     <br>
@@ -32,9 +32,9 @@
             <ng-container *ngIf="appointment.status === 'CANCEL'">Annulé</ng-container>
           </td>
           <td>
-            <button *ngIf="rightConfirm" nz-button nzType="primary" nzSize="small" (click)="showConfirmationDialog(appointment)">Confirmer</button>
-            <button *ngIf="rightPostpone" nz-button nzType="default" nzSize="small" class="reporter" (click)="showpostponeDialog(appointment)">Reporter</button>
-            <button *ngIf="rightCancel" nz-button nzType="default" nzSize="small" class="annuler" (click)="showdeleteDialog(appointment)">Annuler</button>
+            <button *ngIf="rightConfirm && (appointment.status === 'ASKED' || appointment.status === 'POSTPONE')" nz-button nzType="primary" nzSize="small" (click)="showConfirmationDialog(appointment)">Confirmer</button>
+            <button *ngIf="rightPostpone && (appointment.status === 'ASKED' || appointment.status === 'POSTPONE')" nz-button nzType="default" nzSize="small" class="reporter" (click)="showpostponeDialog(appointment)">Reporter</button>
+            <button *ngIf="rightCancel && (appointment.status === 'ASKED' || appointment.status === 'POSTPONE')" nz-button nzType="default" nzSize="small" class="annuler" (click)="showdeleteDialog(appointment)">Annuler</button>
           </td>
         </tr>
       </tbody>
