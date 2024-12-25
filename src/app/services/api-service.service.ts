@@ -102,7 +102,14 @@ export class ApiServiceService {
   getDataDoctors():Observable<any>{
     return this.http.get<any>(`${this.apiUrl}/api/users/doctors`);
   }
+
+  getPublicDays():Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/api/publicDay`);
+  }
  
+  postPublicDays(hospitalId:any,date:any):Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/api/${hospitalId}/publicDay`,date);
+  }
 
   getSpecialitiesByHospital(id:number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/api/hospitals/${id}/specialities`);
@@ -132,9 +139,9 @@ export class ApiServiceService {
     return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}/${hospitalId}/availabilities`);
   }
 
-  getPriceByHospitalAndSpeciality(hospitalId:number, specialityId:number): Observable<any> {
+  getPriceByHospitalAndSpeciality(hospitalId:number, specialityId:number,date:any): Observable<any> {
 
-    return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}/${hospitalId}/price`);
+    return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}/${hospitalId}/price?date=${date}`);
   }
 
   getDoctorAvailabilities(doctorId:number):Observable<any>{

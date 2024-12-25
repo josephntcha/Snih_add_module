@@ -1,0 +1,62 @@
+<div class="table-operations">
+    <button  (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Ajouter un jour férié</button>
+    <button  nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
+</div>
+<div *ngIf="canViewList" class="selected-items">
+    {{ setOfCheckedId.size }} éléments sélectionnés
+    <a (click)="refreshCheckedStatus()">Rafraîchir</a>
+</div>
+<nz-table  *ngIf="canViewList"
+    #basicTable 
+    nzShowSizeChanger
+    [nzData]="listOfData"
+    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+>
+    <thead>
+        <tr>
+            <th 
+                [nzChecked]="checked" 
+                [nzIndeterminate]="indeterminate" 
+                (nzCheckedChange)="onAllChecked($event)"
+            ></th>
+            <th>#ID</th>
+            <th>Date</th>
+            <!-- <th *ngIf="canEditRoom || canDeleteRoom">Actions</th> -->
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let data of basicTable.data">
+            <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+            <td>{{ data.id }}</td>
+            <td>{{ data.date }}</td>
+            <!-- <td>
+                <a  (click)="editPublicDay(data)">Editer</a>
+                <nz-divider nzType="vertical"></nz-divider>
+                <a  (click)="deleteRoom(data.id)">Supprimer</a>
+            </td> -->
+        </tr>
+    </tbody>
+</nz-table>
+
+
+<nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout un jour Férié" (nzOnCancel)="handleCancel()">
+    <ng-container *nzModalContent>
+        <form [formGroup]="publicDayForm" (ngSubmit)="onSubmit()">
+            <nz-form-item>
+                <nz-form-label nzSpan="6" nzRequired>Jour</nz-form-label>
+                <nz-form-control nzSpan="18">
+                  <nz-select formControlName="date" nzPlaceHolder="Sélectionner un jour férié">
+                    <nz-option *ngFor="let day of publicDays" [nzLabel]="day.date" [nzValue]="day"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+    
+            <nz-form-item>
+                <nz-form-control nzOffset="7" nzSpan="12">
+                    <button nz-button nzType="primary" [disabled]="publicDayForm.invalid">Soumettre</button>
+                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
+                </nz-form-control>
+            </nz-form-item>
+        </form>
+    </ng-container>
+</nz-modal>

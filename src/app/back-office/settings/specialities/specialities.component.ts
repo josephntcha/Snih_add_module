@@ -18,6 +18,8 @@ export class SpecialitiesComponent implements OnInit{
   canCreateSpeciality = false;
   canEditSpeciality = false;
   canDeleteSpeciality = false;
+  canAddSpecialityToAnotherHospital=false;
+  canAddSpecialityToOwnHospital=false;
 
   checked = false;
   indeterminate = false;
@@ -37,6 +39,7 @@ export class SpecialitiesComponent implements OnInit{
   buttonText = 'Ajouter une spécialité à un hôpital';
 
 
+
   constructor(
     private apiService: ApiServiceService, 
     public autService:AuthService,
@@ -54,6 +57,7 @@ export class SpecialitiesComponent implements OnInit{
     this.filterForm = this.fb.group({
       filterInput: [null, Validators.required]
     });
+
   }
 
 
@@ -84,6 +88,16 @@ export class SpecialitiesComponent implements OnInit{
           }else{
             this.canDeleteSpeciality = false;
           }
+          if(permissionsCodeNames.includes("ADD_SPECIALITY_TO_ANOTHER_HOSPITAL")){
+            this.canAddSpecialityToAnotherHospital = true;
+          }else{
+            this.canAddSpecialityToAnotherHospital = false;
+          }
+          if(permissionsCodeNames.includes("ADD_SPECIALITY_TO_OWN_HOSPITAL")){
+            this.canAddSpecialityToOwnHospital = true;
+          }else{
+            this.canAddSpecialityToOwnHospital = false;
+          }
         }
       },error: (err) => {
         console.log(err.message);        
@@ -103,6 +117,8 @@ export class SpecialitiesComponent implements OnInit{
         console.log(err.message);
       }
     });
+    
+
   }
 
   getAllSpecialities(){
@@ -145,9 +161,11 @@ export class SpecialitiesComponent implements OnInit{
     this.getHospitals();
     if(this.isToAddSpecialityToHospital){
       this.addSpecialityform = this.fb.group({
-        hospital: ['', Validators.required],
+        hospital: [''],
         speciality: ['', Validators.required],
         price: ['', Validators.required], 
+        radioValue: ['non'],
+        priceHoliday: [null],
       });
       this.buttonText = 'Créer spécialité';
     }else{
@@ -258,40 +276,54 @@ export class SpecialitiesComponent implements OnInit{
 
   addSpeciality(){
     if (this.addSpecialityform.valid) {
-      this.apiService.postAddSpecialityHospital(this.addSpecialityform.value.hospital, this.addSpecialityform.value.speciality, this.addSpecialityform.value.price).subscribe({
-        next: response => {          
-          if(response.success){
-            Swal.fire({
-              title: 'Spécialité ajouté à l\'hôpital',
-              text: '',
-              icon: 'success',
-              timer: 3500,
-              showConfirmButton: false,
-              timerProgressBar: true 
-            });
-            this.addSpecialityform.reset();
-            this.isVisible = false;
-          }else{
-            Swal.fire({
-              title: response.errorMessage,
-              text: '',
-              icon: 'error',
-              timer: 3500,
-              showConfirmButton: false,
-              timerProgressBar: true 
-            });
-          }
-        },
-        error:error=>{
-          console.log(error);
-        }
-       })
+      if(this.addSpecialityform.get('hospital')?.value == ''){
+        this.addSpecialityform.get('hospital')?.setValue(this.hospitalId);
+      }
+      
+       this.apiService.postAddSpecialityHospital(this.addSpecialityform.value.hospital, this.addSpecialityform.value.speciality, this.addSpecialityform.value.price).subscribe({
+         next: response => {          
+           if(response.success){
+             Swal.fire({
+               title: 'Spécialité ajoutée à l\'hôpital',
+               text: '',
+               icon: 'success',
+               timer: 3500,
+               showConfirmButton: false,
+               timerProgressBar: true 
+             });
+             this.addSpecialityform.reset();
+             this.isVisible = false;
+           }else{
+             Swal.fire({
+               title: response.errorMessage,
+               text: '',
+               icon: 'error',
+               timer: 3500,
+               showConfirmButton: false,
+               timerProgressBar: true 
+             });
+           }
+         },
+         error:error=>{
+           console.log(error);
+         }
+        })
    }
   }
 
   addSpecialityToHospital(){
     this.isToAddSpecialityToHospital = !this.isToAddSpecialityToHospital;
     this.initializeForm();
+        
+    this.addSpecialityform.get('radioValue')?.valueChanges.subscribe((value) => {
+      if (value === 'non') {
+        this.addSpecialityform.get('priceHoliday')?.setValue(null);
+      } 
+      if (!this.canAddSpecialityToAnotherHospital) {
+        this.addSpecialityform.get('hospital')?.setValue(this.hospitalId);
+        
+      }
+    });
   }
 
   resetForm(event: Event){

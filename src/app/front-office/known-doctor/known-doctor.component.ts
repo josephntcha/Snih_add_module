@@ -32,6 +32,7 @@ export class KnownDoctorComponent implements OnInit{
   hospitalId:any;
   availabilityId: any;
   appointmentData: any;
+  hospitalIdSelected:any;
 
   constructor(private apiService:ApiServiceService, private fromBuilder:FormBuilder, private route:Router){}
 
@@ -64,9 +65,9 @@ export class KnownDoctorComponent implements OnInit{
   }
   
 
-  ngOnInit(): void {
+        ngOnInit(): void {
 
-    this.Hospitalform=this.fromBuilder.group(
+         this.Hospitalform=this.fromBuilder.group(
            {
              patientLastName:['', [Validators.required, Validators.minLength(3)]],
              patientFirstName: ['', [Validators.required, Validators.minLength(3)]],
@@ -78,7 +79,7 @@ export class KnownDoctorComponent implements OnInit{
              availability: ['', Validators.required],
              date: ['', Validators.required],
              price: ['']
-           });
+          });
  
           this.apiService.getDataDoctors().subscribe(response=>{
             this.dataDoctors=response;
@@ -94,40 +95,47 @@ export class KnownDoctorComponent implements OnInit{
           }); 
  
            this.Hospitalform.get('hospital')?.valueChanges.subscribe(selectedHospitalId=>{
- 
-             this.apiService.getPriceByHospitalAndSpeciality(selectedHospitalId,this.specialityId).subscribe(response=>{
-               this.priceBySpeciality=response.data;
-            
-              })
+            this.hospitalIdSelected=selectedHospitalId;
+             
  
             this.apiService.getAvailabilitiesByDoctorAndHospital(this.doctorId,selectedHospitalId).subscribe(response=>{
              this.availabilities=response; 
             });
  
          });
+
+
  
  
           this.Hospitalform.get('availability')?.valueChanges.subscribe(selectedAvailabilityId=>{
             
-           if (selectedAvailabilityId.frequency.name === "HEBDOMADAIRE") {
-             this.apiService.getDaysForAvailability(selectedAvailabilityId.day.id,selectedAvailabilityId.period).subscribe(response=>{
-               this.days=response.data;
-               this.checkAvailabilityAndRemoveDays();
-                })
-           }
-           if (selectedAvailabilityId.frequency.name === "MENSUELLE") {
-             this.apiService.getDaysForAvailability2(selectedAvailabilityId.day.id,selectedAvailabilityId.orderOfDay,selectedAvailabilityId.period).subscribe(response=>{
-               this.days=response.data;
-               this.checkAvailabilityAndRemoveDays();
-                })
-             
-           }
+            if (selectedAvailabilityId.frequency.name === "HEBDOMADAIRE") {
+              this.apiService.getDaysForAvailability(selectedAvailabilityId.day.id,selectedAvailabilityId.period).subscribe(response=>{
+                this.days=response.data;
+                this.checkAvailabilityAndRemoveDays();
+                  })
+            }
+            if (selectedAvailabilityId.frequency.name === "MENSUELLE") {
+              this.apiService.getDaysForAvailability2(selectedAvailabilityId.day.id,selectedAvailabilityId.orderOfDay,selectedAvailabilityId.period).subscribe(response=>{
+                this.days=response.data;
+                this.checkAvailabilityAndRemoveDays();
+                  })
+              
+            }
          
-         });
+          });
 
-    addKkiapayListener('success', (response: any) => this.successHandler(response));
+          this.Hospitalform.get('date')?.valueChanges.subscribe(selectedDate=>{
+            
+            this.apiService.getPriceByHospitalAndSpeciality(this.hospitalIdSelected,this.specialityId,selectedDate).subscribe(response=>{
+              this.priceBySpeciality=response.data;
+           
+             })
+          })
+
+          addKkiapayListener('success', (response: any) => this.successHandler(response));
    
-  }
+        }
  
 
   ngOnDestroy(){
