@@ -43,6 +43,7 @@
             <!-- <th>Email</th> -->
             <th>Date</th>
             <th>Hôpital</th>
+            <th>Médecin</th>
             <th>Bâtiment</th>
             <th>Salle</th>
             <th>Statut</th>
@@ -56,6 +57,7 @@
             <!-- <td>{{ appointment.patientEmail }}</td> -->
             <td>{{ appointment.date | date: 'd MMMM y':'':'fr' }}</td>
             <td>{{ appointment.hospitalDTO.name }}</td>
+            <td>{{ appointment.doctor.firstName + ' ' + appointment.doctor.lastName}}</td>
             <td>{{ appointment.building }}</td>
             <td>{{ appointment.room }}</td>
             <td>

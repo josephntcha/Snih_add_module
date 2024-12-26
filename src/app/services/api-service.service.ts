@@ -2,12 +2,13 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, tap, throwError } from 'rxjs';
 import { Analysis, Building, InfoMedicalRecord, Module, Permission, TypeConstant } from '../models/model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiServiceService {
-  private apiUrl = 'http://127.0.0.1:8080';
+  private apiUrl = environment.backendUrl;
 
   private modulesSubject = new BehaviorSubject<Module[]>([]);
   public modules$ = this.modulesSubject.asObservable();
@@ -20,145 +21,152 @@ export class ApiServiceService {
     const options = {
     headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
     };
-    return this.http.post<any>(`${this.apiUrl}/api/auth/login`,params,options);
+    return this.http.post<any>(`${this.apiUrl}/auth/login`,params,options);
   }
 
   postVerifyIdentity(numero:any,code:any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/users/verify-identity?phone=${numero}&code=${code}`,{ responseType: 'text' as 'json' });
+    return this.http.post<any>(`${this.apiUrl}/users/verify-identity?phone=${numero}&code=${code}`,{ responseType: 'text' as 'json' });
   }
  
   getPatinetAppointments(patientId:any):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/users/patients/${patientId}/appointments`);
+    return this.http.get<any>(`${this.apiUrl}/users/patients/${patientId}/appointments`);
   }
 
   getDataHospitals():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/hospitals`);
+    return this.http.get<any>(`${this.apiUrl}/hospitals`);
   }
 
   getConstantes():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/typeconstants`);
+    return this.http.get<any>(`${this.apiUrl}/typeconstants`);
   }
 
   getAnalysis():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/analysis`);
+    return this.http.get<any>(`${this.apiUrl}/analysis`);
   }
 
   postAnalysis(data:any):Observable<any>{
-    return this.http.post<any>(`${this.apiUrl}/api/analysis`,data);
+    return this.http.post<any>(`${this.apiUrl}/analysis`,data);
   }
 
   updateAnalysis(id:number,data:any):Observable<any>{
-    return this.http.put<any>(`${this.apiUrl}/api/analysis/${id}`,data);
+    return this.http.put<any>(`${this.apiUrl}/analysis/${id}`,data);
   }
 
  postConstantes(data:any):Observable<any>{
-    return this.http.post<any>(`${this.apiUrl}/api/typeconstants`,data);
+    return this.http.post<any>(`${this.apiUrl}/typeconstants`,data);
   }
 
   updateConstantes(id:number,data:any):Observable<any>{
-    return this.http.put<any>(`${this.apiUrl}/api/typeconstants/${id}`,data);
+    return this.http.put<any>(`${this.apiUrl}/typeconstants/${id}`,data);
   }
 
   getDataSpecialities():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/specialities`);
+    return this.http.get<any>(`${this.apiUrl}/specialities`);
   }
 
   getRights():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/roles`);
+    return this.http.get<any>(`${this.apiUrl}/roles`);
   }
 
    getDataFrequencies():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/frequencies`);
+    return this.http.get<any>(`${this.apiUrl}/frequencies`);
   }
 
    getDataHospitalsByDoctor(id:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/users/doctors/${id}/hospitals`);
+    return this.http.get<any>(`${this.apiUrl}/users/doctors/${id}/hospitals`);
   }
 
   getDataMedicalRecordPatient(patientId:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/medical-records/${patientId}`);
+    return this.http.get<any>(`${this.apiUrl}/medical-records/${patientId}`);
   }
 
  getAvailabilitiesByDoctorAndHospital(doctorId:number,hospitalid:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/hospitals/${doctorId}/${hospitalid}/availabilities`);
+    return this.http.get<any>(`${this.apiUrl}/hospitals/${doctorId}/${hospitalid}/availabilities`);
   }
   
   getAutorities():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/rights`);
+    return this.http.get<any>(`${this.apiUrl}/rights`);
   }
 
   getSecretary(hospitalId:number,specialityId:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/users/hospitals/${hospitalId}/specialities/${specialityId}/secretaries`);
+    return this.http.get<any>(`${this.apiUrl}/users/hospitals/${hospitalId}/specialities/${specialityId}/secretaries`);
   }
 
    getDaysForAvailability(dayId:any,numOfMonth:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/days/${dayId}/month/${numOfMonth}`);
+    return this.http.get<any>(`${this.apiUrl}/days/${dayId}/month/${numOfMonth}`);
   }
 
   getDaysForAvailability2(dayId:any,orderOfDay:any,numOfMonth:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/days/${dayId}/${orderOfDay}/period/${numOfMonth}`);
+    return this.http.get<any>(`${this.apiUrl}/days/${dayId}/${orderOfDay}/period/${numOfMonth}`);
   }
 
   getDataDoctors():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/users/doctors`);
+    return this.http.get<any>(`${this.apiUrl}/users/doctors`);
+  }
+
+  getPublicDays():Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/publicDay`);
   }
  
+  postPublicDays(hospitalId:any,date:any):Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/${hospitalId}/publicDay`,date);
+  }
 
   getSpecialitiesByHospital(id:number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/hospitals/${id}/specialities`);
+    return this.http.get<any>(`${this.apiUrl}/hospitals/${id}/specialities`);
   }
 
   getRooms(hospitalId:any): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/rooms/${hospitalId}`);
+    return this.http.get<any>(`${this.apiUrl}/rooms/${hospitalId}`);
   }
 
   getBuildings(hospitalId:number): Observable<Building[]> {
-    return this.http.get<Building[]>(`${this.apiUrl}/api/buildings/${hospitalId}`);
+    return this.http.get<Building[]>(`${this.apiUrl}/buildings/${hospitalId}`);
   }
 
   postBuilding(hospitalId:number,building:any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/buildings/${hospitalId}`,building);
+    return this.http.post<any>(`${this.apiUrl}/buildings/${hospitalId}`,building);
   }
 
   postRoom(buildingId:any,room:any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/rooms/${buildingId}`,room);
+    return this.http.post<any>(`${this.apiUrl}/rooms/${buildingId}`,room);
   }
 
   putAvailability(availabilityId:number,dayId:any,doctorId:any,hospitalId:any,data:any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/api/update/availability/${availabilityId}/${dayId}/${doctorId}/${hospitalId}`,data);
+    return this.http.put<any>(`${this.apiUrl}/update/availability/${availabilityId}/${dayId}/${doctorId}/${hospitalId}`,data);
   }
 
   getAvailabilitiesByHospitalAndSpeciality(hospitalId:number, specialityId:number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}/${hospitalId}/availabilities`);
+    return this.http.get<any>(`${this.apiUrl}/specialities/${specialityId}/${hospitalId}/availabilities`);
   }
 
-  getPriceByHospitalAndSpeciality(hospitalId:number, specialityId:number): Observable<any> {s
+  getPriceByHospitalAndSpeciality(hospitalId:number, specialityId:number,date:any): Observable<any> {
 
-    return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}/${hospitalId}/price`);
+    return this.http.get<any>(`${this.apiUrl}/specialities/${specialityId}/${hospitalId}/price?date=${date}`);
   }
 
   getDoctorAvailabilities(doctorId:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/availabilities/${doctorId}`);
+    return this.http.get<any>(`${this.apiUrl}/availabilities/${doctorId}`);
   }
 
   getAvailabilitiesById(availabilityId:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/availabilities/${availabilityId}`);
+    return this.http.get<any>(`${this.apiUrl}/availabilities/${availabilityId}`);
   }
 
   getDoctorHospitalSpeciality(hospitalId:number,specialityId:number):Observable<any>{
 
-    return this.http.get<any>(`${this.apiUrl}/api/hospitals/${hospitalId}/specialities/${specialityId}/doctors`);
+    return this.http.get<any>(`${this.apiUrl}/hospitals/${hospitalId}/specialities/${specialityId}/doctors`);
   }
 
   getAppointmentsDoctor(hospitalId:number,specialityId:number):Observable<any>{
 
-    return this.http.get<any>(`${this.apiUrl}/api/hospitals/${hospitalId}/speciality/${specialityId}/doctors`);
+    return this.http.get<any>(`${this.apiUrl}/hospitals/${hospitalId}/speciality/${specialityId}/doctors`);
   }
   
   
 
   getDays():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/days`);
+    return this.http.get<any>(`${this.apiUrl}/days`);
   }
 
   /**
@@ -166,7 +174,7 @@ export class ApiServiceService {
    * @returns 
    */
   getUsers():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/users`); 
+    return this.http.get<any>(`${this.apiUrl}/users`); 
   }
 
   /**
@@ -175,70 +183,71 @@ export class ApiServiceService {
    * @returns 
    */
   getStaff(userId: number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/users/${userId}/staff`); 
+    return this.http.get<any>(`${this.apiUrl}/users/${userId}/staff`); 
   }
   
   getUserById(id:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/users/${id}`);
+    return this.http.get<any>(`${this.apiUrl}/users/${id}`);
   }
 
   getDoctorGiveRight(rightId:number,userId:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/users/doctors/${rightId}/${userId}`);
+    return this.http.get<any>(`${this.apiUrl}/users/doctors/${rightId}/${userId}`);
   }
 
   
   getMaxNumberForAvaillability(availabilityId:number,hospitalId:number,specialityId:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/availabilities/${availabilityId}/hospitals/${hospitalId}/specialities/${specialityId}`);
+    return this.http.get<any>(`${this.apiUrl}/availabilities/${availabilityId}/hospitals/${hospitalId}/specialities/${specialityId}`);
   }
   getDataRoles():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/roles`);
+    return this.http.get<any>(`${this.apiUrl}/roles`);
   }
   
 
   getDoctorsByHospital(hospitalId:any):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/hospitals/${hospitalId}/doctors`);
+    return this.http.get<any>(`${this.apiUrl}/hospitals/${hospitalId}/doctors`);
   }
 
   postAppointment(availabilityId:number,hospitalId:number,data:any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/appointments/${availabilityId}/${hospitalId}`,data);
+    return this.http.post<any>(`${this.apiUrl}/appointments/${availabilityId}/${hospitalId}`,data);
   }
 
   postDoctor(data:any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/users/save-doctor`,data);
+    return this.http.post<any>(`${this.apiUrl}/users/save-doctor`,data);
   }
 
   postAdmin(hospitalId:number,data:any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/users/save-staff/${hospitalId}`,data);
+    return this.http.post<any>(`${this.apiUrl}/users/save-staff/${hospitalId}`,data);
   }
 
   
-  postAddSpecialityHospital(hospitalSeciality: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/hospitals/specialities/add`,hospitalSeciality);
+  postAddSpecialityHospital(hospitalId:number,specialityId:number,data:any): Observable<any> {
+    let params = new HttpParams().set("price", data);
+    return this.http.post<any>(`${this.apiUrl}/hospitals/${hospitalId}/${specialityId}`,params);
   }
 
     
   postAddDoctorHospital(doctorId:any,hospitalId:any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/users/${doctorId}/hospitals/${hospitalId}`, null);
+    return this.http.post<any>(`${this.apiUrl}/users/${doctorId}/hospitals/${hospitalId}`, null);
   }
 
   confirmAppointment(appointmentId:number){
-    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/confirm`,{});
+    return this.http.patch<any>(`${this.apiUrl}/appointments/${appointmentId}/confirm`,{});
   }
 
 
   followAppointment(appointmentId:number,newDate:any,availabilityId:any,doctorId:number){
     let params = new HttpParams().set("newDate", newDate);
-    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/follow/availability/${availabilityId}/doctor/${doctorId}?newDate=${newDate}`,null);
+    return this.http.patch<any>(`${this.apiUrl}/appointments/${appointmentId}/follow/availability/${availabilityId}/doctor/${doctorId}?newDate=${newDate}`,null);
   }
 
    postponeAppointment(appointmentId:number,nouvelleDate:any,availabilityId:any,doctorId:any){
-    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/availability/${availabilityId}/doctor/${doctorId}/postpone?newDate=${nouvelleDate}`,null);
+    return this.http.patch<any>(`${this.apiUrl}/appointments/${appointmentId}/availability/${availabilityId}/doctor/${doctorId}/postpone?newDate=${nouvelleDate}`,null);
 
   }
 
   
   postSpeciality(data:any){
-    return this.http.post<any>(`${this.apiUrl}/api/specialities`,data);
+    return this.http.post<any>(`${this.apiUrl}/specialities`,data);
   }
 
 
@@ -250,34 +259,34 @@ export class ApiServiceService {
    * @returns 
    */
   testAppointmentSaving(availabilityId: number, hospitalId: number, appointment: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/appointments/${availabilityId}/${hospitalId}/verify`, appointment)
+    return this.http.post<any>(`${this.apiUrl}/appointments/${availabilityId}/${hospitalId}/verify`, appointment)
   }
 
 
   postAvailability(dayId:number,doctorId:number,hospitalId:number,data:any){
-    return this.http.post<any>(`${this.apiUrl}/api/availabilities/${dayId}/${doctorId}/${hospitalId}`, data);
+    return this.http.post<any>(`${this.apiUrl}/availabilities/${dayId}/${doctorId}/${hospitalId}`, data);
   }
   
   
   postHospital(data:any){
-    return this.http.post<any>(`${this.apiUrl}/api/hospitals`,data); 
+    return this.http.post<any>(`${this.apiUrl}/hospitals`,data); 
   }
 
   postAutority(secretaryId:number,rightId:number,doctorId:number){
-    return this.http.post<any>(`${this.apiUrl}/api/users/${secretaryId}/grantrights/${rightId}/${doctorId}`,null);  
+    return this.http.post<any>(`${this.apiUrl}/users/${secretaryId}/grantrights/${rightId}/${doctorId}`,null);  
   }
   
   deleteAppointment(appointmentId:number){
-    return this.http.patch<any>(`${this.apiUrl}/api/appointments/${appointmentId}/cancel`,{});
+    return this.http.patch<any>(`${this.apiUrl}/appointments/${appointmentId}/cancel`,{});
   }
 
   getDataPatient():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/users/patients`);
+    return this.http.get<any>(`${this.apiUrl}/users/patients`);
   }
 
   
   getPatientMedicalRecord(patientId:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/medical-records/${patientId}`);
+    return this.http.get<any>(`${this.apiUrl}/medical-records/${patientId}`);
   }
 
   /**
@@ -286,7 +295,7 @@ export class ApiServiceService {
    * @returns 
    */
   getPatientAppointmentsByUsername(patientUsername: string):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/users/patients/appointments?username=${patientUsername}`);
+    return this.http.get<any>(`${this.apiUrl}/users/patients/appointments?username=${patientUsername}`);
   }
 
 /**
@@ -296,7 +305,7 @@ export class ApiServiceService {
   * @returns 
 */
   postMedicalRecord(patientId: number, userId: number): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/medical-records/${patientId}/${userId}/new`, null);        
+    return this.http.post<any>(`${this.apiUrl}/medical-records/${patientId}/${userId}/new`, null);        
   }
 
 
@@ -307,7 +316,7 @@ export class ApiServiceService {
    * @returns 
    */
   createInforMedicalRecord(infoMedRecord: InfoMedicalRecord, medicalRecId: number): Observable<any>{
-    return this.http.post<any>(`${this.apiUrl}/api/info_medical_records/${medicalRecId}`, infoMedRecord);        
+    return this.http.post<any>(`${this.apiUrl}/info_medical_records/${medicalRecId}`, infoMedRecord);        
   }
 
   /**
@@ -316,7 +325,7 @@ export class ApiServiceService {
    * @returns 
    */
   getMedicalRecord(medicalRecorid: number): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/medical-records/${medicalRecorid}/find`);  
+    return this.http.get<any>(`${this.apiUrl}/medical-records/${medicalRecorid}/find`);  
   }
 
   /**
@@ -326,7 +335,7 @@ export class ApiServiceService {
    * @returns 
    */
   searchMedicalRecord(userId: number, firstName: string, lastName: string): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/medical-records/${userId}/search?firstName=${firstName}&lastName=${lastName}`)
+    return this.http.get<any>(`${this.apiUrl}/medical-records/${userId}/search?firstName=${firstName}&lastName=${lastName}`)
   }
 
   /**
@@ -336,7 +345,7 @@ export class ApiServiceService {
      * @returns 
      */
   searchMedicalRecordByCode(userId: number, code: string): Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/medical-records/${userId}/code?code=${code}`)
+    return this.http.get<any>(`${this.apiUrl}/medical-records/${userId}/code?code=${code}`)
   }
 
   /**
@@ -346,7 +355,7 @@ export class ApiServiceService {
    * @returns 
    */
   transferRecordToSpeciality(recordId: number, specialityId: number): Observable<any>{
-    return this.http.post<any>(`${this.apiUrl}/api/medical-records/${recordId}/${specialityId}`, null)
+    return this.http.post<any>(`${this.apiUrl}/medical-records/${recordId}/${specialityId}`, null)
   }
 
   /**
@@ -354,7 +363,7 @@ export class ApiServiceService {
    * @returns 
    */
   getTypeConstants(): Observable<TypeConstant[]> {
-    return this.http.get<TypeConstant[]>(`${this.apiUrl}/api/typeconstants`);
+    return this.http.get<TypeConstant[]>(`${this.apiUrl}/typeconstants`);
   }
 
   /**
@@ -362,12 +371,12 @@ export class ApiServiceService {
    * @returns 
    */
   getAnalyses(): Observable<Analysis[]> {
-    return this.http.get<Analysis[]>(`${this.apiUrl}/api/analysis`);
+    return this.http.get<Analysis[]>(`${this.apiUrl}/analysis`);
   }
 
 
   addConstant(infoMedRecord: InfoMedicalRecord, recordId: number): Observable<any>{
-    return this.http.post<any>(`${this.apiUrl}/api/info_medical_records/${recordId}/save-constants`, infoMedRecord)
+    return this.http.post<any>(`${this.apiUrl}/info_medical_records/${recordId}/save-constants`, infoMedRecord)
   }
 
   /**
@@ -377,7 +386,7 @@ export class ApiServiceService {
    * @returns 
    */
   addAnalysisResult(infoMedRecord: InfoMedicalRecord, recordId: number): Observable<any>{
-    return this.http.post<any>(`${this.apiUrl}/api/info_medical_records/${recordId}/save-analysis-result`, infoMedRecord)
+    return this.http.post<any>(`${this.apiUrl}/info_medical_records/${recordId}/save-analysis-result`, infoMedRecord)
   }
 
   /**
@@ -387,7 +396,7 @@ export class ApiServiceService {
    * @returns 
    */
   addAnalysisResultFromFile(formData: FormData, recordId: number): Observable<any>{
-    const url = `${this.apiUrl}/api/analysis/upload-pdf/${recordId}`;
+    const url = `${this.apiUrl}/analysis/upload-pdf/${recordId}`;
     return this.http.post(url, formData, {
       reportProgress: true,
       observe: 'events'
@@ -400,7 +409,7 @@ export class ApiServiceService {
    * @returns 
    */
   getCurrentDayInfoMedRecord(medicalRecordId: number): Observable<InfoMedicalRecord> {
-    return this.http.get<InfoMedicalRecord>(`${this.apiUrl}/api/info_medical_records/${medicalRecordId}`);
+    return this.http.get<InfoMedicalRecord>(`${this.apiUrl}/info_medical_records/${medicalRecordId}`);
   }
 
 
@@ -410,7 +419,7 @@ export class ApiServiceService {
    * @returns 
    */
   deleteSpeciality(specialityId: number){
-    return this.http.delete<any>(`${this.apiUrl}/api/specialities/${specialityId}`);
+    return this.http.delete<any>(`${this.apiUrl}/specialities/${specialityId}`);
   }
 
 
@@ -420,7 +429,7 @@ export class ApiServiceService {
    * @returns 
    */
   deleteHospital(hospitalId: number){
-    return this.http.delete<any>(`${this.apiUrl}/api/hospitals/${hospitalId}`);
+    return this.http.delete<any>(`${this.apiUrl}/hospitals/${hospitalId}`);
   }
 
 
@@ -430,7 +439,7 @@ export class ApiServiceService {
    * @returns 
    */
   manageUser(userId: number, action: string){
-    return this.http.patch<any>(`${this.apiUrl}/api/users/${userId}/action?action=${action}`, null);
+    return this.http.patch<any>(`${this.apiUrl}/users/${userId}/action?action=${action}`, null);
   }
 
   /**
@@ -439,17 +448,17 @@ export class ApiServiceService {
    * @returns 
    */
   deleteRole(roleId: number){
-    return this.http.delete<any>(`${this.apiUrl}/api/roles/${roleId}`);
+    return this.http.delete<any>(`${this.apiUrl}/roles/${roleId}`);
   }
   
   // Delete a building
   deleteBuilding(buildingId: number){
-    return this.http.delete<any>(`${this.apiUrl}/api/buildings/${buildingId}`);
+    return this.http.delete<any>(`${this.apiUrl}/buildings/${buildingId}`);
   }
 
   // Delete a room
   deleteRoom(roomId: number){
-    return this.http.delete<any>(`${this.apiUrl}/api/rooms/${roomId}`);
+    return this.http.delete<any>(`${this.apiUrl}/rooms/${roomId}`);
   }
 
   /**
@@ -459,7 +468,7 @@ export class ApiServiceService {
    * @returns 
    */
   updateUser(userId: number, user: any){
-    return this.http.put<any>(`${this.apiUrl}/api/users/${userId}`, user);
+    return this.http.put<any>(`${this.apiUrl}/users/${userId}`, user);
   }
 
   /**
@@ -469,7 +478,7 @@ export class ApiServiceService {
    * @returns 
    */
   updateHospital(hospitalId: number, hospital: any){
-    return this.http.put<any>(`${this.apiUrl}/api/hospitals/${hospitalId}`, hospital);
+    return this.http.put<any>(`${this.apiUrl}/hospitals/${hospitalId}`, hospital);
   }
   
   /**
@@ -479,23 +488,23 @@ export class ApiServiceService {
    * @returns 
    */
   updateSpeciality(specialityId: number, speciality: any){
-    return this.http.put<any>(`${this.apiUrl}/api/specialities/${specialityId}`, speciality);
+    return this.http.put<any>(`${this.apiUrl}/specialities/${specialityId}`, speciality);
   }
 
   updateBuilding(buildingId: any, building: any){
-    return this.http.put<any>(`${this.apiUrl}/api/buildings/update_building/${buildingId}`, building);
+    return this.http.put<any>(`${this.apiUrl}/buildings/update_building/${buildingId}`, building);
   }
 
   updateRoom(roomId: number, room: any){
-    return this.http.put<any>(`${this.apiUrl}/api/rooms/update_room/${roomId}`, room);
+    return this.http.put<any>(`${this.apiUrl}/rooms/update_room/${roomId}`, room);
   }
 
   updateRole(roleId: number, role: any){
-    return this.http.put<any>(`${this.apiUrl}/api/roles/${roleId}/update`, role);
+    return this.http.put<any>(`${this.apiUrl}/roles/${roleId}/update`, role);
   }
 
   saveRole(role: any): Observable<any>{
-    return this.http.post<any>(`${this.apiUrl}/api/roles`, role);
+    return this.http.post<any>(`${this.apiUrl}/roles`, role);
   }
 
   /**
@@ -504,7 +513,7 @@ export class ApiServiceService {
    * @returns 
    */
   getSpecialityById(specialityId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}`);
+    return this.http.get<any>(`${this.apiUrl}/specialities/${specialityId}`);
   }
 
   /**
@@ -513,7 +522,7 @@ export class ApiServiceService {
    * @returns 
    */
   getHospitalById(hospitalId: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/hospitals/${hospitalId}`);
+    return this.http.get<any>(`${this.apiUrl}/hospitals/${hospitalId}`);
   }
 
   /**
@@ -521,7 +530,7 @@ export class ApiServiceService {
    * @returns 
    */
   loadAccessibleModules(username: string): Observable<any> {    
-      return this.http.get<any>(`${this.apiUrl}/api/modules/hierarchy?username=${username}`)
+      return this.http.get<any>(`${this.apiUrl}/modules/hierarchy?username=${username}`)
       .pipe(
         tap(modules => this.modulesSubject.next(modules))
       );
@@ -532,7 +541,7 @@ export class ApiServiceService {
    * @returns 
    */
   getAllPermissions(): Observable<Permission[]> {
-    return this.http.get<any>(`${this.apiUrl}/api/permissions`);
+    return this.http.get<any>(`${this.apiUrl}/permissions`);
   }
 
   /**
@@ -542,7 +551,7 @@ export class ApiServiceService {
    * @returns 
    */
   getUserPermissionsOnComponent(userId: number, componentName: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/api/permissions/users/${userId}?componentName=${componentName}`);
+    return this.http.get<any>(`${this.apiUrl}/permissions/users/${userId}?componentName=${componentName}`);
   }
 
   /**
@@ -552,7 +561,7 @@ export class ApiServiceService {
    * @returns 
    */
   grantPermissionToUser(userId: number, permissionIds: number[]){
-    return this.http.post<any>(`${this.apiUrl}/api/permissions/users/${userId}/grant`, permissionIds);
+    return this.http.post<any>(`${this.apiUrl}/permissions/users/${userId}/grant`, permissionIds);
   }
 
   /**
@@ -562,7 +571,7 @@ export class ApiServiceService {
    * @returns 
    */
   removeUserPermission(userId: number, permissionIds: number[]){
-    return this.http.post<any>(`${this.apiUrl}/api/permissions/users/${userId}/remove`, permissionIds);
+    return this.http.post<any>(`${this.apiUrl}/permissions/users/${userId}/remove`, permissionIds);
   }
 
   /**
@@ -572,7 +581,7 @@ export class ApiServiceService {
    * @returns 
    */
   setPermissionToRole(roleId: number, permissionIds: number[]){
-    return this.http.post<any>(`${this.apiUrl}/api/permissions/roles/${roleId}/grant`, permissionIds);
+    return this.http.post<any>(`${this.apiUrl}/permissions/roles/${roleId}/grant`, permissionIds);
   }
 
   /**
@@ -582,7 +591,7 @@ export class ApiServiceService {
    * @returns 
    */
   removePermissionFromRole(roleId: number, permissionIds: number[]){
-    return this.http.post<any>(`${this.apiUrl}/api/permissions/roles/${roleId}/remove`, permissionIds);
+    return this.http.post<any>(`${this.apiUrl}/permissions/roles/${roleId}/remove`, permissionIds);
   }
 
   /**
@@ -592,7 +601,7 @@ export class ApiServiceService {
    * @returns 
    */
   assignRoleToUser(roleId: number, userId: number){
-    return this.http.post<any>(`${this.apiUrl}/api/roles/${roleId}/users/${userId}/assign`, null);
+    return this.http.post<any>(`${this.apiUrl}/roles/${roleId}/users/${userId}/assign`, null);
   }
 
   /**
@@ -602,11 +611,11 @@ export class ApiServiceService {
    * @returns 
    */
   substractUserFromRole(roleId: number, userId: number){
-    return this.http.post<any>(`${this.apiUrl}/api/roles/${roleId}/users/${userId}/substract`, null);
+    return this.http.post<any>(`${this.apiUrl}/roles/${roleId}/users/${userId}/substract`, null);
   }
 
 
   getAppointmentsByAvailability(availabilityId:number):Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/availabilities/${availabilityId}/appointments`);
+    return this.http.get<any>(`${this.apiUrl}/availabilities/${availabilityId}/appointments`);
   }
 }

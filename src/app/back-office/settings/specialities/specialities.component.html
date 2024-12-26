@@ -61,13 +61,13 @@
 
 <nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout de spécialité" (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
-        <button nz-button nzType="primary" (click)="addSpecialityToHospital()" >{{buttonText }}</button>
+        <button nz-button *ngIf="canAddSpecialityToAnotherHospital || canAddSpecialityToOwnHospital" nzType="primary" (click)="addSpecialityToHospital()" >{{buttonText }}</button>
         <br><br>
 
         <form *ngIf="!isToAddSpecialityToHospital" [formGroup]="specialityForm" (ngSubmit)="onSubmit()">
             <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Nom</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <nz-form-label nzSpan="6" nzRequired>Nom</nz-form-label>
+                <nz-form-control nzSpan="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                     <input nz-input formControlName="name" placeholder="Nom de la spécialité">
                 </nz-form-control>
             </nz-form-item>
@@ -83,37 +83,52 @@
         
 
         <form *ngIf="isToAddSpecialityToHospital" [formGroup]="addSpecialityform" (ngSubmit)="addSpeciality()">
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Hôpital</nz-form-label>
-                <nz-form-control nzSpan="12">
-                    <nz-select formControlName="hospital" nzPlaceHolder="Sélectionner l'hôpital">
-                        <nz-option *ngFor="let hosp of hospitals" [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
-                    </nz-select>
-                </nz-form-control>
-
+            <nz-form-item *ngIf="canAddSpecialityToAnotherHospital">
+              <nz-form-label nzSpan="6" nzRequired>Hôpital</nz-form-label>
+              <nz-form-control nzSpan="18">
+                <nz-select formControlName="hospital" nzPlaceHolder="Sélectionner l'hôpital">
+                  <nz-option *ngFor="let hosp of hospitals" [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
+                </nz-select>
+              </nz-form-control>
             </nz-form-item>
+          
             <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Spécialité</nz-form-label>
-                <nz-form-control nzSpan="12">
-                    <nz-select formControlName="speciality" nzPlaceHolder="Sélectionner la spécialité">
-                        <nz-option *ngFor="let sp of listOfData" [nzLabel]="sp.name" [nzValue]="sp.id"></nz-option>
-                    </nz-select>
-                </nz-form-control>
+              <nz-form-label nzSpan="6" nzRequired>Spécialité</nz-form-label>
+              <nz-form-control nzSpan="18">
+                <nz-select formControlName="speciality" nzPlaceHolder="Sélectionner la spécialité">
+                  <nz-option *ngFor="let sp of listOfData" [nzLabel]="sp.name" [nzValue]="sp.id"></nz-option>
+                </nz-select>
+              </nz-form-control>
             </nz-form-item>
-
+          
             <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Coût des consultations</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="price" placeholder="Coût des consultaions">
-                </nz-form-control>
+              <nz-form-label nzSpan="18" nzRequired>Coût des consultations pour les jours non fériés</nz-form-label>
+              <nz-form-control nzSpan="6" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <input nz-input formControlName="price" placeholder="Coût">
+              </nz-form-control>
             </nz-form-item>
-
+          
             <nz-form-item>
-                <nz-form-control nzOffset="7" nzSpan="12">
-                    <button nz-button nzType="primary" [disabled]="addSpecialityform.invalid">Soumettre</button>
-                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
-                </nz-form-control>
+              <nz-form-label nzSpan="24" nzRequired>
+                Le prix de consultation est-il différent pour les jours fériés ?
+              </nz-form-label>
+             <nz-radio-group formControlName="radioValue" nz-col nzSpan="6" nzOffset="3">
+                <label nz-radio nzValue="oui">Oui</label>
+                <label nz-radio nzValue="non">Non</label>
+            </nz-radio-group>
+            <div class="input-holiday" nz-col nzSpan="18" *ngIf="addSpecialityform.get('radioValue')?.value === 'oui'">
+                <input nz-input formControlName="priceHoliday" placeholder="Coût de la consultation pour les jours férié">
+            </div>
+              
             </nz-form-item>
-        </form>
+          
+            <nz-form-item>
+              <nz-form-control nzOffset="7" nzSpan="12">
+                <button nz-button nzType="primary" [disabled]="addSpecialityform.invalid">Soumettre</button>
+                <button nz-button (click)="resetForm($event)">Réinitialiser</button>
+              </nz-form-control>
+            </nz-form-item>
+          </form>
+          
     </ng-container>
 </nz-modal>

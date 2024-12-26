@@ -18,7 +18,8 @@ import { NzModalModule } from 'ng-zorro-antd/modal';
 import { NzInputModule } from 'ng-zorro-antd/input';
 import { NzButtonModule } from 'ng-zorro-antd/button';
 import { NzIconModule } from 'ng-zorro-antd/icon';
-import { PublicHolidaysComponent } from './public-holidays/public-holidays.component';
+import { NzRadioModule } from 'ng-zorro-antd/radio';
+import { PublicDayComponent } from './public-day/public-day.component';
 
 
 @NgModule({
@@ -30,7 +31,7 @@ import { PublicHolidaysComponent } from './public-holidays/public-holidays.compo
     ConstanteComponent,
     AnalysisComponent,
     SettingsComponent,
-    PublicHolidaysComponent,
+    PublicDayComponent,
   ],
   imports: [
     CommonModule,
@@ -44,7 +45,8 @@ import { PublicHolidaysComponent } from './public-holidays/public-holidays.compo
     NzModalModule,
     NzInputModule,
     NzButtonModule,
-    NzIconModule
+    NzIconModule,
+    NzRadioModule
 
   ]
 })

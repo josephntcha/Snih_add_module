@@ -53,7 +53,6 @@ export class TakeAppointmentComponent {
   mergeArraysWithoutDuplicates(A1: any[], B1: any[]): any[] {
     return [...new Set([...A1, ...B1])];
   }
-
   
   ngOnInit(): void {
     this.apiService.getDataHospitals().subscribe(response => {
@@ -78,26 +77,29 @@ export class TakeAppointmentComponent {
       this.apiService.getSpecialitiesByHospital(selectedHospitalId).subscribe(response => {
         this.specialities = response.data;
         this.hospitalId = selectedHospitalId;
-        
       });
     });
 
     this.Hospitalform.get('speciality')?.valueChanges.subscribe(selectedSpecialityId => {
       this.specialityId = selectedSpecialityId;
       this.apiService.getAvailabilitiesByHospitalAndSpeciality(this.hospitalId, selectedSpecialityId).subscribe(response => {
-        
-        this.availabilities = response;
-      
-        this.apiService.getPriceByHospitalAndSpeciality(this.hospitalId, selectedSpecialityId).subscribe(response => {
-          this.priceBySpeciality = response.data;
-        });
+         this.availabilities = response;
+       
       });
+
     });
 
     this.Hospitalform.get('availability')?.valueChanges.subscribe(selectedAvailabilityId => {
-      
       this.loadDays(selectedAvailabilityId);
     });
+
+    this.Hospitalform.get('date')?.valueChanges.subscribe(selectedDay=>{
+        
+      this.apiService.getPriceByHospitalAndSpeciality(this.hospitalId, this.specialityId,selectedDay).subscribe(response => {
+        this.priceBySpeciality = response.data;
+      });
+    })
+   
 
 
     addKkiapayListener('success', (response: any) => this.successHandler(response));

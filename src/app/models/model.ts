@@ -71,6 +71,11 @@ export interface Room {
   room: string;
 }
 
+export interface PublicDay {
+  id: number;
+  date: Date;
+}
+
 export interface Building {
   id: number;
   name: string;
@@ -101,10 +106,4 @@ export interface Permission {
   codeName: string
   name: string;
   description: string;
-}
-
-export interface PublicHoliday {
-  id: number;
-  name: string;
-  date: Date;
 }

@@ -7,6 +7,7 @@ import { SettingsComponent } from './settings.component';
 import { BuildingsComponent } from './buildings/buildings.component';
 import { ConstanteComponent } from './constant/constante.component';
 import { AnalysisComponent } from './analysis/analysis.component';
+import { PublicDayComponent } from './public-day/public-day.component';
 
 const routes: Routes = [
   {
@@ -63,6 +64,14 @@ const routes: Routes = [
     data: {
       breadcrumb: 'Type d\'analyse',
       title: 'Paramétrage | Type d\'analyse'
+    }
+  },
+  {
+    path: "publicDays",
+    component: PublicDayComponent,
+    data: {
+      breadcrumb: 'Jours Fériés',
+      title: 'Paramétrage | jour férié'
     }
   }
 ];
