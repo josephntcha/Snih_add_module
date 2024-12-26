@@ -132,7 +132,7 @@ export class ApiServiceService {
     return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}/${hospitalId}/availabilities`);
   }
 
-  getPriceByHospitalAndSpeciality(hospitalId:number, specialityId:number): Observable<any> {
+  getPriceByHospitalAndSpeciality(hospitalId:number, specialityId:number): Observable<any> {s
 
     return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}/${hospitalId}/price`);
   }
@@ -212,9 +212,8 @@ export class ApiServiceService {
   }
 
   
-  postAddSpecialityHospital(hospitalId:number,specialityId:number,data:any): Observable<any> {
-    let params = new HttpParams().set("price", data);
-    return this.http.post<any>(`${this.apiUrl}/api/hospitals/${hospitalId}/${specialityId}`,params);
+  postAddSpecialityHospital(hospitalSeciality: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/api/hospitals/specialities/add`,hospitalSeciality);
   }
 
     

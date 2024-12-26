@@ -102,4 +102,9 @@ export interface Permission {
   name: string;
   description: string;
 }
-  
+
+export interface PublicHoliday {
+  id: number;
+  name: string;
+  date: Date;
+}
