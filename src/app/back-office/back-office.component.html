@@ -5,12 +5,11 @@
                 <div class="logo">
                     <img 
                         nz-image 
-                        width="40px" 
-                        height="40px" 
-                        nzSrc="/assets/images/8uag7cce0e43b8u5b1jqhcj7i3.png" 
+                        width="50px" 
+                        height="50px" 
+                        nzSrc="/assets/images/logo_SNIH.png" 
                         alt="" 
                     />
-                    lain
                 </div>
                 <button nz-button nzType="primary" (click)="toggleCollapsed()">
                     <span nz-icon [nzType]="isCollapsed ? 'menu-unfold' : 'menu-fold'"></span>
@@ -48,24 +47,31 @@
                     <nz-option nzValue="fr" nzLabel="Français"></nz-option>
                     <nz-option nzValue="es" nzLabel="Español"></nz-option>
                 </nz-select>
-                <!-- <nz-badge [nzCount]="5" class="notification-badge"> -->
-                <nz-badge class="notification-badge">
-                    <i nz-icon nzType="bell" class="bell-icon"></i>
-                </nz-badge>
+
                 <span class="username">
-
-                        {{authService.username}}
-
-                        <img
-                            nz-image
-                            width="20px"
-                            height="20px"
-                            nzSrc="/assets/images/angularjs-typescript-javascript-others-bf0169ca59c033ca8514afaf142ffeed.png"
-                            alt=""
-                        />              
+                    {{authService.username}}
                 </span>
-                
-                <span class="logout"><button (click)="logout()" nz-button>Déconnection</button></span>
+
+                <button nz-button nzType="primary"
+                    nz-dropdown 
+                    [nzDropdownMenu]="menu"
+                    [nzPlacement]="'bottomCenter'">
+
+                    <span class="profileIcon" nz-icon nzType="user"></span>
+                </button>
+                <nz-dropdown-menu #menu="nzDropdownMenu">
+                    <ul nz-menu nzSelectable>
+                        <li nz-menu-item >
+                            <span nz-icon nzType="user"></span>
+                            Profil
+                        </li>
+                        <li nz-menu-item (click)="logout()">
+                            <span nz-icon nzType="logout"></span>
+                            Déconnexion
+                        </li>
+                    </ul>
+                </nz-dropdown-menu>
+                <!-- <span class="logout"><button (click)="logout()" nz-button >Déconnection</button></span> -->
             </div>
         </nz-header>
     </nz-affix>

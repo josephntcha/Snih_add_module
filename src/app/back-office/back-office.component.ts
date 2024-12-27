@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter, map } from 'rxjs';
@@ -15,21 +15,57 @@ export class BackOfficeComponent implements OnInit{
   title: string =  '';
 
   isCollapsed = false;
-  selectedLanguage = 'en';
+  selectedLanguage = 'fr';
+  isMobile = false;
 
   activeMenu: string | null = 'null';
 
+  @HostListener('window:resize', ['$event'])
+
+  onResize(event: any) {
+    this.checkScreenSize();
+  }
+  
+
+  checkScreenSize() {
+    this.isMobile = window.innerWidth <= 768;
+    if (this.isMobile && !this.isCollapsed) {
+      this.isCollapsed = true;
+    }
+  }
+
+
   ngOnInit(): void {
+    // Récupérer le titre initial au chargement
+    this.getInitialTitle();
+
+    // Souscrire aux changements de route
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd),
-      map(() => {
-        let route = this.activatedRoute;
-        while(route.firstChild) route = route.firstChild;
-        return route.snapshot.data['title'] || '';
-      })
+      map(() => this.getRouteTitle())
     ).subscribe((title: string) => {
       this.title = title;
     });
+
+    this.checkScreenSize();
+  }
+
+  // Méthode pour récupérer le titre initial
+  private getInitialTitle(): void {
+      let route = this.activatedRoute;
+      while (route.firstChild) {
+          route = route.firstChild;
+      }
+      this.title = route.snapshot.data['title'] || '';
+  }
+
+  // Méthode pour récupérer le titre lors des changements de route
+  private getRouteTitle(): string {
+      let route = this.activatedRoute;
+      while (route.firstChild) {
+          route = route.firstChild;
+      }
+      return route.snapshot.data['title'] || '';
   }
 
   toggleMenu(menu: string){
@@ -39,6 +75,12 @@ export class BackOfficeComponent implements OnInit{
 
   toggleCollapsed(): void {
     this.isCollapsed = !this.isCollapsed;
+    if (this.isMobile) {
+      const sider = document.querySelector('nz-sider');
+      if (sider) {
+        sider.classList.toggle('sidebar-mobile-open');
+      }
+    }
   }
 
   logout(){

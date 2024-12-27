@@ -1,189 +1,237 @@
-   .header-blue {
-    background-color: #1890ff;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 16px;
+/* Styles de base */
+.app-layout {
+  min-height: 100vh;
+}
+
+/* Header */
+.header-blue {
+  background-color: #1890ff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 64px;
+
+  @media (max-width: 768px) {
+    padding: 0 8px;
   }
-  
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
   .logo {
-    color: white;
-    font-size: 18px;
-    font-weight: bold;
     display: flex;
     align-items: center;
-  }
-  
-  .header-right {
-    display: flex;
-    align-items: center;
-  }
-  
-  .language-select {
-    margin-right: 20px;
-  }
-  
-  ::ng-deep .language-select .ant-select-selector {
-    background-color: #1890ff !important;
-    color: white !important;
-    border: none !important;
-  }
-  
-  ::ng-deep .language-select .ant-select-arrow {
-    color: white !important;
-  }
-  
-  ::ng-deep .language-select .ant-select-selection-item {
-    color: white !important;
-  }
-  
-  .notification-badge {
-    margin-right: 16px;
-  }
-  
-  .username {
-    color: white;
-    margin-left: 8px;
+
+    img {
+      @media (max-width: 576px) {
+        width: 40px;
+        height: 40px;
+      }
+    }
   }
 
-  .logout button {
-    color: white;
-    background-color: rgb(205, 57, 57);
-    margin-left: 8px;
-    border-radius: 50px;
-  }
-  
-  .selected-items {
-    margin-bottom: 16px;
-    padding: 8px;
-    background-color: #e6f7ff;
-    border: 1px solid #91d5ff;
-    border-radius: 4px;
-  }
-  
-  .search-box {
-    margin-bottom: 16px;
-  }
-  
-  .table-operations {
-    margin-bottom: 16px;
-  }
-  
-  .table-operations button {
-    margin-right: 8px;
-  }
-  
-  
-  .advanced-filter {
-    float: right;
-  }
-  
-  .advanced-filter-icon {
-    background-color: #1890ff;
-    color: white;
-    padding: 10px;
-  }
-  
-  .advanced-filter-icon2, .advanced-filter {
-    color: #1890ff;
-  }
-  
-  nz-content {
-    margin-left: 20px;
-  }
-  
-  .content-heade {
-    background-color: white;
-    margin-left: 3px;
-    padding-bottom: 15px;
-  }
-  
-  .content-body {
-    margin-top: 10px;
-    margin-right: 10px;
-    margin-left: 15px;
-  }
-  
-  .breadcrumb {
-    margin-left: 20px;
-    margin-bottom: 10px;
-    padding-top: 10px
-  }
-  
-  .title {
-    margin-left: 20px;
-    margin-right: 10px;
-    font-weight: bold;
-    font-size: large;
-  }
-  
-  .barre {
-    margin-right: 10px;
-    font-size: smaller ;
-  }
-  
-  .bell-icon {
-    background-color: #1890ff;
-    color: white;
-  }
-  
-  .menu-icon, .dashboard-cion {
-    margin-left: 50px;
-  }
-  
-  .seachr-icon {
-    background-color: #1890ff;
-  }
-  
-  .header-left {
-    display: flex;
-    align-items: center;
-  }
-  
-  .header-left button {
-    margin-left: 100px;
+  button {
     background: transparent;
     border: none;
+    margin-left: 16px;
+
+    @media (max-width: 768px) {
+      margin-left: 8px;
+    }
   }
-  
-  ::ng-deep .ant-layout-sider-trigger {
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  @media (max-width: 768px) {
+    gap: 8px;
+  }
+
+  .language-select {
+    @media (max-width: 576px) {
+      width: 100px;
+    }
+
+    @media (max-width: 400px) {
+      display: none;
+    }
+  }
+
+  .username {
+    color: white;
+    
+    @media (max-width: 576px) {
+      display: none;
+    }
+  }
+
+  img {
+    @media (max-width: 576px) {
+      display: none;
+    }
+  }
+}
+
+/* Sidebar */
+nz-sider {
+  position: fixed;
+  top: 64px;
+  bottom: 0;
+  left: 0;
+  z-index: 99;
+  overflow-y: auto;
+  transition: all 0.3s;
+
+  @media (max-width: 768px) {
+    position: fixed;
+    left: -200px;
+    &.ant-layout-sider-collapsed {
+      left: -80px;
+    }
+    &.sidebar-mobile-open {
+      left: 0;
+    }
+  }
+}
+
+/* Content */
+nz-content {
+  padding-top: 64px;
+  margin-left: 200px;
+  transition: margin-left 0.3s;
+  min-height: calc(100vh - 64px);
+
+  @media (max-width: 768px) {
+    margin-left: 0;
+    padding: 74px 10px 10px;
+  }
+
+  .content-heade {
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 10px;
+
+    @media (max-width: 576px) {
+      padding: 10px;
+    }
+
+    .breadcrumb {
+      margin-bottom: 10px;
+      
+      @media (max-width: 576px) {
+        font-size: 12px;
+      }
+    }
+
+    .title {
+      font-size: large;
+      font-weight: bold;
+      
+      @media (max-width: 576px) {
+        font-size: medium;
+      }
+    }
+  }
+
+  .content-body {
+    margin: 10px;
+    
+    @media (max-width: 768px) {
+      margin: 5px;
+    }
+
+    ::ng-deep .ant-card-body {
+      @media (max-width: 576px) {
+        padding: 12px;
+      }
+    }
+  }
+}
+
+/* Utilitaires */
+.collapsed {
+  nz-content {
+    margin-left: 80px;
+
+    @media (max-width: 768px) {
+      margin-left: 0;
+    }
+  }
+}
+
+::ng-deep .ant-layout-sider-trigger {
+  display: none;
+}
+
+
+.language-select {
+  margin-right: 20px;
+}
+
+::ng-deep .language-select .ant-select-selector {
+  background-color: #1890ff !important;
+  color: white !important;
+  border: none !important;
+}
+
+::ng-deep .language-select .ant-select-arrow {
+  color: white !important;
+}
+
+::ng-deep .language-select .ant-select-selection-item {
+  color: white !important;
+}
+
+/* Styles spécifiques ng-zorro */
+::ng-deep {
+  .language-select {
+    .ant-select-selector {
+      background-color: #1890ff !important;
+      color: white !important;
+      border: none !important;
+    }
+
+    .ant-select-arrow {
+      color: white !important;
+    }
+
+    .ant-select-selection-item {
+      color: white !important;
+    }
+  }
+
+  .ant-layout-sider-trigger {
     display: none;
   }
+}
 
-  .header-blue {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 1;
+/* Animation de la sidebar */
+@keyframes slidein {
+  from {
+    transform: translateX(-100%);
   }
+  to {
+    transform: translateX(0);
+  }
+}
 
-  nz-sider {
-    position: fixed;
-    top: 64px; /* Hauteur de l'en-tête */
-    bottom: 0;
-    left: 0;
-    z-index: 1;
-    overflow-y: auto;
+@keyframes slideout {
+  from {
+    transform: translateX(0);
   }
-  
-  .sidebar-content {
-    padding-top: 16px;
+  to {
+    transform: translateX(-100%);
   }
-  
-  nz-content {
-    padding-top: 80px; /* Hauteur de l'en-tête + sidebar */
-    margin-left: 200px;
-    transition: margin-left 0.3s;
-  }
-  
-  .collapsed nz-content {
-    margin-left: 80px;
-  }
-
-  nz-content {
-    padding-top: 64px; /* Hauteur de la barre de navigation */
-    margin-left: 200px; /* Largeur de la sidebar */
-    transition: margin-left 0.3s;
-  }
-
+}
