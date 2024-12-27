@@ -164,8 +164,6 @@ export class SpecialitiesComponent implements OnInit{
         hospital: [''],
         speciality: ['', Validators.required],
         price: ['', Validators.required], 
-        radioValue: ['non'],
-        priceHoliday: [null],
       });
       this.buttonText = 'Créer spécialité';
     }else{
@@ -314,16 +312,6 @@ export class SpecialitiesComponent implements OnInit{
   addSpecialityToHospital(){
     this.isToAddSpecialityToHospital = !this.isToAddSpecialityToHospital;
     this.initializeForm();
-        
-    this.addSpecialityform.get('radioValue')?.valueChanges.subscribe((value) => {
-      if (value === 'non') {
-        this.addSpecialityform.get('priceHoliday')?.setValue(null);
-      } 
-      if (!this.canAddSpecialityToAnotherHospital) {
-        this.addSpecialityform.get('hospital')?.setValue(this.hospitalId);
-        
-      }
-    });
   }
 
   resetForm(event: Event){

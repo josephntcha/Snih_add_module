@@ -82,6 +82,10 @@ export class TakeAppointmentComponent {
 
     this.Hospitalform.get('speciality')?.valueChanges.subscribe(selectedSpecialityId => {
       this.specialityId = selectedSpecialityId;
+
+      this.apiService.getPriceByHospitalAndSpeciality(this.hospitalId, selectedSpecialityId).subscribe(response => {
+        this.priceBySpeciality = response.data;
+      }); 
       this.apiService.getAvailabilitiesByHospitalAndSpeciality(this.hospitalId, selectedSpecialityId).subscribe(response => {
          this.availabilities = response;
        
@@ -92,15 +96,6 @@ export class TakeAppointmentComponent {
     this.Hospitalform.get('availability')?.valueChanges.subscribe(selectedAvailabilityId => {
       this.loadDays(selectedAvailabilityId);
     });
-
-    this.Hospitalform.get('date')?.valueChanges.subscribe(selectedDay=>{
-        
-      this.apiService.getPriceByHospitalAndSpeciality(this.hospitalId, this.specialityId,selectedDay).subscribe(response => {
-        this.priceBySpeciality = response.data;
-      });
-    })
-   
-
 
     addKkiapayListener('success', (response: any) => this.successHandler(response));
   }

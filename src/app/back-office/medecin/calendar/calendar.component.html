@@ -7,14 +7,19 @@
 
       <span class="month-title">{{ currentMonth | date: 'MMMM y':'':'fr'}}</span>
 
-      <form [formGroup]="Hospitalform" class="">
-        <div nz-row class="row">
-          <div nz-col nzSpan="">
+      <form [formGroup]="Hospitalform" class="form">
+        <nz-select formControlName="hospital"  nzShowSearch>
+          
+            <nz-option *ngFor="let hospital of hospitals" [nzLabel]="hospital.name" [nzValue]="hospital.id"></nz-option>
+          
+        </nz-select>
+        <!-- <div nz-row class="row">
+          <div class="">
             <nz-select formControlName="hospital" nzPlaceHolder="Sélectionnez un hôpital">
               <nz-option *ngFor="let hospital of hospitals" [nzValue]="hospital.id" [nzLabel]="hospital.name"></nz-option>
             </nz-select>                       
           </div>
-        </div>
+        </div> -->
       </form>
   
       <button nz-button nzShape="circle" (click)="nextMonth()" class="next-month">

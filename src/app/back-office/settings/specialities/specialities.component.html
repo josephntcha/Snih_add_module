@@ -102,26 +102,11 @@
             </nz-form-item>
           
             <nz-form-item>
-              <nz-form-label nzSpan="18" nzRequired>Coût des consultations pour les jours non fériés</nz-form-label>
-              <nz-form-control nzSpan="6" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+              <nz-form-label nzSpan="8" nzRequired>Coût de la consultation</nz-form-label>
+              <nz-form-control nzSpan="16" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                 <input nz-input formControlName="price" placeholder="Coût">
               </nz-form-control>
             </nz-form-item>
-          
-            <nz-form-item>
-              <nz-form-label nzSpan="24" nzRequired>
-                Le prix de consultation est-il différent pour les jours fériés ?
-              </nz-form-label>
-             <nz-radio-group formControlName="radioValue" nz-col nzSpan="6" nzOffset="3">
-                <label nz-radio nzValue="oui">Oui</label>
-                <label nz-radio nzValue="non">Non</label>
-            </nz-radio-group>
-            <div class="input-holiday" nz-col nzSpan="18" *ngIf="addSpecialityform.get('radioValue')?.value === 'oui'">
-                <input nz-input formControlName="priceHoliday" placeholder="Coût de la consultation pour les jours férié">
-            </div>
-              
-            </nz-form-item>
-          
             <nz-form-item>
               <nz-form-control nzOffset="7" nzSpan="12">
                 <button nz-button nzType="primary" [disabled]="addSpecialityform.invalid">Soumettre</button>

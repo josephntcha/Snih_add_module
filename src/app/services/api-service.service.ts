@@ -103,12 +103,16 @@ export class ApiServiceService {
     return this.http.get<any>(`${this.apiUrl}/api/users/doctors`);
   }
 
-  getPublicDays():Observable<any>{
-    return this.http.get<any>(`${this.apiUrl}/api/publicDay`);
+  getPublicDays(hospitalId:any):Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/api/public-holidays/${hospitalId}`);
+  }
+
+  getDateDayHolidays():Observable<any>{
+    return this.http.get<any>(`${this.apiUrl}/api/days/dates`);
   }
  
-  postPublicDays(hospitalId:any,date:any):Observable<any>{
-    return this.http.post<any>(`${this.apiUrl}/api/${hospitalId}/publicDay`,date);
+  postPublicDays(hospitalId:any,data:any):Observable<any>{
+    return this.http.post<any>(`${this.apiUrl}/api/public-holidays/${hospitalId}/save`,data);
   }
 
   getSpecialitiesByHospital(id:number): Observable<any> {
@@ -139,9 +143,9 @@ export class ApiServiceService {
     return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}/${hospitalId}/availabilities`);
   }
 
-  getPriceByHospitalAndSpeciality(hospitalId:number, specialityId:number,date:any): Observable<any> {
+  getPriceByHospitalAndSpeciality(hospitalId:number, specialityId:number): Observable<any> {
 
-    return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}/${hospitalId}/price?date=${date}`);
+    return this.http.get<any>(`${this.apiUrl}/api/specialities/${specialityId}/${hospitalId}/price`);
   }
 
   getDoctorAvailabilities(doctorId:number):Observable<any>{

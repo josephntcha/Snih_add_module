@@ -95,9 +95,12 @@ export class KnownDoctorComponent implements OnInit{
           }); 
  
            this.Hospitalform.get('hospital')?.valueChanges.subscribe(selectedHospitalId=>{
-            this.hospitalIdSelected=selectedHospitalId;
+            this.hospitalIdSelected=selectedHospitalId;   
              
- 
+            this.apiService.getPriceByHospitalAndSpeciality(selectedHospitalId, this.specialityId).subscribe(response => {
+              this.priceBySpeciality = response.data;
+            });
+
             this.apiService.getAvailabilitiesByDoctorAndHospital(this.doctorId,selectedHospitalId).subscribe(response=>{
              this.availabilities=response; 
             });
@@ -124,14 +127,6 @@ export class KnownDoctorComponent implements OnInit{
             }
          
           });
-
-          this.Hospitalform.get('date')?.valueChanges.subscribe(selectedDate=>{
-            
-            this.apiService.getPriceByHospitalAndSpeciality(this.hospitalIdSelected,this.specialityId,selectedDate).subscribe(response=>{
-              this.priceBySpeciality=response.data;
-           
-             })
-          })
 
           addKkiapayListener('success', (response: any) => this.successHandler(response));
    

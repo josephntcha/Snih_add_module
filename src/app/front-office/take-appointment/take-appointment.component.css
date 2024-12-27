@@ -19,9 +19,9 @@
     color: red;
   }
   
-  .body {
+   .body {
     background-color: rgba(195, 225, 24, 0.128);
-  }
+  } 
 
   @media (max-width: 768px) {
     .menu-right {

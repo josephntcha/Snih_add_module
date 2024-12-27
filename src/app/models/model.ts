@@ -73,6 +73,7 @@ export interface Room {
 
 export interface PublicDay {
   id: number;
+  name:string;
   date: Date;
 }
 
