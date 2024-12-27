@@ -21,9 +21,12 @@
     color: red;
   }
 
-  .body {
-    background-color: rgba(195, 225, 24, 0.128);
-  }
+.body {
+  background-color: rgba(195, 225, 24, 0.128);
+  min-height: 100vh;
+  padding: 10px;
+}
+
 
   @media (max-width: 768px) {
     .menu-right {
@@ -39,4 +42,22 @@
     .menu-right li {
       flex: 0 0 auto;
     }
+
+    .ant-form-item {
+      display: inline;
+      margin-bottom: 100px;
+    }
+  
+    nz-form-label {
+      margin-bottom: -10px;
+    }
+
+    nz-form-control {
+      margin-bottom: 10px;
+    }
+
+    .text-center {
+      margin-top: 15px;
+    }
+    
   }

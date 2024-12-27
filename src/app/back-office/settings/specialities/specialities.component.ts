@@ -187,6 +187,7 @@ export class SpecialitiesComponent implements OnInit{
   }
 
   handleCancel(): void {
+    this.isToAddSpecialityToHospital=false;
     this.isVisible = false;
   }
 

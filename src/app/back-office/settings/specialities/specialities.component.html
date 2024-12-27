@@ -84,8 +84,8 @@
 
         <form *ngIf="isToAddSpecialityToHospital" [formGroup]="addSpecialityform" (ngSubmit)="addSpeciality()">
             <nz-form-item *ngIf="canAddSpecialityToAnotherHospital">
-              <nz-form-label nzSpan="6" nzRequired>Hôpital</nz-form-label>
-              <nz-form-control nzSpan="18">
+              <nz-form-label nzSpan="8" nzRequired>Hôpital</nz-form-label>
+              <nz-form-control nzSpan="16">
                 <nz-select formControlName="hospital" nzPlaceHolder="Sélectionner l'hôpital">
                   <nz-option *ngFor="let hosp of hospitals" [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
                 </nz-select>
@@ -93,8 +93,8 @@
             </nz-form-item>
           
             <nz-form-item>
-              <nz-form-label nzSpan="6" nzRequired>Spécialité</nz-form-label>
-              <nz-form-control nzSpan="18">
+              <nz-form-label nzSpan="8" nzRequired>Spécialité</nz-form-label>
+              <nz-form-control nzSpan="16">
                 <nz-select formControlName="speciality" nzPlaceHolder="Sélectionner la spécialité">
                   <nz-option *ngFor="let sp of listOfData" [nzLabel]="sp.name" [nzValue]="sp.id"></nz-option>
                 </nz-select>
