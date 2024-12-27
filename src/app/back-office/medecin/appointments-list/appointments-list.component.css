@@ -1,60 +1,165 @@
-.availability{
-    margin-left: 14rem;
-   }
-   
-   .primary{
-       margin-left: 2px;
-   }
-   .button1{
-       background-color: #28a745;
-       color: #ffffff
-   
-   }
-   .button2{
-       background-color: #ffc107;
-       color: #ffffff;
-   
-   }
-   .button3{
-       background-color: #dc3545;
-       color: #ffffff;
-   
-     
-   }
-   .button4{
-       background-color: #343a40;
-       color: #ffffff;
-   
-   }
-   .action{
-       margin-left: 8rem;
-   }
-   
-   
-   .butt1{
-       margin-top: 30px;
-       margin-left: 5px;
-     }
-     .butt2{
-       background-color: #ffc107;
-       margin-top: 10px;
-       margin-left: 15px;
-     }
-     .butt3{
-       margin-top: 10px;
-       margin-left: 20px;
-       background-color: #dc3545;
-       color: #ffffff;
-     }
-     .selectOp{
-       margin-top: 65px;
-     }
-     .barre{
-       font-size: 100px;
-        font-weight: 100;
-        opacity: 0.5;
-     }
+.appointment-container {
+  padding: 1rem;
+  width: 100%;
+}
 
-     
-   
-   
+.header-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@media (max-width: 768px) {
+  .header-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.date-display h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.auth-button {
+  white-space: normal;
+  height: auto;
+  padding: 0.5rem 1rem;
+}
+
+.filter-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.filter-buttons button {
+  flex: 1;
+  min-width: 120px;
+  white-space: normal;
+  height: auto;
+  padding: 0.5rem;
+}
+
+/* Modal Styles */
+.modal-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.secretary-form {
+  flex: 1;
+  min-width: 250px;
+}
+
+.select-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.divider {
+  width: 1px;
+  background: rgba(0, 0, 0, 0.1);
+  align-self: stretch;
+}
+
+.authorities-section {
+  flex: 1;
+  min-width: 250px;
+}
+
+.authority-item {
+  margin-bottom: 1rem;
+}
+
+.auth-button-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* Table Styles */
+.table-responsive {
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.action-buttons {
+  min-width: 200px;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* Button Styles */
+.confirm-btn {
+  background-color: #28a745;
+  color: #ffffff;
+}
+
+.postpone-btn {
+  background-color: #ffc107;
+  color: #ffffff;
+}
+
+.cancel-btn {
+  background-color: #dc3545;
+  color: #ffffff;
+}
+
+.follow-btn {
+  background-color: #343a40;
+  color: #ffffff;
+}
+
+/* Status Styles */
+.status-asked { color: #ffc107; }
+.status-postpone { color: #fd7e14; }
+.status-confirmed { color: #28a745; }
+.status-cancel { color: #dc3545; }
+
+/* Responsive Adjustments */
+@media (max-width: 576px) {
+  .action-buttons {
+    min-width: auto;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .button-group button {
+    width: 100%;
+  }
+  
+  .modal-content {
+    flex-direction: column;
+  }
+  
+  .divider {
+    width: 100%;
+    height: 1px;
+    margin: 1rem 0;
+  }
+}
+
+/* Table Responsive Behavior */
+@media (max-width: 992px) {
+  .nz-table-content {
+    overflow-x: auto;
+  }
+  
+  th, td {
+    min-width: 120px;
+    white-space: nowrap;
+  }
+}

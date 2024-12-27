@@ -1,72 +1,65 @@
-
 <div class="calendar-container">
-    <div class="calendar-header">
-      <button nz-button nzShape="circle" (click)="previousMonth()" class="prev-month">
+  <div class="calendar-header">
+    <div class="navigation-group">
+      <button nz-button nzShape="circle" (click)="previousMonth()" class="nav-button">
         <i nz-icon nzType="left"></i>
       </button>
-
       <span class="month-title">{{ currentMonth | date: 'MMMM y':'':'fr'}}</span>
-
-      <form [formGroup]="Hospitalform" class="form">
-        <nz-select formControlName="hospital"  nzShowSearch>
-          
-            <nz-option *ngFor="let hospital of hospitals" [nzLabel]="hospital.name" [nzValue]="hospital.id"></nz-option>
-          
-        </nz-select>
-        <!-- <div nz-row class="row">
-          <div class="">
-            <nz-select formControlName="hospital" nzPlaceHolder="Sélectionnez un hôpital">
-              <nz-option *ngFor="let hospital of hospitals" [nzValue]="hospital.id" [nzLabel]="hospital.name"></nz-option>
-            </nz-select>                       
-          </div>
-        </div> -->
-      </form>
-  
-      <button nz-button nzShape="circle" (click)="nextMonth()" class="next-month">
+      <button nz-button nzShape="circle" (click)="nextMonth()" class="nav-button">
         <i nz-icon nzType="right"></i>
       </button>
     </div>
-  
+
+    <form [formGroup]="Hospitalform" class="hospital-form">
+      <nz-select formControlName="hospital" nzShowSearch>
+        <nz-option *ngFor="let hospital of hospitals" 
+                  [nzLabel]="hospital.name" 
+                  [nzValue]="hospital.id">
+        </nz-option>
+      </nz-select>
+    </form>
+  </div>
+
+  <div class="calendar-table-container">
     <nz-table nzBordered class="calendar-table">
       <thead>
         <tr>
-          <th>Dimanche</th>
-          <th>Lundi</th>
-          <th>Mardi</th>
-          <th>Mercredi</th>
-          <th>Jeudi</th>
-          <th>Vendredi</th>
-          <th>Samedi</th>
+          <th class="calendar-header-cell">Dim</th>
+          <th class="calendar-header-cell">Lun</th>
+          <th class="calendar-header-cell">Mar</th>
+          <th class="calendar-header-cell">Mer</th>
+          <th class="calendar-header-cell">Jeu</th>
+          <th class="calendar-header-cell">Ven</th>
+          <th class="calendar-header-cell">Sam</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let week of weeks">
           <td *ngFor="let day of week"
-              [class.other-month]="isOtherMonth(day)" 
-              [class.availability]="hasAvailability(day)" 
-              (click)="onAppointmentClick(day)">
-            <span>{{ day ? day.getDate() : '' }}</span>
-            <br>
-            <span *ngIf="hasAvailability(day) && getAppointmentCount(day).follow > 0" 
-                  class="appointments-count follow" 
-                  style="color: rgb(133, 7, 7);">
-              {{ getAppointmentCount(day).follow }} RDV pour suivi
-            </span>
-  
-            <span *ngIf="hasAvailability(day) && getAppointmentCount(day).notFollow > 0" 
-                  class="appointments-count not-follow" 
-                  style="color: rgb(63, 13, 246); font-weight: bold;">
-              {{ getAppointmentCount(day).notFollow }} RDV
-            </span>
-            <br>
-  
-            <span *ngIf="hasAvailability(day) && getAvailabilityTime(day) as time">
-              {{ time }}
-            </span>
-            
+              [class.other-month]="isOtherMonth(day)"
+              [class.availability]="hasAvailability(day)"
+              (click)="onAppointmentClick(day)"
+              class="calendar-cell">
+            <div class="day-content">
+              <span class="day-number">{{ day ? day.getDate() : '' }}</span>
+              
+              <div class="appointments-info" *ngIf="hasAvailability(day)">
+                <span *ngIf="getAppointmentCount(day).follow > 0"
+                      class="appointments-count follow">
+                  {{ getAppointmentCount(day).follow }} suivi
+                </span>
+                <span *ngIf="getAppointmentCount(day).notFollow > 0"
+                      class="appointments-count not-follow">
+                  {{ getAppointmentCount(day).notFollow }} RDV
+                </span>
+                <span class="availability-time" *ngIf="getAvailabilityTime(day) as time">
+                  {{ time }}
+                </span>
+              </div>
+            </div>
           </td>
         </tr>
       </tbody>
     </nz-table>
-    
   </div>
+</div>
