@@ -59,7 +59,7 @@
     gap: 8px;
   }
 
-  .language-select {
+  /* .language-select {
     @media (max-width: 576px) {
       width: 100px;
     }
@@ -67,21 +67,21 @@
     @media (max-width: 400px) {
       display: none;
     }
-  }
+  } */
 
   .username {
     color: white;
     
-    @media (max-width: 576px) {
+    /* @media (max-width: 576px) {
       display: none;
-    }
+    } */
   }
 
-  img {
+  /* img {
     @media (max-width: 576px) {
       display: none;
     }
-  }
+  } */
 }
 
 /* Sidebar */
@@ -176,11 +176,11 @@ nz-content {
 }
 
 
-.language-select {
+/* .language-select {
   margin-right: 20px;
-}
+} */
 
-::ng-deep .language-select .ant-select-selector {
+/* ::ng-deep .language-select .ant-select-selector {
   background-color: #1890ff !important;
   color: white !important;
   border: none !important;
@@ -192,11 +192,11 @@ nz-content {
 
 ::ng-deep .language-select .ant-select-selection-item {
   color: white !important;
-}
+} */
 
 /* Styles spécifiques ng-zorro */
 ::ng-deep {
-  .language-select {
+  /* .language-select {
     .ant-select-selector {
       background-color: #1890ff !important;
       color: white !important;
@@ -210,7 +210,7 @@ nz-content {
     .ant-select-selection-item {
       color: white !important;
     }
-  }
+  } */
 
   .ant-layout-sider-trigger {
     display: none;

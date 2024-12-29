@@ -1,51 +1,67 @@
-<div nz-row>
-    <div nz-col nzSpan="24">
-        <button *ngIf="canCreateAvailibility" nz-button nzType="primary" routerLink="/back-office/medecin/create-availability" class="float-left">Créer une
-            disponibilité pour les RDV</button>
-        <br><br>
-        <nz-table  #basicTable [nzData]="availabilities" *ngIf="canViewListAvailibility" [nzBordered]="true" [nzSize]="'middle'" class="table">
+<div class="availability-container">
+    <div class="button-container">
+        <button *ngIf="canCreateAvailibility" 
+                nz-button 
+                nzType="primary" 
+                routerLink="/back-office/medecin/create-availability">
+            Créer une disponibilité pour les RDV
+        </button>
+    </div>
+  
+    <div class="table-container" *ngIf="canViewListAvailibility">
+        <nz-table #basicTable 
+                    [nzData]="availabilities" 
+                    [nzBordered]="true" 
+                    [nzSize]="'middle'"
+                    class="desktop-table"
+                    [nzScroll]="{ x: '800px' }">
             <thead>
                 <tr>
-                    <th nzColumnKey="id">Id</th>
-                    <th nzColumnKey="day">Jour</th>
-                    <th nzColumnKey="startTime">Heure Début</th>
-                    <th nzColumnKey="endTime">Heure fin</th>
-                    <th nzColumnKey="room">Salle</th>
-                    <th nzColumnKey="period">Nb de mois</th>
-                    <th nzColumnKey="hospital">Hopital</th>
-                    <th nzColumnKey="action">Action</th>
+                    <th nzLeft>#ID</th>
+                    <th>Jour</th>
+                    <th>Heure Début</th>
+                    <th>Heure fin</th>
+                    <th>Salle</th>
+                    <th>Nb de mois</th>
+                    <th>Hopital</th>
+                    <th nzRight>Action</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let availability of availabilities; let i = index" nz-table-tr>
-                    <td>{{ i + 1 }}</td>
-                    <td>{{ availability . day['name'] }}</td>
-                    <td>{{ availability . startTime }}</td>
-                    <td>{{ availability . endTime }}</td>
-                    <td>{{ availability . room }}</td>
-                    <td>{{ availability . period }}</td>
-                    <td>{{ availability . hospitalDTO . name }}</td>
-                    <td>
-                        <button *ngIf="canEditAvailibility" nz-button nzType="default" nzDanger
-                            (click)="updateAvailability1(availability)">Modifier</button>
-
+                <tr *ngFor="let availability of availabilities; let i = index">
+                    <td nzLeft>{{ i + 1 }}</td>
+                    <td>{{ availability.day['name'] }}</td>
+                    <td>{{ availability.startTime }}</td>
+                    <td>{{ availability.endTime }}</td>
+                    <td>{{ availability.room }}</td>
+                    <td>{{ availability.period }}</td>
+                    <td>{{ availability.hospitalDTO.name }}</td>
+                    <td nzRight>
+                    <button *ngIf="canEditAvailibility" 
+                            nz-button 
+                            nzType="default" 
+                            nzDanger
+                            (click)="updateAvailability1(availability)">
+                        Modifier
+                    </button>
                     </td>
                 </tr>
             </tbody>
         </nz-table>
-        <br>
-
     </div>
-</div>
 
-<div>
-    <nz-modal [(nzVisible)]="isVisible" nzTitle="Modifier la disponobilité" nzOkText="Modifier" nzCancelText="annuler"
-        (nzOnOk)="Submit()" (nzOnCancel)="handleCancel()" [nzWidth]="900">
+
+    <nz-modal [(nzVisible)]="isVisible" 
+            nzTitle="Modifier la disponobilité" 
+            [nzFooter]="modalFooter"
+            (nzOnCancel)="handleCancel()" 
+            [nzWidth]="'90%'"
+            [nzBodyStyle]="{ maxHeight: '80vh', overflow: 'auto' }">
         <ng-container *nzModalContent>
-            <form nz-form [formGroup]="availabiltyForm" (ngSubmit)="Submit()">
+            <form nz-form [formGroup]="availabiltyForm" (ngSubmit)="Submit()" class="responsive-form">
                 <nz-form-item>
-                    <nz-form-label [nzSpan]="3">Jour</nz-form-label>
-                    <nz-form-control nzSpan="20">
+                    <nz-form-label [nzXs]="24" [nzSm]="6">Jour</nz-form-label>
+                    <nz-form-control [nzXs]="24" [nzSm]="18">
                         <nz-select formControlName="day" nzPlaceHolder="Sélectionner un jour">
                             <nz-option *ngFor="let day of days" [nzValue]="day.id" [nzLabel]="day.name"></nz-option>
                         </nz-select>
@@ -53,20 +69,20 @@
                 </nz-form-item>
 
                 <nz-form-item>
-                    <nz-form-label [nzSpan]="3">Heure début</nz-form-label>
-                    <nz-form-control [nzSpan]="20">
+                    <nz-form-label [nzXs]="24" [nzSm]="6">Heure début</nz-form-label>
+                    <nz-form-control [nzXs]="24" [nzSm]="18">
                         <input nz-input type="time" formControlName="startTime" />
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
-                    <nz-form-label [nzSpan]="3">Heure fin</nz-form-label>
-                    <nz-form-control [nzSpan]="20">
+                    <nz-form-label [nzXs]="24" [nzSm]="6">Heure fin</nz-form-label>
+                    <nz-form-control [nzXs]="24" [nzSm]="18">
                         <input nz-input type="time" formControlName="endTime" />
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
-                    <nz-form-label [nzSpan]="3">Périodicité</nz-form-label>
-                    <nz-form-control [nzSpan]="20">
+                    <nz-form-label [nzXs]="24" [nzSm]="6">Périodicité</nz-form-label>
+                    <nz-form-control [nzXs]="24" [nzSm]="18">
                         <nz-select formControlName="frequency" nzPlaceHolder="Sélectionner une périodicité">
                             <nz-option *ngFor="let frequency of frequencies" [nzValue]="frequency"
                                 [nzLabel]="frequency.name"></nz-option>
@@ -75,15 +91,15 @@
                 </nz-form-item>
 
                 <nz-form-item *ngIf="mensuelle">
-                    <nz-form-label [nzSpan]="3">Ordre du jour</nz-form-label>
-                    <nz-form-control [nzSpan]="20">
+                    <nz-form-label [nzXs]="24" [nzSm]="6">Ordre du jour</nz-form-label>
+                    <nz-form-control [nzXs]="24" [nzSm]="18">
                         <input nz-input type="number" formControlName="orderOfDay" />
                     </nz-form-control>
                 </nz-form-item>
 
                 <nz-form-item>
-                    <nz-form-label [nzSpan]="3">Hôpital</nz-form-label>
-                    <nz-form-control [nzSpan]="20">
+                    <nz-form-label [nzXs]="24" [nzSm]="6">Hôpital</nz-form-label>
+                    <nz-form-control [nzXs]="24" [nzSm]="18">
                         <nz-select formControlName="hospital" nzPlaceHolder="Sélectionner l'hôpital">
                             <nz-option *ngFor="let hospital of hospitals" [nzValue]="hospital.id"
                                 [nzLabel]="hospital.name"></nz-option>
@@ -94,8 +110,8 @@
 
 
                 <nz-form-item>
-                    <nz-form-label [nzSpan]="3">Bâtiment</nz-form-label>
-                    <nz-form-control [nzSpan]="20">
+                    <nz-form-label [nzXs]="24" [nzSm]="6">Bâtiment</nz-form-label>
+                    <nz-form-control [nzXs]="24" [nzSm]="18">
                         <nz-select formControlName="building" nzPlaceHolder="Sélectionner le bâtiment">
                             <nz-option *ngFor="let building of buildings" [nzValue]="building.id"
                                 [nzLabel]="building.name"></nz-option>
@@ -104,8 +120,8 @@
                 </nz-form-item>
 
                 <nz-form-item>
-                    <nz-form-label [nzSpan]="3">Salle</nz-form-label>
-                    <nz-form-control [nzSpan]="20">
+                    <nz-form-label [nzXs]="24" [nzSm]="6">Salle</nz-form-label>
+                    <nz-form-control [nzXs]="24" [nzSm]="18">
                         <nz-select formControlName="room" nzPlaceHolder="Sélectionner une salle">
                             <nz-option *ngFor="let room of rooms" [nzValue]="room.room"
                                 [nzLabel]="room.room"></nz-option>
@@ -114,18 +130,26 @@
                 </nz-form-item>
 
                 <nz-form-item>
-                    <nz-form-label [nzSpan]="20">Nombre maximum de Rendez-vous</nz-form-label>
-                    <nz-form-control [nzSpan]="3">
+                    <nz-form-label [nzXs]="24" [nzSm]="18">Nombre maximum de Rendez-vous</nz-form-label>
+                    <nz-form-control [nzXs]="24" [nzSm]="6">
                         <input nz-input type="number" formControlName="maxNumberOfAppointments" />
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item>
-                    <nz-form-label [nzSpan]="20">Nombre de mois valides pour la disponibilité </nz-form-label>
-                    <nz-form-control [nzSpan]="3">
+                    <nz-form-label [nzXs]="24" [nzSm]="18">Nombre de mois valides pour la disponibilité </nz-form-label>
+                    <nz-form-control [nzXs]="24" [nzSm]="6">
                         <input nz-input type="number" formControlName="period" type="number" />
                     </nz-form-control>
                 </nz-form-item>
             </form>
         </ng-container>
+        <ng-template #modalFooter>
+            <div class="modal-footer">
+                <button nz-button nzType="default" (click)="handleCancel()">Annuler</button>
+                <button nz-button nzType="primary" (click)="Submit()" [disabled]="availabiltyForm.invalid">
+                    Modifier
+                </button>
+            </div>
+        </ng-template>
     </nz-modal>
 </div>

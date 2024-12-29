@@ -1,4 +1,61 @@
+nz-form-item {
+  width: 100%;
+  margin-bottom: 24px;
+}
 
-button {
-  margin-left: 8px;
+nz-form-label {
+  white-space: normal !important;
+  text-align: left !important;
+  line-height: 1.2 !important;
+  height: auto !important;
+  padding-bottom: 8px !important;
+}
+
+nz-form-control {
+  width: 100% !important;
+}
+
+.body {
+  height: 68vh;
+}
+
+@media (max-width: 768px) {
+  nz-form-item {
+    flex-direction: column !important;
+  }
+
+  nz-form-label {
+    padding-bottom: 8px !important;
+    text-align: left !important;
+  }
+
+  [nz-form-label] {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  [nz-form-control] {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  .ant-form-item-label {
+    padding: 0 0 8px !important;
+  }
+  
+  /* Force les labels à rester sur leur propre ligne */
+  .ant-col {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  .submit-container {
+    align-items: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .body {
+    height: 100%;
+  }
 }
