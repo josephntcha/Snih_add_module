@@ -25,6 +25,7 @@ import { LandingPageComponent } from './landing-page/landing-page.component';
 import { NzCarouselModule } from 'ng-zorro-antd/carousel';
 import { MedecinModule } from '../back-office/medecin/medecin.module';
 import { NzIconModule } from 'ng-zorro-antd/icon';
+import { NzTagModule } from 'ng-zorro-antd/tag';
 
 
 @NgModule({
@@ -57,6 +58,7 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
     ReactiveFormsModule,
     NzCarouselModule,
     NzIconModule,
+    NzTagModule,
     MedecinModule
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
