@@ -1,56 +1,171 @@
-.selected-items {
-    margin-bottom: 16px;
-    padding: 8px;
-    background-color: #e6f7ff;
-    border: 1px solid #91d5ff;
-    border-radius: 4px;
+.hospital-management-container {
+  padding: 1rem;
+  width: 100%;
+}
+
+/* Search Section */
+.search-section {
+  margin-bottom: 1rem;
+}
+
+.search-box-wrapper {
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Actions Section */
+.actions-section {
+  margin-bottom: 1rem;
+}
+
+.button-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.action-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: auto;
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+}
+
+/* Selection Info */
+.selection-info {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.refresh-link {
+  color: #1890ff;
+  cursor: pointer;
+}
+
+/* Table Styles */
+.table-responsive {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+::ng-deep th {
+  font-weight: 600 !important;
+  white-space: nowrap;
+  padding: 0.75rem !important;
+}
+
+.id-column {
+  width: 80px;
+}
+
+.actions-column {
+  min-width: 150px;
+}
+
+.action-links {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.edit-link, .delete-link {
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.edit-link {
+  color: #1890ff;
+}
+
+.delete-link {
+  color: #ff4d4f;
+}
+
+/* Modal Form Styles */
+.hospital-form {
+  padding: 1rem;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  margin-top: 1.5rem;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .button-group {
+    flex-direction: column;
+    width: 100%;
   }
-  
-  .search-box {
-    margin-bottom: 16px;
+
+  .action-button {
+    width: 100%;
+    justify-content: center;
   }
-  
-  .table-operations {
-    margin-bottom: 16px;
+
+  .selection-info {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  
-  .table-operations button {
-    margin-right: 8px;
+
+  .hospital-form nz-form-label {
+    padding-bottom: 0.5rem;
   }
-  
-  .seachr-icon {
-    background-color: #1890ff;
+
+  .form-buttons {
+    flex-direction: column;
   }
-  
-  .green {
-    color: white;
-    background-color: rgb(32, 199, 32);
+
+  .form-buttons button {
+    width: 100%;
   }
-  
-  .red {
-    color: white;
-    background-color: red;
+}
+
+@media screen and (max-width: 576px) {
+  .hospital-management-container {
+    padding: 0.5rem;
   }
-  
-  .advanced-filter {
-    float: right;
-  }
-  
-  .advanced-filter-icon {
-    background-color: #1890ff;
-    color: white;
-    padding: 10px;
-  }
-  
-  .advanced-filter-icon2, .advanced-filter {
-    color: #1890ff;
-  }
-  
+
   ::ng-deep th {
-    font-weight: bolder !important;
+    padding: 0.5rem !important;
   }
-  
-   
-  nz-form-item button {
-    margin-left: 8px;
+
+  .action-links {
+    flex-direction: column;
+    align-items: flex-start;
   }
+
+  nz-divider {
+    display: none;
+  }
+
+  .edit-link, .delete-link {
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem;
+  }
+}
+
+/* Utility Classes */
+.green {
+  color: white;
+  background-color: rgb(32, 199, 32);
+}
+
+.red {
+  color: white;
+  background-color: red;
+}

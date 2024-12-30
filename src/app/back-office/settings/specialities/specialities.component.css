@@ -1,24 +1,48 @@
+.container {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
 .selected-items {
-    margin-bottom: 16px;
-    padding: 8px;
-    background-color: #e6f7ff;
-    border: 1px solid #91d5ff;
-    border-radius: 4px;
+  margin-bottom: 16px;
+  padding: 8px;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 4px;
+}
+
+.table-operations {
+  margin-bottom: 16px;
+}
+
+::ng-deep th {
+  font-weight: bolder !important;
+}
+
+/* Responsive adjustments */
+@media screen and (max-width: 576px) {
+  .table-operations button {
+    width: 100%;
+    margin-bottom: 8px;
   }
-  
-  .table-operations {
-    margin-bottom: 16px;
+
+  .selected-items {
+    padding: 12px;
   }
-  
+
+  nz-form-item button {
+    width: 100%;
+    margin: 4px 0;
+  }
+}
+
+@media screen and (min-width: 577px) {
   .table-operations button {
     margin-right: 8px;
   }
-  
-  ::ng-deep th {
-    font-weight: bolder !important;
-  }
-
 
   nz-form-item button {
     margin-left: 8px;
   }
+}

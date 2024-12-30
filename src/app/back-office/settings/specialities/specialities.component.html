@@ -1,119 +1,149 @@
-<!-- <div class="search-box">
-    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-        <input type="text" nz-input placeholder="Search..." />
-    </nz-input-group>
-    <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
-    </ng-template>
-</div> -->
-
-<form *ngIf="canViewList" [formGroup]="filterForm">
-    <nz-form-item>
-        <nz-form-label>Options de filtre</nz-form-label>
-        <nz-form-control >
-            <nz-select formControlName="filterInput" (nzOpenChange)="filterSpecialities()" nzPlaceHolder="Choisir une option de filtre">
-                <nz-option [nzLabel]="'Voir toutes les spécialités'" [nzValue]="false"></nz-option>
-                <nz-option [nzLabel]="'Voir les spécialités de mon hôpital'" [nzValue]="true"></nz-option>
-            </nz-select>
+<!-- Container principal avec padding responsive -->
+<div class="container px-4 md:px-6 lg:px-8">
+    <!-- Formulaire de filtre -->
+    <form *ngIf="canViewList" [formGroup]="filterForm" class="mb-4">
+      <nz-form-item nz-row>
+        <nz-form-label [nzXs]="24" [nzSm]="8" [nzMd]="6">Options de filtre</nz-form-label>
+        <nz-form-control [nzXs]="24" [nzSm]="16" [nzMd]="18">
+          <nz-select class="w-full" formControlName="filterInput" (nzOpenChange)="filterSpecialities()" nzPlaceHolder="Choisir une option de filtre">
+            <nz-option [nzLabel]="'Voir toutes les spécialités'" [nzValue]="false"></nz-option>
+            <nz-option [nzLabel]="'Voir les spécialités de mon hôpital'" [nzValue]="true"></nz-option>
+          </nz-select>
         </nz-form-control>
-    </nz-form-item>
-</form>
-
-<div class="table-operations">
-    <button *ngIf="canCreateSpeciality" (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer une specialité</button>
-    <button *ngIf="canViewList" nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
-</div>
-<div *ngIf="canViewList" class="selected-items">
-    {{ setOfCheckedId.size }} éléments selectionnés
-    <a (click)="refreshCheckedStatus()">Refraîchir</a>
-</div>
-<nz-table *ngIf="canViewList"
-    #basicTable 
-    nzShowSizeChanger
-    [nzData]="listOfData"
-    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
->
-    <thead>
-        <tr>
-            <th [nzChecked]="checked" 
-                [nzIndeterminate]="indeterminate" 
-                (nzCheckedChange)="onAllChecked($event)"
-            ></th>
-            <th>#ID</th>
+      </nz-form-item>
+    </form>
+  
+    <!-- Boutons d'opération -->
+    <div class="table-operations flex flex-wrap gap-2 mb-4">
+      <button *ngIf="canCreateSpeciality" (click)="showModal()" nz-button nzType="primary">
+        <i nz-icon nzType="plus"></i>
+        <span class="ml-1">Créer une specialité</span>
+      </button>
+      <button *ngIf="canViewList" nz-button (click)="exportToFile()">
+        <i nz-icon nzType="export"></i>
+        <span class="ml-1">Exporter en Excel</span>
+      </button>
+    </div>
+  
+    <!-- Information des éléments sélectionnés -->
+    <div *ngIf="canViewList" class="selected-items mb-4">
+      <div class="flex justify-between items-center">
+        <span>{{ setOfCheckedId.size }} éléments selectionnés</span>
+        <a (click)="refreshCheckedStatus()">Refraîchir</a>
+      </div>
+    </div>
+  
+    <!-- Table responsive -->
+    <div *ngIf="canViewList" class="overflow-x-auto">
+      <nz-table 
+        #basicTable 
+        nzShowSizeChanger
+        [nzData]="listOfData"
+        [nzScroll]="{ x: '800px' }"
+        (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
+      >
+        <thead>
+          <tr>
+            <th [nzWidth]="'60px'" [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+            <th [nzWidth]="'80px'">#ID</th>
             <th>Nom</th>
-            <th *ngIf="canEditSpeciality || canDeleteSpeciality">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let data of basicTable.data">
+            <th *ngIf="canEditSpeciality || canDeleteSpeciality" [nzWidth]="'150px'">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
             <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
             <td>{{ data.id }}</td>
             <td>{{ data.name }}</td>
-            <td>
+            <td *ngIf="canEditSpeciality || canDeleteSpeciality">
+              <div class="flex gap-2">
                 <a *ngIf="canEditSpeciality" (click)="editSpeciality(data)">Editer</a>
-                <nz-divider *ngIf="canEditSpeciality" nzType="vertical"></nz-divider>
-                <a *ngIf="canDeleteSpeciality" (click)="deleteSpeciality(data.id)">Spprimer</a>
+                <nz-divider *ngIf="canEditSpeciality && canDeleteSpeciality" nzType="vertical"></nz-divider>
+                <a *ngIf="canDeleteSpeciality" (click)="deleteSpeciality(data.id)">Supprimer</a>
+              </div>
             </td>
-        </tr>
-    </tbody>
-</nz-table>
-
-
-<nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout de spécialité" (nzOnCancel)="handleCancel()">
-    <ng-container *nzModalContent>
-        <button nz-button *ngIf="canAddSpecialityToAnotherHospital || canAddSpecialityToOwnHospital" nzType="primary" (click)="addSpecialityToHospital()" >{{buttonText }}</button>
-        <br><br>
-
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  
+    <!-- Modal responsive -->
+    <nz-modal 
+      nzFooter=" " 
+      [(nzVisible)]="isVisible" 
+      nzTitle="Ajout de spécialité" 
+      (nzOnCancel)="handleCancel()"
+      [nzWidth]="'90vw'"
+      [nzBodyStyle]="{ maxWidth: '600px', margin: '0 auto' }"
+    >
+      <ng-container *nzModalContent>
+        <div class="mb-4">
+          <button 
+            nz-button 
+            *ngIf="canAddSpecialityToAnotherHospital || canAddSpecialityToOwnHospital" 
+            nzType="primary" 
+            (click)="addSpecialityToHospital()" 
+            class="w-full md:w-auto"
+          >
+            {{buttonText}}
+          </button>
+        </div>
+  
+        <!-- Formulaire de création -->
         <form *ngIf="!isToAddSpecialityToHospital" [formGroup]="specialityForm" (ngSubmit)="onSubmit()">
-            <nz-form-item>
-                <nz-form-label nzSpan="6" nzRequired>Nom</nz-form-label>
-                <nz-form-control nzSpan="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="name" placeholder="Nom de la spécialité">
-                </nz-form-control>
-            </nz-form-item>
-    
-            <nz-form-item>
-                <nz-form-control nzOffset="7" nzSpan="12">
-                    <button nz-button nzType="primary" [disabled]="specialityForm.invalid">Soumettre</button>
-                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
-                </nz-form-control>
-            </nz-form-item>
+          <nz-form-item>
+            <nz-form-label [nzXs]="24" [nzSm]="6" nzRequired>Nom</nz-form-label>
+            <nz-form-control [nzXs]="24" [nzSm]="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+              <input nz-input formControlName="name" placeholder="Nom de la spécialité">
+            </nz-form-control>
+          </nz-form-item>
+  
+          <nz-form-item>
+            <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 18, offset: 6 }">
+              <div class="flex flex-wrap gap-2">
+                <button nz-button nzType="primary" [disabled]="specialityForm.invalid">Soumettre</button>
+                <button nz-button (click)="resetForm($event)">Réinitialiser</button>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
         </form>
-
-        
-
+  
+        <!-- Formulaire d'ajout de spécialité -->
         <form *ngIf="isToAddSpecialityToHospital" [formGroup]="addSpecialityform" (ngSubmit)="addSpeciality()">
-            <nz-form-item *ngIf="canAddSpecialityToAnotherHospital">
-              <nz-form-label nzSpan="8" nzRequired>Hôpital</nz-form-label>
-              <nz-form-control nzSpan="16">
-                <nz-select formControlName="hospital" nzPlaceHolder="Sélectionner l'hôpital">
-                  <nz-option *ngFor="let hosp of hospitals" [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
-                </nz-select>
-              </nz-form-control>
-            </nz-form-item>
-          
-            <nz-form-item>
-              <nz-form-label nzSpan="8" nzRequired>Spécialité</nz-form-label>
-              <nz-form-control nzSpan="16">
-                <nz-select formControlName="speciality" nzPlaceHolder="Sélectionner la spécialité">
-                  <nz-option *ngFor="let sp of listOfData" [nzLabel]="sp.name" [nzValue]="sp.id"></nz-option>
-                </nz-select>
-              </nz-form-control>
-            </nz-form-item>
-          
-            <nz-form-item>
-              <nz-form-label nzSpan="8" nzRequired>Coût de la consultation</nz-form-label>
-              <nz-form-control nzSpan="16" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                <input nz-input formControlName="price" placeholder="Coût">
-              </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-              <nz-form-control nzOffset="7" nzSpan="12">
+          <nz-form-item *ngIf="canAddSpecialityToAnotherHospital">
+            <nz-form-label [nzXs]="24" [nzSm]="8" nzRequired>Hôpital</nz-form-label>
+            <nz-form-control [nzXs]="24" [nzSm]="16">
+              <nz-select class="w-full" formControlName="hospital" nzPlaceHolder="Sélectionner l'hôpital">
+                <nz-option *ngFor="let hosp of hospitals" [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+  
+          <nz-form-item>
+            <nz-form-label [nzXs]="24" [nzSm]="8" nzRequired>Spécialité</nz-form-label>
+            <nz-form-control [nzXs]="24" [nzSm]="16">
+              <nz-select class="w-full" formControlName="speciality" nzPlaceHolder="Sélectionner la spécialité">
+                <nz-option *ngFor="let sp of listOfData" [nzLabel]="sp.name" [nzValue]="sp.id"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+  
+          <nz-form-item>
+            <nz-form-label [nzXs]="24" [nzSm]="8" nzRequired>Coût de la consultation</nz-form-label>
+            <nz-form-control [nzXs]="24" [nzSm]="16" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+              <input nz-input formControlName="price" placeholder="Coût">
+            </nz-form-control>
+          </nz-form-item>
+  
+          <nz-form-item>
+            <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 16, offset: 8 }">
+              <div class="flex flex-wrap gap-2">
                 <button nz-button nzType="primary" [disabled]="addSpecialityform.invalid">Soumettre</button>
                 <button nz-button (click)="resetForm($event)">Réinitialiser</button>
-              </nz-form-control>
-            </nz-form-item>
-          </form>
-          
-    </ng-container>
-</nz-modal>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
+        </form>
+      </ng-container>
+    </nz-modal>
+  </div>

@@ -1,43 +1,76 @@
-<div *ngFor="let availability of availabilities" class="container-fluid mt-3 p-5 bg-light">
-    <div class="row">
-      <div class="col-6 h3">Liste des RDV pour le {{ availability.appointments[0]?.date | date:'fullDate':'':'fr' }}</div>
+<div class="appointments-container">
+  <div *ngFor="let availability of availabilities" class="appointment-section">
+    <div class="appointment-header">
+      <h3 class="date-title">
+        Liste des RDV pour le {{ availability.appointments[0]?.date | date:'fullDate':'':'fr' }}
+      </h3>
     </div>
-  
-    <br>
-    <nz-table #basicTable [nzData]="availability.appointments" [nzBordered]="true">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Nom</th>
-          <th>Prénom</th>
-          <th>Email</th>
-          <th>Date</th>
-          <th>Statut</th>
-          <th *ngIf="rightConfirm || rightPostpone || rightCancel">
-            <span class="offset-md-3">Actions</span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let appointment of availability.appointments; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>{{ appointment.patientLastName }}</td>
-          <td>{{ appointment.patientFirstName }}</td>
-          <td>{{ appointment.patientEmail }}</td>
-          <td>{{ appointment.date | date:'d MMMM y':'':'fr'}}</td>
-          <td>
-            <ng-container *ngIf="appointment.status === 'ASKED'">En attente</ng-container>
-            <ng-container *ngIf="appointment.status === 'POSTPONE'">Reporté</ng-container>
-            <ng-container *ngIf="appointment.status === 'CONFIRMED'">Confirmé</ng-container>
-            <ng-container *ngIf="appointment.status === 'CANCEL'">Annulé</ng-container>
-          </td>
-          <td>
-            <button *ngIf="rightConfirm && (appointment.status === 'ASKED' || appointment.status === 'POSTPONE')" nz-button nzType="primary" nzSize="small" (click)="showConfirmationDialog(appointment)">Confirmer</button>
-            <button *ngIf="rightPostpone && (appointment.status === 'ASKED' || appointment.status === 'POSTPONE')" nz-button nzType="default" nzSize="small" class="reporter" (click)="showpostponeDialog(appointment)">Reporter</button>
-            <button *ngIf="rightCancel && (appointment.status === 'ASKED' || appointment.status === 'POSTPONE')" nz-button nzType="default" nzSize="small" class="annuler" (click)="showdeleteDialog(appointment)">Annuler</button>
-          </td>
-        </tr>
-      </tbody>
-    </nz-table>
+
+    <div class="table-responsive">
+      <nz-table 
+        #basicTable 
+        [nzData]="availability.appointments" 
+        [nzBordered]="true"
+        [nzScroll]="{ x: '800px' }"
+        nzSize="middle"
+        class="responsive-table">
+        <thead>
+          <tr>
+            <th nzLeft nzWidth="60px">#</th>
+            <th nzWidth="120px">Nom</th>
+            <th nzWidth="120px">Prénom</th>
+            <th nzWidth="200px">Email</th>
+            <th nzWidth="150px">Date</th>
+            <th nzWidth="100px">Statut</th>
+            <th *ngIf="rightConfirm || rightPostpone || rightCancel" 
+                nzRight 
+                nzWidth="200px">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let appointment of availability.appointments; let i = index">
+            <td nzLeft>{{ i + 1 }}</td>
+            <td>{{ appointment.patientLastName }}</td>
+            <td>{{ appointment.patientFirstName }}</td>
+            <td>{{ appointment.patientEmail }}</td>
+            <td>{{ appointment.date | date:'d MMMM y':'':'fr'}}</td>
+            <td>
+              <nz-tag
+                [nzColor]="getStatusColor(appointment.status)">
+                {{ getStatusLabel(appointment.status) }}
+              </nz-tag>
+            </td>
+            <td nzRight class="action-buttons">
+              <button 
+                *ngIf="rightConfirm && (appointment.status === 'ASKED' || appointment.status === 'POSTPONE')" 
+                nz-button 
+                nzType="primary" 
+                nzSize="small" 
+                (click)="showConfirmationDialog(appointment)">
+                Confirmer
+              </button>
+              <button 
+                *ngIf="rightPostpone && (appointment.status === 'ASKED' || appointment.status === 'POSTPONE')" 
+                nz-button 
+                class="postpone-btn" 
+                nzSize="small" 
+                (click)="showpostponeDialog(appointment)">
+                Reporter
+              </button>
+              <button 
+                *ngIf="rightCancel && (appointment.status === 'ASKED' || appointment.status === 'POSTPONE')" 
+                nz-button 
+                class="cancel-btn" 
+                nzSize="small" 
+                (click)="showdeleteDialog(appointment)">
+                Annuler
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
   </div>
-  
+</div>

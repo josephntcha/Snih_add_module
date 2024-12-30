@@ -8,6 +8,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../../services/auth.service';
 import { ApiServiceService } from '../../../services/api-service.service';
 import { Permission } from '../../../models/model';
+type AppointmentStatus = 'ASKED' | 'POSTPONE' | 'CONFIRMED' | 'CANCEL';
 
 @Component({
   selector: 'app-appointments-list',
@@ -104,6 +105,28 @@ ngOnInit(): void {
       this.secretaryId=selectedSecretaryId;
     });
  
+}
+
+private statusColors: Record<AppointmentStatus, string> = {
+  'ASKED': 'blue',
+  'POSTPONE': 'orange',
+  'CONFIRMED': 'green',
+  'CANCEL': 'red'
+};
+
+private statusLabels: Record<AppointmentStatus, string> = {
+  'ASKED': 'En attente',
+  'POSTPONE': 'Reporté',
+  'CONFIRMED': 'Confirmé',
+  'CANCEL': 'Annulé'
+};
+
+getStatusColor(status: string): string {
+  return this.statusColors[status as AppointmentStatus] || 'default';
+}
+
+getStatusLabel(status: string): string {
+  return this.statusLabels[status as AppointmentStatus] || status;
 }
 
 loadAvailabilityAndAppiontment(){

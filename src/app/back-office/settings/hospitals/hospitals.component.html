@@ -1,76 +1,138 @@
-<div *ngIf="canViewList" class="search-box">
-    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-        <input type="text" nz-input placeholder="Recherche..." [(ngModel)]="searchValue" (ngModelChange)="onSearch()"/>
-    </nz-input-group>
-    <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
-    </ng-template>
-</div>
-<div class="table-operations">
-    <button *ngIf="canCreateHospital" (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un hôpital</button>
-    <button *ngIf="canViewList" nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
-</div>
-<div *ngIf="canViewList" class="selected-items">
-    {{ setOfCheckedId.size }} éléments sélectionnés
-    <a (click)="refreshCheckedStatus()">Rafraîchir</a>
-</div>
-<nz-table *ngIf="canViewList" 
-    #basicTable 
-    nzShowSizeChanger
-    [nzData]="filteredData"
-    (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
->
-    <thead>
-        <tr>
+<div class="hospital-management-container">
+    <!-- Search Section -->
+    <div *ngIf="canViewList" class="search-section">
+      <div class="search-box-wrapper">
+        <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
+          <input type="text" 
+                 nz-input 
+                 placeholder="Recherche..." 
+                 [(ngModel)]="searchValue" 
+                 (ngModelChange)="onSearch()"/>
+        </nz-input-group>
+        <ng-template #suffixIconButton>
+          <button nz-button nzType="primary" nzSearch>
+            <span nz-icon nzType="search"></span>
+          </button>
+        </ng-template>
+      </div>
+    </div>
+  
+    <!-- Actions Section -->
+    <div class="actions-section">
+      <div class="button-group">
+        <button *ngIf="canCreateHospital" 
+                (click)="showModal()" 
+                nz-button 
+                nzType="primary" 
+                class="action-button">
+          <i nz-icon nzType="plus"></i>
+          <span class="button-text">Créer un hôpital</span>
+        </button>
+        <button *ngIf="canViewList" 
+                nz-button 
+                (click)="exportToFile()" 
+                class="action-button">
+          <i nz-icon nzType="export"></i>
+          <span class="button-text">Exporter en Excel</span>
+        </button>
+      </div>
+    </div>
+  
+    <!-- Selection Info -->
+    <div *ngIf="canViewList" class="selection-info">
+      <span>{{ setOfCheckedId.size }} éléments sélectionnés</span>
+      <a (click)="refreshCheckedStatus()" class="refresh-link">Rafraîchir</a>
+    </div>
+  
+    <!-- Table Section -->
+    <div class="table-responsive">
+      <nz-table *ngIf="canViewList" 
+                #basicTable 
+                nzShowSizeChanger
+                [nzData]="filteredData"
+                (nzCurrentPageDataChange)="onCurrentPageDataChange($event)">
+        <thead>
+          <tr>
             <th [nzChecked]="checked" 
                 [nzIndeterminate]="indeterminate" 
-                (nzCheckedChange)="onAllChecked($event)"></th>
-            <th>#ID</th>
+                (nzCheckedChange)="onAllChecked($event)">
+            </th>
+            <th class="id-column">#ID</th>
             <th>Nom</th>
             <th>Localisation</th>
-            <th *ngIf="canEditHospital || canDeleteHospital">Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let data of basicTable.data">
-            <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
-            <td>{{ data.id }}</td>
+            <th *ngIf="canEditHospital || canDeleteHospital" class="actions-column">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td [nzChecked]="setOfCheckedId.has(data.id)" 
+                (nzCheckedChange)="onItemChecked(data.id, $event)">
+            </td>
+            <td class="id-column">{{ data.id }}</td>
             <td>{{ data.name }}</td>
             <td>{{ data.location }}</td>
-            <td>
-                <a *ngIf="canEditHospital" (click)="editHospital(data)">Editer</a>
-                <nz-divider *ngIf="canEditHospital" nzType="vertical"></nz-divider>
-                <a *ngIf="canDeleteHospital" (click)="deleteHospital(data.id)">Supprimer</a>
+            <td *ngIf="canEditHospital || canDeleteHospital" class="actions-column">
+              <div class="action-links">
+                <a *ngIf="canEditHospital" 
+                   (click)="editHospital(data)" 
+                   class="edit-link">Editer</a>
+                <nz-divider *ngIf="canEditHospital && canDeleteHospital" 
+                           nzType="vertical">
+                </nz-divider>
+                <a *ngIf="canDeleteHospital" 
+                   (click)="deleteHospital(data.id)" 
+                   class="delete-link">Supprimer</a>
+              </div>
             </td>
-        </tr>
-    </tbody>
-</nz-table>
-
-
-
-<nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout d'hôpital" (nzOnCancel)="handleCancel()">
-    <ng-container *nzModalContent>
-        <form [formGroup]="hospitalForm" (ngSubmit)="onSubmit()">
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired >Nom de l'hôpital</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="name" placeholder="Entrez le nom de l'hôpital">
-                </nz-form-control>
-            </nz-form-item>
-    
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired >Localisation</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="location" placeholder="Entrez la localisation de l'hôpital">
-                </nz-form-control>
-            </nz-form-item>
-    
-            <nz-form-item>
-                <nz-form-control nzOffset="7" nzSpan="12">
-                    <button nz-button nzType="primary" [disabled]="hospitalForm.invalid">Soumettre</button>
-                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
-                </nz-form-control>
-            </nz-form-item>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  
+    <!-- Modal Form -->
+    <nz-modal nzFooter=" " 
+              [(nzVisible)]="isVisible" 
+              nzTitle="Ajout d'hôpital" 
+              (nzOnCancel)="handleCancel()"
+              class="hospital-modal">
+      <ng-container *nzModalContent>
+        <form [formGroup]="hospitalForm" 
+              (ngSubmit)="onSubmit()" 
+              class="hospital-form">
+          <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired>
+              Nom de l'hôpital
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" 
+                            nzHasFeedback 
+                            nzErrorTip="Ce champ est obligatoire">
+              <input nz-input 
+                     formControlName="name" 
+                     placeholder="Entrez le nom de l'hôpital">
+            </nz-form-control>
+          </nz-form-item>
+  
+          <nz-form-item>
+            <nz-form-label [nzSm]="24" [nzXs]="24" nzRequired>
+              Localisation
+            </nz-form-label>
+            <nz-form-control [nzSm]="24" [nzXs]="24" 
+                            nzHasFeedback 
+                            nzErrorTip="Ce champ est obligatoire">
+              <input nz-input 
+                     formControlName="location" 
+                     placeholder="Entrez la localisation de l'hôpital">
+            </nz-form-control>
+          </nz-form-item>
+  
+          <div class="form-buttons">
+            <button nz-button 
+                    nzType="primary" 
+                    [disabled]="hospitalForm.invalid">Soumettre</button>
+            <button nz-button 
+                    (click)="resetForm($event)">Réinitialiser</button>
+          </div>
         </form>
-    </ng-container>
-</nz-modal>
+      </ng-container>
+    </nz-modal>
+  </div>
