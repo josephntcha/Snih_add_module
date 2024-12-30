@@ -19,6 +19,7 @@ import { environment } from '../../../environments/environment';
 })
 export class TakeAppointmentComponent {
 
+  isMenuVisible = false;
   
   Hospitalform!: FormGroup;
   dataHospitals: any;

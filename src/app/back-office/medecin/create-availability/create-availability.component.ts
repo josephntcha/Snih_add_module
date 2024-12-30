@@ -12,7 +12,7 @@ import { ApiServiceService } from '../../../services/api-service.service';
 })
 export class CreateAvailabilityComponent implements OnInit{
 
-  appointmentform!:FormGroup;
+  availabilityForm!:FormGroup;
   hospitals:any;
   frequencies:any;
   availabilities: any;
@@ -34,7 +34,7 @@ ngOnInit(): void {
   })
 
 
-  this.appointmentform=this.fromBuilder.group({
+  this.availabilityForm=this.fromBuilder.group({
    day:['',Validators.required],
    startTime:['',Validators.required],
    endTime:['',Validators.required],
@@ -48,7 +48,7 @@ ngOnInit(): void {
 
   });
 
-  this.appointmentform.get('frequency')?.valueChanges.subscribe(frequency=>{
+  this.availabilityForm.get('frequency')?.valueChanges.subscribe(frequency=>{
 
     if (frequency.name==="MENSUELLE") {
       
@@ -79,14 +79,14 @@ loadAppointments() {
     this.frequencies=reponse;
      });
 
-     this.appointmentform.get('building')?.valueChanges.subscribe(selectBuildingId=>{
+     this.availabilityForm.get('building')?.valueChanges.subscribe(selectBuildingId=>{
 
       this.apiService.getRooms(selectBuildingId).subscribe(response=>{
         this.rooms=response;
        });
      })
 
-     this.appointmentform.get('hospital')?.valueChanges.subscribe(selectedHospitalId=>{
+     this.availabilityForm.get('hospital')?.valueChanges.subscribe(selectedHospitalId=>{
 
         this.apiService.getBuildings(selectedHospitalId).subscribe(response=>{
           this.buildings=response;
@@ -104,12 +104,12 @@ loadAppointments() {
                
             
               for (let index2 = 0; index2 < response.length; index2++) {
-                if(this.appointmentform.get('building')?.value != ""){
+                if(this.availabilityForm.get('building')?.value != ""){
                  for (let index3 = 0; index3 < this.rooms.length; index3++) {
 
-                  if ((response[index2].day.id==this.appointmentform.get('day')?.value) && 
-                      (response[index2].startTime==this.appointmentform.get('startTime')?.value) &&
-                      (response[index2].endTime==this.appointmentform.get('endTime')?.value) &&
+                  if ((response[index2].day.id==this.availabilityForm.get('day')?.value) && 
+                      (response[index2].startTime==this.availabilityForm.get('startTime')?.value) &&
+                      (response[index2].endTime==this.availabilityForm.get('endTime')?.value) &&
                       (response[index2].room==this.rooms[index3]['room'])) {
                   
                   this.rooms=this.rooms.filter((room:any)=> room.room !== response[index2].room)                     
@@ -130,18 +130,18 @@ loadAppointments() {
   }
 
   onSubmit(){
-    if (this.appointmentform.valid) {
+    if (this.availabilityForm.valid) {
          const data={
-         startTime:this.appointmentform.value.startTime,
-         endTime:this.appointmentform.value.endTime,
-         maxNumberOfAppointments:this.appointmentform.value.maxNumberOfAppointments,
-         frequency:this.appointmentform.value.frequency,
-         building:this.appointmentform.value.building,
-         room:this.appointmentform.value.room,
-         period:this.appointmentform.value.period,
-         orderOfDay:this.appointmentform.value.orderOfDay,
+         startTime:this.availabilityForm.value.startTime,
+         endTime:this.availabilityForm.value.endTime,
+         maxNumberOfAppointments:this.availabilityForm.value.maxNumberOfAppointments,
+         frequency:this.availabilityForm.value.frequency,
+         building:this.availabilityForm.value.building,
+         room:this.availabilityForm.value.room,
+         period:this.availabilityForm.value.period,
+         orderOfDay:this.availabilityForm.value.orderOfDay,
          }
-          this.apiService.postAvailability(this.appointmentform.value.day,this.doctorId,this.appointmentform.value.hospital,data).subscribe({
+          this.apiService.postAvailability(this.availabilityForm.value.day,this.doctorId,this.availabilityForm.value.hospital,data).subscribe({
            next:response=>{
             if (response.success == true) {
              Swal.fire({

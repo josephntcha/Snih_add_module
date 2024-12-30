@@ -14,6 +14,9 @@ import { environment } from '../../../environments/environment';
 })
 export class KnownDoctorComponent implements OnInit{
 
+
+  isMenuVisible = false;
+  
   Hospitalform!: FormGroup;
   dataDoctors: any;
   hospitals: any;

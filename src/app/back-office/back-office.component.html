@@ -4,11 +4,11 @@
             <div class="header-left">
                 <div class="logo">
                     <img 
-                        nz-image 
                         width="50px" 
                         height="50px" 
-                        nzSrc="/assets/images/logo_SNIH.png" 
-                        alt="" 
+                        src="/assets/images/logo_SNIH.png" 
+                        alt="SNIH"
+                        (click)="home()" 
                     />
                 </div>
                 <button nz-button nzType="primary" (click)="toggleCollapsed()">
@@ -17,7 +17,7 @@
             </div>
 
             <div class="header-right">
-                @if(selectedLanguage == "en"){
+                <!-- @if(selectedLanguage == "en"){
                     <img
                         nz-image
                         width="20px"
@@ -46,7 +46,7 @@
                     <nz-option nzValue="en" nzLabel="English"></nz-option>
                     <nz-option nzValue="fr" nzLabel="Français"></nz-option>
                     <nz-option nzValue="es" nzLabel="Español"></nz-option>
-                </nz-select>
+                </nz-select> -->
 
                 <span class="username">
                     {{authService.username}}
@@ -76,7 +76,7 @@
         </nz-header>
     </nz-affix>
     <nz-layout >
-        <nz-sider nzTheme="light" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="200" [nzCollapsedWidth]="80" [nzBreakpoint]="'md'">
+        <nz-sider [class.visible]="!isCollapsed && isMobile" nzTheme="light" nzCollapsible [(nzCollapsed)]="isCollapsed" [nzWidth]="200" [nzCollapsedWidth]="80" [nzBreakpoint]="'md'">
             <ul nz-menu nzMode="inline" [nzInlineCollapsed]="isCollapsed">
                 <li 
                 *ngFor="let module of authService.userModules"

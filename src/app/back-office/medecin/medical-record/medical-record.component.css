@@ -1,5 +1,26 @@
+.responsive-container {
+    padding: 16px;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.search-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
 .selected-items {
-    margin-bottom: 16px;
+    margin: 16px 0;
     padding: 8px;
     background-color: #e6f7ff;
     border: 1px solid #91d5ff;
@@ -8,10 +29,9 @@
 
 .table-operations {
     margin-bottom: 16px;
-}
-
-.table-operations button {
-    margin-right: 8px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
 }
 
 ::ng-deep th {
@@ -19,6 +39,73 @@
 }
 
 
-nz-form-item button {
-    margin-left: 8px;
+.table-responsive {
+    overflow-x: auto;
+    margin: 0 -16px;
+    padding: 0 16px;
+}
+
+.actions-cell {
+    white-space: nowrap;
+}
+
+.action-links {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.form-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.responsive-button {
+    min-width: 120px;
+}
+
+.full-width-mobile {
+    margin-bottom: 16px;
+}
+
+/* Media Queries */
+@media (max-width: 575px) {
+    .full-width-mobile {
+        width: 100%;
+    }
+
+    .responsive-button {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .action-links {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .action-links nz-divider {
+        display: none;
+    }
+
+    .header-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .table-operations {
+        width: 100%;
+    }
+
+    .modal-form {
+        padding: 0 8px;
+    }
+    
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .action-links {
+        flex-wrap: wrap;
+    }
 }

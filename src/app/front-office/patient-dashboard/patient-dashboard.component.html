@@ -1,95 +1,112 @@
-<nav nz-menu  nzMode="horizontal" class="menu-right">
-  
-
-    <li nz-menu-item class="menu-item-spacing">
-      <button nz-button nzType="link" routerLink="/">ACCUEIL</button>
-    </li>
-  
-
-    <li nz-menu-item class="menu-item-spacing">
-      <button nz-button nzType="link" routerLink="/prendre-rdv">Prendre RDV</button>
-    </li>
-
-    <li *ngIf="authService.isAuthenticated" nz-menu-item class="menu-item-spacing">
-        <button nz-button nzType="link"  [routerLink]="['/patient-medical-record']">Dossier Médical</button>
-    </li>
-  
-   
-    <li nz-menu-item class="menu-item-spacing">
-      <button nz-button nzType="link" routerLink="/patient-dashboard">Mes rendez-vous</button>
-    </li>
-  
-    <li *ngIf="authService.isAuthenticated || username" nz-menu-item class="menu-item-spacing">
-      <button nz-button nzType="link" (click)="deconnexion()">Deconnexion</button>
-    </li>
-    
-</nav>
-<br><br><br>
-<div nz-row class="p-5 bg-light">
-    <div nz-col nzSpan="12" nzOffset="2">
-      <h3>Liste de vos rendez-vous</h3>
-    </div>
+<nav class="nav-container">
+  <div class="nav-left">
+    <img 
+      width="50px" 
+      height="50px" 
+      src="/assets/images/logo_SNIH.png" 
+      alt="SNIH" 
+      class="nav-logo"
+      routerLink="/"
+    />
+    <button nz-button nzType="link" routerLink="/">
+      <span nz-icon nzType="home"></span>
+    </button>
   </div>
   
-  <br />
-  <div nz-row>
-    <div nz-col nzSpan="20" nzOffset="2">
-      <nz-table #basicTable [nzData]="appointments" [nzBordered]="true" nzSize="middle" nzShowPagination="false" class="table-striped">
-        <thead>
-          <tr>
-            <th>#</th>
-            <!-- <th>Nom</th> -->
-            <!-- <th>Prénom</th> -->
-            <!-- <th>Email</th> -->
-            <th>Date</th>
-            <th>Hôpital</th>
-            <th>Médecin</th>
-            <th>Bâtiment</th>
-            <th>Salle</th>
-            <th>Statut</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let appointment of appointments; let i = index">
-            <td>{{ i + 1 }}</td>
-            <!-- <td>{{ appointment.patientLastName }}</td> -->
-            <!-- <td>{{ appointment.patientFirstName }}</td> -->
-            <!-- <td>{{ appointment.patientEmail }}</td> -->
-            <td>{{ appointment.date | date: 'd MMMM y':'':'fr' }}</td>
-            <td>{{ appointment.hospitalDTO.name }}</td>
-            <td>{{ appointment.doctor.firstName + ' ' + appointment.doctor.lastName}}</td>
-            <td>{{ appointment.building }}</td>
-            <td>{{ appointment.room }}</td>
-            <td>
+  <div class="nav-right">
+    <button class="menu-toggle" nz-button nzType="link" (click)="isMenuVisible = !isMenuVisible">
+      <span nz-icon nzType="menu"></span>
+    </button>
+    
+    <ul class="nav-menu" [class.visible]="isMenuVisible">
+      <li><button nz-button nzType="link" routerLink="/prendre-rdv">Prendre RDV</button></li>
+      <li><button nz-button nzType="link" routerLink="/patient-dashboard">Mes rendez-vous</button></li>
+      <li><button nz-button nzType="link" routerLink="/patient-connexion">Se connecter</button></li>
+      <li *ngIf="authService.isAuthenticated">
+        <button nz-button nzType="link"  routerLink="/patient-medical-record">Dossier Médical</button>
+      </li>
+      <li *ngIf="authService.isAuthenticated">
+        <button nz-button nzType="link" (click)="deconnexion()">Déconnexion</button>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="appointments-container">
+  <h3 class="appointments-title">Liste de vos rendez-vous</h3>
+  
+  <div class="table-container">
+    <nz-table 
+      #basicTable 
+      [nzData]="appointments" 
+      [nzBordered]="true" 
+      nzSize="middle" 
+      nzShowPagination="false"
+      [nzScroll]="{ x: '800px' }"
+    >
+      <thead>
+        <tr>
+          <th [nzWidth]="'60px'">#</th>
+          <th [nzWidth]="'150px'">Date</th>
+          <th [nzWidth]="'150px'">Hôpital</th>
+          <th [nzWidth]="'200px'">Médecin</th>
+          <th [nzWidth]="'120px'">Bâtiment</th>
+          <th [nzWidth]="'100px'">Salle</th>
+          <th [nzWidth]="'120px'">Statut</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let appointment of appointments; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ appointment.date | date: 'd MMMM y':'':'fr' }}</td>
+          <td>{{ appointment.hospitalDTO.name }}</td>
+          <td>{{ appointment.doctor.firstName + ' ' + appointment.doctor.lastName}}</td>
+          <td>{{ appointment.building }}</td>
+          <td>{{ appointment.room }}</td>
+          <td>
+            <nz-tag 
+              [nzColor]="
+                appointment.status === 'CONFIRMED' ? 'success' : 
+                appointment.status === 'CANCEL' ? 'error' : 
+                appointment.status === 'POSTPONE' ? 'warning' : 'processing'
+              "
+            >
               <ng-container *ngIf="appointment.status === 'ASKED'">En attente</ng-container>
               <ng-container *ngIf="appointment.status === 'POSTPONE'">Reporté</ng-container>
               <ng-container *ngIf="appointment.status === 'CONFIRMED'">Confirmé</ng-container>
-            </td>
-          </tr>
-        </tbody>
-      </nz-table>
-    </div>
+              <ng-container *ngIf="appointment.status === 'CANCEL'">Annulé</ng-container>
+            </nz-tag>
+          </td>
+        </tr>
+      </tbody>
+    </nz-table>
   </div>
 
-  
-  
-  <nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Recherche de rendez-vous" (nzOnCancel)="handleCancel()">
+  <nz-modal 
+    nzFooter=" " 
+    [(nzVisible)]="isVisible" 
+    nzTitle="Recherche de rendez-vous" 
+    (nzOnCancel)="handleCancel()"
+    [nzWidth]="'90%'"
+    [nzStyle]="{ maxWidth: '600px' }"
+  >
     <ng-container *nzModalContent>
-        <form [formGroup]="usernameForm" (ngSubmit)="onSubmitSerch()">
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Code du demandeur</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="username" placeholder="Entrez le code qui vous ait envoyé ">
-                </nz-form-control>
-            </nz-form-item>
-    
-            <nz-form-item>
-                <nz-form-control nzOffset="7" nzSpan="12">
-                    <button class="submitButton" nz-button nzType="primary" [disabled]="usernameForm.invalid">Soumettre</button>
-                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
-                </nz-form-control>
-            </nz-form-item>
-        </form>
+      <form [formGroup]="usernameForm" (ngSubmit)="onSubmitSerch()" class="search-form">
+        <nz-form-item>
+          <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Code du demandeur</nz-form-label>
+          <nz-form-control [nzSm]="12" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+            <input nz-input formControlName="username" placeholder="Entrez le code qui vous est envoyé">
+          </nz-form-control>
+        </nz-form-item>
+
+        <nz-form-item>
+          <nz-form-control [nzSm]="{offset: 7, span: 12}" [nzXs]="{offset: 0, span: 24}" class="form-buttons">
+            <button nz-button nzType="primary" [disabled]="usernameForm.invalid" class="responsive-button">Soumettre</button>
+            <button nz-button (click)="resetForm($event)" class="responsive-button">Réinitialiser</button>
+          </nz-form-control>
+        </nz-form-item>
+      </form>
     </ng-container>
-</nz-modal>
+  </nz-modal>
+</div>
   

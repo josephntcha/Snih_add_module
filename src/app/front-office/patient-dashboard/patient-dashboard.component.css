@@ -1,16 +1,232 @@
-.navclas{
-    background: #066631ee;
+.nav-container {
+  background: #1890ff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  position: relative;
+  z-index: 1000;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.nav-logo {
+  margin-right: 100px;
+}
+
+.nav-left button {
+  color: white;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-menu button {
+  color: white;
+  margin: 0 20px;
+}
+
+.menu-toggle {
+  display: none;
+  color: white;
+}
+
+.submit-container {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+nz-form-item {
+  width: 100%;
+  margin-bottom: 24px;
+}
+
+nz-form-label {
+  white-space: normal !important;
+  text-align: left !important;
+  line-height: 1.2 !important;
+  height: auto !important;
+  padding-bottom: 8px !important;
+}
+
+nz-form-control {
+  width: 100% !important;
 }
 
 
-.menu-item-spacing button {
-    margin-right: 40px; 
-    color: white;
+.appointments-container {
+  padding: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.appointments-title {
+  margin-bottom: 24px;
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.table-container {
+  margin: 0 -16px;
+  padding: 0 16px;
+  overflow-x: auto;
+}
+
+.search-form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.responsive-button {
+  min-width: 120px;
+}
+
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: block;
+    z-index: 1001;
   }
 
-  .menu-right {
-    display: flex;
-    justify-content: flex-end;
-    padding: 10px;
-    background: #1890ff;
+  .nav-right {
+    position: static;
   }
+
+  .nav-logo {
+    margin-right: 40px;
+  }
+
+  .nav-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    left: 0;
+    background: #1890ff;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+
+  .nav-menu.visible {
+    display: block;
+  }
+
+  .nav-menu li {
+    margin: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .nav-menu button {
+    width: 100%;
+    text-align: left;
+    margin: 0;
+    padding: 15px 20px;
+    text-align: center;
+  }
+
+  .nav-menu button:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  nz-form-item {
+    flex-direction: column !important;
+  }
+
+  nz-form-label {
+    padding-bottom: 8px !important;
+    text-align: left !important;
+  }
+
+  [nz-form-label] {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  [nz-form-control] {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  .ant-form-item-label {
+    padding: 0 0 8px !important;
+  }
+  
+  /* Force les labels à rester sur leur propre ligne */
+  .ant-col {
+    flex: 0 0 100% !important;
+    max-width: 100% !important;
+  }
+
+  .text-center{
+    text-align: center;
+  }
+}
+
+
+@media (max-width: 575px) {
+  .appointments-container {
+    padding: 8px;
+  }
+
+  .responsive-button {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .table-container {
+    margin: 0 -8px;
+    padding: 0 8px;
+  }
+
+  .search-form {
+    padding: 0 8px;
+  }
+}
+
+:host ::ng-deep {
+  .ant-table-thead > tr > th {
+    white-space: nowrap;
+  }
+
+  .ant-table-tbody > tr > td {
+    white-space: nowrap;
+  }
+
+  nz-tag {
+    white-space: nowrap;
+    display: inline-block;
+  }
+}
+
+
+/* Ajout pour assurer que le contenu principal passe sous le menu */
+.body {
+  position: relative;
+  z-index: 1;
+}

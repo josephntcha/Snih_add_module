@@ -83,6 +83,16 @@ export class BackOfficeComponent implements OnInit{
     }
   }
 
+  home(){
+    if(this.authService.isSuperAdmin()){
+      this.router.navigateByUrl("/back-office/Administration/super-admin-dashboard");
+    }else if(this.authService.isAdmin()){
+      this.router.navigateByUrl("/back-office/Administration/admin-dashboard");
+    }else if(this.authService.isDoctor()){
+      this.router.navigateByUrl("/back-office/medecin/calendar");
+    }
+  }
+
   logout(){
     this.authService.logout();
   }

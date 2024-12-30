@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ApiServiceService } from '../../services/api-service.service';
 import { AuthService } from '../../services/auth.service';
@@ -9,7 +9,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   templateUrl: './patient-dashboard.component.html',
   styleUrl: './patient-dashboard.component.css'
 })
-export class PatientDashboardComponent implements OnInit{
+export class PatientDashboardComponent implements OnInit, OnDestroy{
+  isMenuVisible = false;
   patientId: any;
   appointments: any;
   isVisible = false;
@@ -35,6 +36,11 @@ export class PatientDashboardComponent implements OnInit{
       this.showModal();
     }
     
+  }
+
+  ngOnDestroy(): void {
+    window.localStorage.removeItem('username');
+    this.username = null;
   }
 
   showModal(): void {
