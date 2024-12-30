@@ -34,6 +34,8 @@ export class RolesComponent implements OnInit{
   users!: User[];
   selectedUser!: User;
 
+  window = window; //Fenêtre actuelle
+
 
   constructor(private apiService: ApiServiceService, private router: Router, private fb: FormBuilder, private authService: AuthService){}
 

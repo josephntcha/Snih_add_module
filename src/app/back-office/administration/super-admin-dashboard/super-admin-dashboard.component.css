@@ -1,5 +1,102 @@
-.element, .button, .value {
+.body {
+    height: 68vh;
+}
+
+
+.dashboard-container {
+    padding: 16px;
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    width: 100%;
+}
+
+.card-wrapper {
+    width: 100%;
+}
+
+.dashboard-card {
+    height: 100%;
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
-    display: block;
-    margin: auto;
+}
+
+.element {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.value {
+    font-size: 28px;
+    font-weight: bold;
+    color: #1890ff;
+    margin-bottom: 8px;
+}
+
+.action-button {
+    min-width: 120px;
+    width: 100%;
+    max-width: 200px;
+}
+
+
+@media (max-width: 575px) {
+    .dashboard-container {
+        padding: 8px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .element {
+        font-size: 16px;
+    }
+
+    .value {
+        font-size: 24px;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+:host ::ng-deep {
+    .ant-card {
+        height: 100%;
+    }
+
+    .ant-card-body {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 16px;
+    }
+
+    .ant-divider {
+        margin: 12px 0;
+    }
 }

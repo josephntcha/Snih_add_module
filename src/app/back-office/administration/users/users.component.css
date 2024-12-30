@@ -1,45 +1,63 @@
 .selected-items {
-    margin-bottom: 16px;
-    padding: 8px;
-    background-color: #e6f7ff;
-    border: 1px solid #91d5ff;
-    border-radius: 4px;
+  margin-bottom: 16px;
+  padding: 8px;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 4px;
+}
+
+.search-box {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.table-operations {
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.table-operations button {
+  white-space: nowrap;
+}
+
+::ng-deep th {
+  font-weight: bolder !important;
+}
+
+nz-form-item button {
+  margin-left: 8px;
+}
+
+
+@media screen and (max-width: 768px) {
+  ::ng-deep nz-form-item {
+    flex-direction: column;
   }
-  
-  .search-box {
-    margin-bottom: 16px;
+
+  ::ng-deep nz-form-label {
+    text-align: left !important;
+    padding: 0 0 8px 0;
   }
-  
+
+  ::ng-deep .ant-form-item-control {
+    width: 100% !important;
+  }
+
   .table-operations {
-    margin-bottom: 16px;
+    flex-direction: column;
+    align-items: stretch;
   }
-  
+
   .table-operations button {
-    margin-right: 8px;
+    width: 100%;
   }
-  
-  .seachr-icon {
-    background-color: #1890ff;
+}
+
+/* Optimisations pour les tablettes */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  ::ng-deep .ant-modal {
+    max-width: 90% !important;
   }
-  
-  .advanced-filter {
-    float: right;
-  }
-  
-  .advanced-filter-icon {
-    background-color: #1890ff;
-    color: white;
-    padding: 10px;
-  }
-  
-  .advanced-filter-icon2, .advanced-filter {
-    color: #1890ff;
-  }
-  
-  ::ng-deep th {
-    font-weight: bolder !important;
-  }
-  
-  nz-form-item button {
-    margin-left: 8px;
-  }
+}

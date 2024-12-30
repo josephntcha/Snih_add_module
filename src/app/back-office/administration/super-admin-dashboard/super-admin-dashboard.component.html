@@ -1,19 +1,28 @@
-<div >
-    <div nz-row [nzGutter]="8">
-        <div nz-col [nzSpan]="8">
-            <nz-card>
-                <p class="element" >Nombre d'utilisateurs</p>
-                <span class="value" >{{ users}}</span>
-                <nz-divider></nz-divider>
-                <button routerLink="/back-office/Administration/users" nz-button nzType="primary" class="button"> Consulter</button>
+<div class="dashboard-container body">
+    <div class="cards-grid">
+        <div class="card-wrapper">
+            <nz-card class="dashboard-card">
+                <div class="card-content">
+                    <p class="element">Utilisateurs</p>
+                    <span class="value" *ngIf="users">{{users.length}}</span>
+                    <nz-divider></nz-divider>
+                    <button routerLink="/back-office/Administration/users" nz-button nzType="primary" class="action-button">
+                        Consulter
+                    </button>
+                </div>
             </nz-card>
         </div>
-        <div nz-col [nzSpan]="8">
-            <nz-card>
-                <p class="element" >nombre d'hôpital</p>
-                <span class="value" >{{ hospitals}}</span>
-                <nz-divider></nz-divider>
-                <button routerLink="/back-office/settings/hospitals" nz-button nzType="primary" class="button"> Consulter</button>
+
+        <div class="card-wrapper">
+            <nz-card class="dashboard-card">
+                <div class="card-content">
+                    <p class="element">Hôpital</p>
+                    <span class="value" *ngIf="hospitals">{{hospitals.length}}</span>
+                    <nz-divider></nz-divider>
+                    <button routerLink="/back-office/settings/hospitals" nz-button nzType="primary" class="action-button">
+                        Consulter
+                    </button>
+                </div>
             </nz-card>
         </div>
     </div>
