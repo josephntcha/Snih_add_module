@@ -6,7 +6,7 @@ import Swal from 'sweetalert2';
 import { AuthService } from '../../../services/auth.service';
 import { ApiServiceService } from '../../../services/api-service.service';
 import moment from 'moment';
-
+type AppointmentStatus = 'ASKED' | 'POSTPONE' | 'CONFIRMED' | 'CANCEL';
 @Component({
   selector: 'app-appointments-doctor',
   templateUrl: './appointments-doctor.component.html',
@@ -28,6 +28,7 @@ doctors:any[]=[];
 days:any;
 formattedDatePostpone: string | null | undefined;
 
+
 constructor(private apiService:ApiServiceService,private datePipe: DatePipe,private route:ActivatedRoute,private router:Router,private authService:AuthService){}
 
   
@@ -48,7 +49,12 @@ constructor(private apiService:ApiServiceService,private datePipe: DatePipe,priv
           cancelButtonColor: '#d33',
           confirmButtonText: 'retour!',
           cancelButtonText: 'ok'
-        })
+        }).then((result) => {
+          if (result.isConfirmed) {
+           
+             this.router.navigate(['/back-office/Administration/secretaire-dashboard']);
+          }
+        });
       }
     })
 
@@ -79,6 +85,28 @@ constructor(private apiService:ApiServiceService,private datePipe: DatePipe,priv
     })
 
     
+}
+
+private statusColors: Record<AppointmentStatus, string> = {
+  'ASKED': 'blue',
+  'POSTPONE': 'orange',
+  'CONFIRMED': 'green',
+  'CANCEL': 'red'
+};
+
+private statusLabels: Record<AppointmentStatus, string> = {
+  'ASKED': 'En attente',
+  'POSTPONE': 'Reporté',
+  'CONFIRMED': 'Confirmé',
+  'CANCEL': 'Annulé'
+};
+
+getStatusColor(status: string): string {
+  return this.statusColors[status as AppointmentStatus] || 'default';
+}
+
+getStatusLabel(status: string): string {
+  return this.statusLabels[status as AppointmentStatus] || status;
 }
 
 

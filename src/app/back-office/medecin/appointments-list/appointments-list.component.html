@@ -91,14 +91,10 @@
           <td>{{ appointment.patientPhone }}</td>
           <td>{{ appointment.newDate | date: 'd MMMM y':'':'fr'}}</td>
           <td>
-            <span [ngClass]="'status-' + appointment.status.toLowerCase()">
-              {{ 
-                appointment.status === 'ASKED' ? 'En attente' :
-                appointment.status === 'POSTPONE' ? 'Reporté' :
-                appointment.status === 'CONFIRMED' ? 'Confirmé' :
-                appointment.status === 'CANCEL' ? 'Annulé' : ''
-              }}
-            </span>
+            <nz-tag
+            [nzColor]="getStatusColor(appointment.status)">
+            {{ getStatusLabel(appointment.status) }}
+          </nz-tag>
           </td>
           <td class="action-buttons">
             <div class="button-group">
