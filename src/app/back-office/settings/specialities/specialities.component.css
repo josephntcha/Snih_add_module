@@ -11,6 +11,13 @@
   border: 1px solid #91d5ff;
   border-radius: 4px;
 }
+form{
+  margin-top: 10px;
+}
+.labelName{
+ text-align: left!important;
+}
+
 
 .table-operations {
   margin-bottom: 16px;

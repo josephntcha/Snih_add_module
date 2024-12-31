@@ -39,7 +39,7 @@
         #basicTable 
         nzShowSizeChanger
         [nzData]="listOfData"
-        [nzScroll]="{ x: '800px' }"
+        [nzScroll]="{ x: '700px' }"
         (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
       >
         <thead>
@@ -73,7 +73,7 @@
       [(nzVisible)]="isVisible" 
       nzTitle="Ajout de spécialité" 
       (nzOnCancel)="handleCancel()"
-      [nzWidth]="'90vw'"
+      [nzWidth]="'50vw'"
       [nzBodyStyle]="{ maxWidth: '600px', margin: '0 auto' }"
     >
       <ng-container *nzModalContent>
@@ -91,9 +91,9 @@
   
         <!-- Formulaire de création -->
         <form *ngIf="!isToAddSpecialityToHospital" [formGroup]="specialityForm" (ngSubmit)="onSubmit()">
-          <nz-form-item>
-            <nz-form-label [nzXs]="24" [nzSm]="6" nzRequired>Nom</nz-form-label>
-            <nz-form-control [nzXs]="24" [nzSm]="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+          <nz-form-item class="labelName">
+            <nz-form-label [nzXs]="24" [nzSm]="2" nzRequired>Nom</nz-form-label>
+            <nz-form-control [nzXs]="24" [nzSm]="22" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
               <input nz-input formControlName="name" placeholder="Nom de la spécialité">
             </nz-form-control>
           </nz-form-item>

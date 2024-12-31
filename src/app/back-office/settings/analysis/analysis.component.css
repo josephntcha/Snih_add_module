@@ -1,56 +1,128 @@
+.app-container {
+  padding: 16px;
+  width: 100%;
+}
+
+/* Styles pour les boutons d'opération */
+.operation-buttons {
+  margin-bottom: 16px;
+}
+
+.button-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.operation-btn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* Styles pour la section des éléments sélectionnés */
 .selected-items {
-    margin-bottom: 16px;
+  margin-bottom: 16px;
+  padding: 12px;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Styles pour la table */
+.table-container {
+  overflow-x: auto;
+  margin: 0 -16px;
+}
+
+:host ::ng-deep .ant-table {
+  font-size: 14px;
+}
+
+:host ::ng-deep .ant-table-thead > tr > th {
+  font-weight: bold;
+  background-color: #fafafa;
+}
+
+.action-column {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* Styles pour le formulaire modal */
+.responsive-form {
+  padding: 16px;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+
+/* Media queries pour la responsivité */
+@media screen and (max-width: 768px) {
+  .app-container {
     padding: 8px;
-    background-color: #e6f7ff;
-    border: 1px solid #91d5ff;
-    border-radius: 4px;
   }
-  
-  .search-box {
-    margin-bottom: 16px;
+
+  .button-group {
+    flex-direction: column;
   }
-  
-  .table-operations {
-    margin-bottom: 16px;
+
+  .operation-btn {
+    width: 100%;
+    justify-content: center;
   }
-  
-  .table-operations button {
-    margin-right: 8px;
+
+  .selected-items {
+    flex-direction: column;
+    gap: 8px;
+    text-align: center;
   }
-  
-  .seachr-icon {
-    background-color: #1890ff;
+
+  :host ::ng-deep .ant-table {
+    font-size: 12px;
   }
-  
-  .green {
-    color: white;
-    background-color: rgb(32, 199, 32);
+
+  .form-buttons {
+    flex-direction: column;
+    align-items: stretch;
   }
-  
-  .red {
-    color: white;
-    background-color: red;
+
+  .form-buttons button {
+    width: 100%;
+    margin-bottom: 8px;
   }
-  
-  .advanced-filter {
-    float: right;
+}
+
+@media screen and (max-width: 480px) {
+  :host ::ng-deep .ant-table-thead > tr > th,
+  :host ::ng-deep .ant-table-tbody > tr > td {
+    padding: 8px 4px;
   }
-  
-  .advanced-filter-icon {
-    background-color: #1890ff;
-    color: white;
-    padding: 10px;
+
+  .btn-text {
+    font-size: 12px;
   }
-  
-  .advanced-filter-icon2, .advanced-filter {
-    color: #1890ff;
-  }
-  
-  ::ng-deep th {
-    font-weight: bolder !important;
-  }
-  
-   
-  nz-form-item button {
-    margin-left: 8px;
-  }
+}
+
+/* Styles utilitaires */
+.edit-link {
+  color: #1890ff;
+  cursor: pointer;
+}
+
+.refresh-link {
+  color: #1890ff;
+  cursor: pointer;
+}
+
+:host ::ng-deep .ant-form-item-label {
+  text-align: left;
+}

@@ -23,6 +23,7 @@ export class AnalysisComponent implements OnInit{
   checked = false;
   indeterminate = false;
   setOfCheckedId = new Set<number>();
+  window = window;
 
   constructor( private apiService: ApiServiceService,
     private router: Router, 
