@@ -65,6 +65,16 @@
   margin-top: 24px;
 }
 
+
+.submit-button,
+.reset-button {
+    min-width: 120px;
+}
+
+.reset-button {
+    margin-left: 20px;
+}
+
 /* Media queries pour la responsivité */
 @media screen and (max-width: 768px) {
   .app-container {
@@ -109,6 +119,15 @@
 
   .btn-text {
     font-size: 12px;
+  }
+  .submit-button,
+  .reset-button {
+      width: 100%;
+  }
+
+  .reset-button {
+      margin-top: 10px;
+      margin-left: 0;
   }
 }
 

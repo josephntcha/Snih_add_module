@@ -37,6 +37,7 @@ export class SpecialitiesComponent implements OnInit{
   isToAddSpecialityToHospital = false;
   hospitals!: Hospital[];
   buttonText = 'Ajouter une spécialité à un hôpital';
+  window = window;
 
 
 

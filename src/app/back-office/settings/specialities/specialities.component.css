@@ -53,3 +53,15 @@ form{
     margin-left: 8px;
   }
 }
+
+/* @media screen and (max-width: 1024px) {
+  .submit-button,
+  .reset-button {
+      width: 85%;
+  }
+
+  .reset-button {
+      margin-top: 20px;
+      margin-left: 0;
+  }
+} */

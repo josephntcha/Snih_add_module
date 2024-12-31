@@ -37,7 +37,13 @@
 </nz-table>
 
 
-<nz-modal [nzWidth]="window.innerWidth > 768 ? '40%' : '90%'" *ngIf="isToCreate" nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout de rôle" (nzOnCancel)="handleCancel()">
+<nz-modal 
+    [nzWidth]="window.innerWidth>1024? '40%': window.innerWidth>768 && window.innerWidth<1024? '80%':'90%'"
+    *ngIf="isToCreate" 
+    nzFooter=" " 
+    [(nzVisible)]="isVisible" 
+    nzTitle="Ajout de rôle" 
+    (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
         <form [formGroup]="roleForm" (ngSubmit)="onSubmit()">
             <nz-form-item>
@@ -58,7 +64,13 @@
 </nz-modal>
 
 
-<nz-modal [nzWidth]="window.innerWidth > 768 ? '40%' : '90%'" *ngIf="!isToCreate" nzFooter=" " [(nzVisible)]="isVisible" [nzTitle]="isToAssign ? 'Assignation de rôle' : 'Soustraction de rôle'" (nzOnCancel)="handleCancel()">
+<nz-modal       
+    [nzWidth]="window.innerWidth>1024? '40%': window.innerWidth>768 && window.innerWidth<1024? '80%':'90%'"
+    *ngIf="!isToCreate" 
+    nzFooter=" " 
+    [(nzVisible)]="isVisible" 
+    [nzTitle]="isToAssign ? 'Assignation de rôle' : 'Soustraction de rôle'" 
+    (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
         <form [formGroup]="manageRoleForm" (ngSubmit)="onSubmit()">
             <nz-form-item>

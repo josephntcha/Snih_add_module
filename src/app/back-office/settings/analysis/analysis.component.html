@@ -71,7 +71,7 @@
       [(nzVisible)]="isVisible"
       nzTitle="Ajout d'un type d'analyse"
       (nzOnCancel)="handleCancel()"
-      [nzWidth]="window.innerWidth > 768 ? '40%' : '90%'"
+      [nzWidth]="window.innerWidth>1024? '40%': window.innerWidth>768 && window.innerWidth<1024? '80%':'90%'"
       class="responsive-modal">
       <ng-container *nzModalContent>
         <form [formGroup]="analysisForm" 
@@ -84,7 +84,7 @@
               Nom de l'analyse
             </nz-form-label>
             <nz-form-control [nzXs]="24" 
-                            [nzSm]="12"
+                            [nzSm]="14"
                             nzHasFeedback
                             nzErrorTip="Ce champ est obligatoire">
               <input nz-input 
@@ -93,14 +93,14 @@
             </nz-form-control>
           </nz-form-item>
           <nz-form-item>
-            <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 18, offset: 9 }">
+            <nz-form-control [nzSm]="{offset: 7, span: 14}" [nzXs]="{offset: 0, span: 24}" class="form-buttons">
               <div class="flex flex-wrap gap-2">
-                <button nz-button 
+                <button nz-button class="submit-button"
                     nzType="primary"
                     [disabled]="analysisForm.invalid">
                         Soumettre
                 </button>
-                <button nz-button 
+                <button nz-button class="reset-button" 
                   (click)="resetForm($event)">
                   Réinitialiser
                 </button>
