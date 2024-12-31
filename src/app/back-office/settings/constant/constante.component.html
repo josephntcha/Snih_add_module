@@ -1,11 +1,3 @@
-<!-- <div class="search-box" *ngIf="canViewList">
-    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-        <input type="text" nz-input placeholder="Recherche..." />
-    </nz-input-group>
-    <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
-    </ng-template>
-</div> -->
 <div class="table-operations">
     <button *ngIf="canCreateConstant"  (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer une constante</button>
     <button *ngIf="canViewList"  nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
@@ -16,18 +8,19 @@
 </div>
 <nz-table 
     #basicTable 
+    [nzScroll]="{x: '500px'}"
     nzShowSizeChanger
     [nzData]="constants"
     *ngIf="canViewList">
     <thead>
         <tr>
-            <th [nzChecked]="checked" 
+            <th [nzWidth]="'40px'" [nzChecked]="checked" 
             [nzIndeterminate]="indeterminate" 
             (nzCheckedChange)="onAllChecked($event)"></th>
-            <th>#ID</th>
-            <th>Nom</th>
-            <th>Unité</th>
-            <th>Actions</th>
+            <th [nzWidth]="'60px'">#ID</th>
+            <th [nzWidth]="window.innerWidth>768?'40%':'35%'">Nom</th>
+            <th [nzWidth]="window.innerWidth>768?'10%':'15%'">Unité</th>
+            <th [nzWidth]="'25%'">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -46,27 +39,31 @@
 
 
 
- <nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout d'une constante" (nzOnCancel)="handleCancel()">
+ <nz-modal 
+    [nzWidth]="window.innerWidth>1024? '40%': window.innerWidth>768 && window.innerWidth<1024? '80%':'90%'"
+    nzFooter=" " [(nzVisible)]="isVisible"
+    nzTitle="Ajout d'une constante" 
+    (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
         <form [formGroup]="constantForm" (ngSubmit)="onSubmit()">
             <nz-form-item>
-                <nz-form-label nzSpan="8" nzRequired >Nom de la constante</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired >Nom</nz-form-label>
+                <nz-form-control [nzSm]="12" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                     <input nz-input formControlName="name" placeholder="Entrez le nom de la constante">
                 </nz-form-control>
             </nz-form-item>
     
             <nz-form-item>
-                <nz-form-label nzSpan="8" nzRequired >Unité de la constante</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired >Unité</nz-form-label>
+                <nz-form-control [nzSm]="12" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                     <input nz-input formControlName="unit" placeholder="Entrez l'unité de mesure de la constante">
                 </nz-form-control>
             </nz-form-item>
     
             <nz-form-item>
-                <nz-form-control nzOffset="7" nzSpan="12">
-                    <button nz-button nzType="primary" [disabled]="constantForm.invalid">Soumettre</button>
-                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
+                <nz-form-control [nzSm]="{offset: 7, span: 14}" [nzXs]="{offset: 0, span: 24}" class="form-buttons">
+                    <button nz-button nzType="primary" [disabled]="constantForm.invalid" class="submit-button">Soumettre</button>
+                    <button nz-button (click)="resetForm($event)" class="reset-button">Réinitialiser</button>
                 </nz-form-control>
             </nz-form-item>
         </form>

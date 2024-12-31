@@ -42,7 +42,12 @@
 </nz-table>
 
 
-<nz-modal [nzWidth]="window.innerWidth > 768 ? '40%' : '90%'" nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout de bâtiment" (nzOnCancel)="handleCancel()">
+<nz-modal 
+    [nzWidth]="window.innerWidth>1024? '40%': window.innerWidth>768 && window.innerWidth<1024? '80%':'90%'"
+    nzFooter=" " 
+    [(nzVisible)]="isVisible" 
+    nzTitle="Ajout de bâtiment" 
+    (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
         <form [formGroup]="buildingForm" (ngSubmit)="onSubmit()">
             <nz-form-item>

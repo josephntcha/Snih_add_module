@@ -1,56 +1,136 @@
 .selected-items {
-    margin-bottom: 16px;
-    padding: 8px;
-    background-color: #e6f7ff;
-    border: 1px solid #91d5ff;
-    border-radius: 4px;
+  margin-bottom: 16px;
+  padding: 8px;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 4px;
+}
+
+.table-operations {
+  margin-bottom: 16px;
+}
+
+.table-operations button {
+  margin-right: 8px;
+}
+
+.seachr-icon {
+  background-color: #1890ff;
+}  
+
+::ng-deep th {
+  font-weight: bolder !important;
+}
+
+nz-form-item button {
+  margin-left: 8px;
+}
+
+
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.submit-button,
+.reset-button {
+    min-width: 120px;
+}
+
+.reset-button {
+    margin-left: 20px;
+}
+
+
+@media (max-width: 575px) {
+  .form-container {
+      padding: 8px;
   }
-  
-  .search-box {
-    margin-bottom: 16px;
+
+  .form-buttons {
+      flex-direction: column;
+      gap: 8px;
   }
-  
-  .table-operations {
-    margin-bottom: 16px;
+
+  .submit-button,
+  .reset-button {
+      width: 100%;
   }
-  
-  .table-operations button {
-    margin-right: 8px;
+
+  .reset-button {
+      margin-top: 10px;
+      margin-left: 0;
   }
-  
-  .seachr-icon {
-    background-color: #1890ff;
+
+  .main-action-button {
+      width: 100%;
   }
-  
-  .green {
-    color: white;
-    background-color: rgb(32, 199, 32);
+
+  :host ::ng-deep {
+      .ant-form-item-label {
+          padding-bottom: 8px;
+      }
   }
+}
   
-  .red {
-    color: white;
-    background-color: red;
+  @media screen and (max-width: 768px) {
+    ::ng-deep .ant-modal {
+      max-width: 95% !important;
+      margin: 10px auto;
+    }
+  
+    ::ng-deep .ant-modal-body {
+      padding: 12px;
+    }
+  
+    ::ng-deep nz-form-item {
+      flex-direction: column;
+    }
+  
+    ::ng-deep nz-form-label {
+      text-align: left !important;
+      padding: 0 0 8px 0;
+    }
+  
+    ::ng-deep .ant-form-item-control {
+      width: 100% !important;
+    }
+  
+    .table-operations {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .table-operations button {
+      width: 100%;
+      margin-top: 16px;
+    }
+
+    .form-buttons {
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .submit-button,
+    .reset-button {
+        width: 100%;
+    }
+
+    .reset-button {
+        margin-top: 10px;
+        margin-left: 0;
+    }
   }
-  
-  .advanced-filter {
-    float: right;
-  }
-  
-  .advanced-filter-icon {
-    background-color: #1890ff;
-    color: white;
-    padding: 10px;
-  }
-  
-  .advanced-filter-icon2, .advanced-filter {
-    color: #1890ff;
-  }
-  
-  ::ng-deep th {
-    font-weight: bolder !important;
-  }
-  
-   
-  nz-form-item button {
-    margin-left: 8px;
+
+  @media screen and (max-width: 1024px) {
+    .submit-button,
+    .reset-button {
+        width: 85%;
+    }
+
+    .reset-button {
+        margin-top: 20px;
+        margin-left: 0;
+    }
   }

@@ -39,15 +39,15 @@
         #basicTable 
         nzShowSizeChanger
         [nzData]="listOfData"
-        [nzScroll]="{ x: '800px' }"
+        [nzScroll]="{ x: '500px' }"
         (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
       >
         <thead>
           <tr>
-            <th [nzWidth]="'60px'" [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
-            <th [nzWidth]="'80px'">#ID</th>
-            <th>Nom</th>
-            <th *ngIf="canEditSpeciality || canDeleteSpeciality" [nzWidth]="'150px'">Actions</th>
+            <th [nzWidth]="'40px'" [nzChecked]="checked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="onAllChecked($event)"></th>
+            <th [nzWidth]="'60px'">#ID</th>
+            <th [nzWidth]="'40%'">Nom</th>
+            <th [nzWidth]="window.innerWidth>768? '25%':'30%'" *ngIf="canEditSpeciality || canDeleteSpeciality" [nzWidth]="'150px'">Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -73,7 +73,7 @@
       [(nzVisible)]="isVisible" 
       nzTitle="Ajout de spécialité" 
       (nzOnCancel)="handleCancel()"
-      [nzWidth]="'90vw'"
+      [nzWidth]="window.innerWidth>1024? '40%': window.innerWidth>768 && window.innerWidth<1024? '80%':'90%'"
       [nzBodyStyle]="{ maxWidth: '600px', margin: '0 auto' }"
     >
       <ng-container *nzModalContent>
@@ -91,16 +91,16 @@
   
         <!-- Formulaire de création -->
         <form *ngIf="!isToAddSpecialityToHospital" [formGroup]="specialityForm" (ngSubmit)="onSubmit()">
-          <nz-form-item>
-            <nz-form-label [nzXs]="24" [nzSm]="6" nzRequired>Nom</nz-form-label>
-            <nz-form-control [nzXs]="24" [nzSm]="18" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+          <nz-form-item class="labelName">
+            <nz-form-label [nzXs]="24" [nzSm]="7" nzRequired>Nom</nz-form-label>
+            <nz-form-control [nzXs]="24" [nzSm]="14" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
               <input nz-input formControlName="name" placeholder="Nom de la spécialité">
             </nz-form-control>
           </nz-form-item>
   
           <nz-form-item>
-            <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzSm]="{ span: 18, offset: 6 }">
-              <div class="flex flex-wrap gap-2">
+            <nz-form-control [nzXs]="{ span: 24, offset: 0 }" [nzMd]="{ span: 18, offset: 8 }" [nzSm]="{ span: 18, offset: 8 }">
+              <div>
                 <button nz-button nzType="primary" [disabled]="specialityForm.invalid">Soumettre</button>
                 <button nz-button (click)="resetForm($event)">Réinitialiser</button>
               </div>

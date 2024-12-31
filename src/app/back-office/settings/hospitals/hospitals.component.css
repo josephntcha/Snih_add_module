@@ -168,3 +168,7 @@
   color: white;
   background-color: red;
 }
+.hospital-form nz-form-label {
+  text-align: left !important;
+
+}

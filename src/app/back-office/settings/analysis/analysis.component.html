@@ -1,64 +1,113 @@
-<!-- <div class="search-box" *ngIf="canViewList">
-    <nz-input-group nzSearch [nzAddOnAfter]="suffixIconButton">
-        <input type="text" nz-input placeholder="Recherche..." />
-    </nz-input-group>
-    <ng-template #suffixIconButton>
-        <button nz-button nzType="primary" nzSearch><span nz-icon nzType="search"></span></button>
-    </ng-template>
-</div> -->
-<div class="table-operations">
-    <button *ngIf="canCreateConstant"  (click)="showModal()" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un type d'analyse</button>
-    <button *ngIf="canViewList"  nz-button (click)="exportToFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
-</div>
- <div  class="selected-items" *ngIf="canViewList">
-    {{ setOfCheckedId.size }} éléments sélectionnés
-    <a (click)="refreshCheckedStatus()">Rafraîchir</a>
-</div>
-<nz-table 
-    #basicTable 
-    nzShowSizeChanger
-    [nzData]="analysis"
-    *ngIf="canViewList">
-    <thead>
-        <tr>
-            <th [nzChecked]="checked" 
-            [nzIndeterminate]="indeterminate" 
-            (nzCheckedChange)="onAllChecked($event)"></th>
-            <th>#ID</th>
-            <th>Nom</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let data of basicTable.data">
-            <td [nzChecked]="setOfCheckedId.has(data.id)" (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+<div class="app-container">
+    <!-- Boutons d'opération -->
+    <div class="operation-buttons">
+      <div class="button-group">
+        <button *ngIf="canCreateConstant"
+                (click)="showModal()"
+                nz-button
+                nzType="primary"
+                class="operation-btn">
+          <i nz-icon nzType="plus"></i>
+          <span class="btn-text">Créer un type d'analyse</span>
+        </button>
+        <button *ngIf="canViewList"
+                nz-button
+                (click)="exportToFile()"
+                class="operation-btn">
+          <i nz-icon nzType="export"></i>
+          <span class="btn-text">Exporter en Excel</span>
+        </button>
+      </div>
+    </div>
+  
+    <!-- Info éléments sélectionnés -->
+    <div class="selected-items" *ngIf="canViewList">
+      <span>{{ setOfCheckedId.size }} éléments sélectionnés</span>
+      <a (click)="refreshCheckedStatus()" class="refresh-link">Rafraîchir</a>
+    </div>
+  
+    <!-- Table -->
+    <div class="table-container" *ngIf="canViewList">
+      <nz-table 
+        #basicTable
+        nzShowSizeChanger
+        [nzData]="analysis"
+        [nzScroll]="{ x: '800px' }"
+        class="responsive-table">
+        <thead>
+          <tr>
+            <th nzWidth="60px" 
+                [nzChecked]="checked"
+                [nzIndeterminate]="indeterminate"
+                (nzCheckedChange)="onAllChecked($event)">
+            </th>
+            <th nzWidth="80px">#ID</th>
+            <th nzWidth="200px">Nom</th>
+            <th nzWidth="120px">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td [nzChecked]="setOfCheckedId.has(data.id)" 
+                (nzCheckedChange)="onItemChecked(data.id, $event)">
+            </td>
             <td>{{ data.id }}</td>
             <td>{{ data.name }}</td>
-            <td>
-                <a *ngIf="canEditConstant" (click)="editHospital(data)">Editer</a>
-                <nz-divider  nzType="vertical"></nz-divider>
+            <td class="action-column">
+              <a *ngIf="canEditConstant" 
+                 (click)="editHospital(data)" 
+                 class="edit-link">
+                Editer
+              </a>
             </td>
-        </tr>
-    </tbody>
-</nz-table>
-
-
-
- <nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout d'un type d'analyse" (nzOnCancel)="handleCancel()">
-    <ng-container *nzModalContent>
-        <form [formGroup]="analysisForm" (ngSubmit)="onSubmit()">
-            <nz-form-item>
-                <nz-form-label nzSpan="8" nzRequired >Nom de l'analyse</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="name" placeholder="Entrez le nom de l'analyse">
-                </nz-form-control>
-            </nz-form-item>
-            <nz-form-item>
-                <nz-form-control nzOffset="7" nzSpan="12">
-                    <button nz-button nzType="primary" [disabled]="analysisForm.invalid">Soumettre</button>
-                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
-                </nz-form-control>
-            </nz-form-item>
+          </tr>
+        </tbody>
+      </nz-table>
+    </div>
+  
+    <!-- Modal -->
+    <nz-modal 
+      nzFooter=" "
+      [(nzVisible)]="isVisible"
+      nzTitle="Ajout d'un type d'analyse"
+      (nzOnCancel)="handleCancel()"
+      [nzWidth]="window.innerWidth>1024? '40%': window.innerWidth>768 && window.innerWidth<1024? '80%':'90%'"
+      class="responsive-modal">
+      <ng-container *nzModalContent>
+        <form [formGroup]="analysisForm" 
+              (ngSubmit)="onSubmit()"
+              class="responsive-form">
+          <nz-form-item>
+            <nz-form-label [nzXs]="24" 
+                          [nzSm]="7" 
+                          nzRequired>
+              Nom de l'analyse
+            </nz-form-label>
+            <nz-form-control [nzXs]="24" 
+                            [nzSm]="14"
+                            nzHasFeedback
+                            nzErrorTip="Ce champ est obligatoire">
+              <input nz-input 
+                     formControlName="name"
+                     placeholder="Entrez le nom de l'analyse">
+            </nz-form-control>
+          </nz-form-item>
+          <nz-form-item>
+            <nz-form-control [nzSm]="{offset: 7, span: 14}" [nzXs]="{offset: 0, span: 24}" class="form-buttons">
+              <div class="flex flex-wrap gap-2">
+                <button nz-button class="submit-button"
+                    nzType="primary"
+                    [disabled]="analysisForm.invalid">
+                        Soumettre
+                </button>
+                <button nz-button class="reset-button" 
+                  (click)="resetForm($event)">
+                  Réinitialiser
+                </button>
+              </div>
+            </nz-form-control>
+          </nz-form-item>
         </form>
-    </ng-container>  
-</nz-modal> 
+      </ng-container>
+    </nz-modal>
+  </div>
