@@ -10,18 +10,19 @@
     #basicTable 
     nzShowSizeChanger
     [nzData]="listOfData"
+    [nzScroll]="{x: '500px'}"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
 >
     <thead>
         <tr>
-            <th 
+            <th nzWidth="30px"
                 [nzChecked]="checked" 
                 [nzIndeterminate]="indeterminate" 
                 (nzCheckedChange)="onAllChecked($event)"
             ></th>
-            <th>#ID</th>
-            <th>Nom</th>
-            <th *ngIf="canEditBuilding || canDeleteBuilding">Actions</th>
+            <th  nzWidth="60px">#ID</th>
+            <th  nzWidth="40%">Nom</th>
+            <th  nzWidth="30%" *ngIf="canEditBuilding || canDeleteBuilding">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -41,20 +42,20 @@
 </nz-table>
 
 
-<nz-modal nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout de bâtiment" (nzOnCancel)="handleCancel()">
+<nz-modal [nzWidth]="window.innerWidth > 768 ? '40%' : '90%'" nzFooter=" " [(nzVisible)]="isVisible" nzTitle="Ajout de bâtiment" (nzOnCancel)="handleCancel()">
     <ng-container *nzModalContent>
         <form [formGroup]="buildingForm" (ngSubmit)="onSubmit()">
             <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Nom</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Nom</nz-form-label>
+                <nz-form-control [nzSm]="12" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
                     <input nz-input formControlName="name" placeholder="Nom du bâtiment">
                 </nz-form-control>
             </nz-form-item>
     
             <nz-form-item>
-                <nz-form-control nzOffset="7" nzSpan="12">
-                    <button nz-button nzType="primary" [disabled]="buildingForm.invalid">Soumettre</button>
-                    <button nz-button (click)="resetForm($event)">Réinitialiser</button>
+                <nz-form-control [nzSm]="{offset: 7, span: 14}" [nzXs]="{offset: 0, span: 24}" class="form-buttons">
+                    <button nz-button nzType="primary" [disabled]="buildingForm.invalid" class="submit-button">Soumettre</button>
+                    <button nz-button (click)="resetForm($event)" class="reset-button">Réinitialiser</button>
                 </nz-form-control>
             </nz-form-item>
         </form>
