@@ -40,6 +40,8 @@ export class PermissionsComponent implements OnInit{
   list: TransferItem[] = [];
   selectedPermissions: number[] = [];
 
+  window = window; //La taille de la fenêtre
+
 
   constructor(private apiService: ApiServiceService, private router: Router, private fb: FormBuilder, private authService: AuthService, private fileExport: FileExportService){
     this.initializeForms();
@@ -270,7 +272,7 @@ export class PermissionsComponent implements OnInit{
       next: (response) => {
         if (response.success) {
           this.showSuccessMessage('ajoutées');
-          this.isVisible = false;
+          this.handleCancel();
           this.getPermissions();
         } else {
           this.showErrorMessage(response.errorMessage);
@@ -293,7 +295,7 @@ export class PermissionsComponent implements OnInit{
       next: (response) => {
         if (response.success) {
           this.showSuccessMessage('retirées');
-          this.isVisible = false;
+          this.handleCancel();
           this.getPermissions();
         } else {
           this.showErrorMessage(response.errorMessage);

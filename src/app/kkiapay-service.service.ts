@@ -9,7 +9,7 @@ declare const Kkiapay: any;
 })
 export class KkiapayService {
 
-  private baseUrl = 'http://192.168.1.14:8080/api'; // Ajustez selon votre configuration
+  private baseUrl = 'http://localhost:8080/api'; // Ajustez selon votre configuration
   private paymentSuccessSubject = new Subject<any>();
 
   constructor(private http: HttpClient) {

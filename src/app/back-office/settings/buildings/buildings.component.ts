@@ -30,6 +30,8 @@ export class BuildingsComponent implements OnInit{
   buildingForm!: FormGroup;
   building: any;
 
+  window = window;
+
 
   constructor(private apiService: ApiServiceService, 
               private router: Router, 

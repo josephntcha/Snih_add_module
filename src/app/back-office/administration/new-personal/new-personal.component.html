@@ -1,160 +1,163 @@
-<div class="center">
-    <button nz-button nzType="primary" (click)="addDoctorToHospital()">
-        @if(isToAddDoctorToHospital){
-            <span>Créer un médecin</span>
-        }@else {
-            <span>Ajouter un docteur à un hôpital</span>
-        }
-    </button>
-</div>
+<div class="form-container">
+    <div class="action-button-container">
+        <button nz-button nzType="primary" (click)="addDoctorToHospital()" class="main-action-button">
+            @if(isToAddDoctorToHospital){
+                <span>Créer un médecin</span>
+            }@else {
+                <span>Ajouter un docteur à un hôpital</span>
+            }
+        </button>
+    </div>
 
-@if (!isToAddDoctorToHospital) {
-    <nz-card>
-        <form class="adminForm" [formGroup]="staffForm" (ngSubmit)="onSubmitAdmin()">
-    
-            <nz-form-item>
-                <nz-form-label [nzSpan]="7" nzRequired>Type de personnel</nz-form-label>
-                <nz-form-control [nzSpan]="12" [nzHasFeedback] nzErrorTip="Ce champ est obligatoire">
-                    <nz-select formControlName="userType" (nzOpenChange)="chooseUserType()" nzPlaceHolder="Choisir le type de compte utilisateur">
-                        @for (type of userTypes; track type) {
-                            <nz-option [nzLabel]="type" [nzValue]="type"></nz-option>
-                        }q
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-            
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Nom</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="lastName" placeholder="Entrez le nom">
-                </nz-form-control>
-            </nz-form-item>
-    
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Prénom</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="firstName" placeholder="Entrez le prénom">
-                </nz-form-control>
-            </nz-form-item>
-    
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Sexe</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <nz-select formControlName="sex" nzPlaceHolder="Choisir le genre">
-                        <nz-option [nzLabel]="'Homme'" [nzValue]="'MALE'"></nz-option>
-                        <nz-option [nzLabel]="'Femme'" [nzValue]="'FEMALE'"></nz-option>
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-    
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Adresse mail</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="email" placeholder="Entrez votre adresse mail">
-                </nz-form-control>
-            </nz-form-item>
-    
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Téléphone</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="phone" placeholder="Entrez votre numéro de téléphone">
-                </nz-form-control>
-            </nz-form-item>
-    
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Spécialité</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <nz-select formControlName="speciality" nzPlaceHolder="Selectionnez la spécialité">
-                        @for (sp of specialities; track sp.id) {
-                            <nz-option [nzLabel]="sp.name" [nzValue]="sp"></nz-option>
-                        }
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-            
-            @if (isStaff) {
+    @if (!isToAddDoctorToHospital) {
+        <nz-card class="form-card">
+            <form class="admin-form" [formGroup]="staffForm" (ngSubmit)="onSubmitAdmin()">
                 <nz-form-item>
-                    <nz-form-label [nzSpan]="7" nzRequired>Hôpital</nz-form-label>
-                    <nz-form-control [nzSpan]="12" [nzHasFeedback] nzErrorTip="Choisir un hôpital">
-                        <nz-select formControlName="hospital" nzPlaceHolder="Choisir un hôpital">
-                            @for (hosp of hospitals; track hosp.id) {
+                    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Type de personnel</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" [nzHasFeedback] nzErrorTip="Ce champ est obligatoire">
+                        <nz-select formControlName="userType" (nzOpenChange)="chooseUserType()" nzPlaceHolder="Choisir le type de compte utilisateur">
+                            @for (type of userTypes; track type) {
+                                <nz-option [nzLabel]="type" [nzValue]="type"></nz-option>
+                            }
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+                
+                <nz-form-item>
+                    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Nom</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                        <input nz-input formControlName="lastName" placeholder="Entrez le nom">
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Prénom</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                        <input nz-input formControlName="firstName" placeholder="Entrez le prénom">
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Sexe</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                        <nz-select formControlName="sex" nzPlaceHolder="Choisir le genre">
+                            <nz-option [nzLabel]="'Homme'" [nzValue]="'MALE'"></nz-option>
+                            <nz-option [nzLabel]="'Femme'" [nzValue]="'FEMALE'"></nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Adresse mail</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                        <input nz-input formControlName="email" placeholder="Entrez votre adresse mail">
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Téléphone</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                        <input nz-input formControlName="phone" placeholder="Entrez votre numéro de téléphone">
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Spécialité</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                        <nz-select formControlName="speciality" nzPlaceHolder="Selectionnez la spécialité">
+                            @for (sp of specialities; track sp.id) {
+                                <nz-option [nzLabel]="sp.name" [nzValue]="sp"></nz-option>
+                            }
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+                
+                @if (isStaff) {
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Hôpital</nz-form-label>
+                        <nz-form-control [nzSm]="14" [nzXs]="24" [nzHasFeedback] nzErrorTip="Choisir un hôpital">
+                            <nz-select formControlName="hospital" nzPlaceHolder="Choisir un hôpital">
+                                @for (hosp of hospitals; track hosp.id) {
+                                    <nz-option [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
+                                }
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+
+                    <nz-form-item>
+                        <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Roles</nz-form-label>
+                        <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                            <nz-select nzMode="tags" formControlName="userRoles" nzPlaceHolder="Selectionnez le droits">
+                                @for (role of roles; track role.id) {
+                                    <nz-option [nzLabel]="role.name" [nzValue]="role"></nz-option>
+                                }
+                            </nz-select>
+                        </nz-form-control>
+                    </nz-form-item>
+                }
+
+                <nz-form-item>
+                    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Nom d'utilisateur</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                        <input nz-input formControlName="username" placeholder="Entrez le nom d'utilisateur">
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Mot de passe</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                        <input type="password" nz-input formControlName="password" placeholder="Entrez le mot de passe">
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item>
+                    <nz-form-control [nzSm]="{offset: 7, span: 14}" [nzXs]="{offset: 0, span: 24}" class="form-buttons">
+                        <button nz-button nzType="primary" [disabled]="staffForm.invalid" class="submit-button">Créer</button>
+                        <button nz-button (click)="resetAdminForm($event)" class="reset-button">Réinitialiser</button>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
+        </nz-card>
+    }@else{
+        <nz-card class="form-card">
+            <div class="card-title">
+                @if (canAddDoctorToAnotherHospital) {
+                    <span>Ajout d'un médecin dans un hôpital</span>
+                }@else {
+                    <span>Ajout d'un médecin dans votre hôpital</span>
+                }
+            </div>
+
+            <form [formGroup]="addDoctorToHospitalform" (ngSubmit)="addDoctor(null)" class="doctor-form">
+                <nz-form-item>
+                    <nz-form-label [nzSm]="7" [nzXs]="24" nzRequired>Selectionner le médecin</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
+                        <nz-select formControlName="doctor" nzPlaceHolder="Veuillez selectionner le médecin">
+                            @for (doc of doctors; track doc) {
+                                <nz-option [nzLabel]="doc.firstName + doc.lastName" [nzValue]="doc.id"></nz-option>
+                            }
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item *ngIf="canAddDoctorToAnotherHospital">
+                    <nz-form-label [nzSm]="7" [nzXs]="24">Selectionner l'hôpital</nz-form-label>
+                    <nz-form-control [nzSm]="14" [nzXs]="24" nzHasFeedback>
+                        <nz-select formControlName="hospital" nzPlaceHolder="Veuillez selectionner l'hôpital">
+                            @for (hosp of hospitals; track hosp) {
                                 <nz-option [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
                             }
                         </nz-select>
                     </nz-form-control>
                 </nz-form-item>
-    
+
                 <nz-form-item>
-                    <nz-form-label nzSpan="7" nzRequired>Roles</nz-form-label>
-                    <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                        <nz-select nzMode="tags" formControlName="userRoles" nzPlaceHolder="Selectionnez le droits">
-                            @for (role of roles; track role.id) {
-                                <nz-option [nzLabel]="role.name" [nzValue]="role" ></nz-option>
-                            }
-                        </nz-select>
+                    <nz-form-control [nzSm]="{offset: 7, span: 14}" [nzXs]="{offset: 0, span: 24}" class="form-buttons">
+                        <button nz-button nzType="primary" [disabled]="addDoctorToHospitalform.invalid" class="submit-button">Soumettre</button>
+                        <button nz-button (click)="resetAddForm($event)" class="reset-button">Réinitialiser</button>
                     </nz-form-control>
                 </nz-form-item>
-            }
-    
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Nom d'utilisateur</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input nz-input formControlName="username" placeholder="Entrez le nom d'utilisateur">
-                </nz-form-control>
-            </nz-form-item>
-    
-            <nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Mot de passe</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <input type="password" nz-input formControlName="password" placeholder="Entrez le mot de passe">
-                </nz-form-control>
-            </nz-form-item>
-    
-            <nz-form-item>
-                <nz-form-control nzOffset="9" nzSpan="12">
-                    <button nz-button nzType="primary" [disabled]="staffForm.invalid">Créer</button>
-                    <button nz-button (click)="resetAdminForm($event)">Réinitialiser</button>
-                </nz-form-control>
-            </nz-form-item>
-        </form>
-    </nz-card>
-}@else{
-    <nz-card>
-        @if (canAddDoctorToAnotherHospital) {
-            <span>Ajout d'un médecin dans un hôpital </span>
-        }@else {
-            <span>Ajout d'un médecin dans votre hôpital </span>
-        }
-        <form [formGroup]="addDoctorToHospitalform" (ngSubmit)="addDoctor(null)">
-            <br><nz-form-item>
-                <nz-form-label nzSpan="7" nzRequired>Selectionner le médecin</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback nzErrorTip="Ce champ est obligatoire">
-                    <nz-select formControlName="doctor" nzPlaceHolder="Veuillez selectionner le médecin">
-                        @for (doc of doctors; track doc) {
-                            <nz-option [nzLabel]="doc.firstName + doc.lastName" [nzValue]="doc.id"></nz-option>
-                        }
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-
-            <nz-form-item *ngIf="canAddDoctorToAnotherHospital">
-                <nz-form-label nzSpan="7">Selectionner l'hôpital</nz-form-label>
-                <nz-form-control nzSpan="12" nzHasFeedback >
-                    <nz-select formControlName="hospital" nzPlaceHolder="Veuillez selectionner l'hôpital">
-                        @for (hosp of hospitals; track hosp) {
-                            <nz-option [nzLabel]="hosp.name" [nzValue]="hosp.id"></nz-option>
-                        }
-                    </nz-select>
-                </nz-form-control>
-            </nz-form-item>
-
-            <nz-form-item>
-                <nz-form-control nzOffset="9" nzSpan="12">
-                    <button nz-button nzType="primary" [disabled]="addDoctorToHospitalform.invalid">Soumettre</button>
-                    <button nz-button (click)="resetAddForm($event)">Réinitialiser</button>
-                </nz-form-control>
-            </nz-form-item>
-        </form>
-    </nz-card>
-}
-
+            </form>
+        </nz-card>
+    }
+</div>

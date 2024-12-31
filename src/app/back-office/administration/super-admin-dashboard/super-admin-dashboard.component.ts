@@ -15,11 +15,11 @@ export class SuperAdminDashboardComponent implements OnInit{
 
   ngOnInit(): void {
     this.apiService.getDataHospitals().subscribe(response=>{
-      this.hospitals=response.length;
+      this.hospitals=response;
     });
 
     this.apiService.getUsers().subscribe(response=>{
-      this.users=response.length;
+      this.users=response;
     });
   }
 

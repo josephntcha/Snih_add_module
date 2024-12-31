@@ -1,28 +1,130 @@
 .selected-items {
-    margin-bottom: 16px;
-    padding: 8px;
-    background-color: #e6f7ff;
-    border: 1px solid #91d5ff;
-    border-radius: 4px;
+  margin-bottom: 16px;
+  padding: 8px;
+  background-color: #e6f7ff;
+  border: 1px solid #91d5ff;
+  border-radius: 4px;
+}
+
+.search-box {
+  margin-bottom: 16px;
+  width: 100%;
+}
+
+.table-operations {
+  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.table-operations button {
+  white-space: nowrap;
+}
+
+::ng-deep th {
+  font-weight: bolder !important;
+}
+
+nz-form-item button {
+  margin-left: 8px;
+}
+
+
+::ng-deep .ant-transfer {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  justify-content: center;
+}
+
+::ng-deep .ant-transfer-list {
+  min-width: 250px;
+  max-width: 400px;
+}
+
+::ng-deep .ant-transfer-operation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 !important;
+}
+
+
+@media screen and (max-width: 768px) {
+  ::ng-deep .ant-modal {
+    max-width: 95% !important;
+    margin: 10px auto;
   }
 
-  .search-box {
+  ::ng-deep .ant-modal-body {
+    padding: 12px;
+  }
+
+  ::ng-deep nz-form-item {
+    flex-direction: column;
+  }
+
+  ::ng-deep nz-form-label {
+    text-align: left !important;
+    padding: 0 0 8px 0;
+  }
+
+  ::ng-deep .ant-form-item-control {
+    width: 100% !important;
+  }
+
+  ::ng-deep .ant-transfer {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  ::ng-deep .ant-transfer-list {
+    width: 100% !important;
+    max-width: none;
     margin-bottom: 16px;
   }
-  
+
+  ::ng-deep .ant-transfer-operation {
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+    margin: 8px 0 !important;
+  }
+
   .table-operations {
-    margin-bottom: 16px;
+    flex-direction: column;
+    align-items: stretch;
   }
-  
+
   .table-operations button {
-    margin-right: 8px;
+    width: 100%;
   }
-  
-  ::ng-deep th {
-    font-weight: bolder !important;
+}
+
+/* Optimisations pour les tablettes */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  ::ng-deep .ant-modal {
+    max-width: 90% !important;
   }
-  
-  nz-form-item button {
-    margin-left: 8px;
+
+  ::ng-deep .ant-transfer-list {
+    min-width: 200px;
   }
-    
+
+  ::ng-deep .ant-transfer-operation {
+    padding: 0 8px;
+  }
+}
+
+/* Ajustements pour les grands écrans */
+@media screen and (min-width: 1025px) {
+  ::ng-deep .ant-transfer {
+    justify-content: space-around;
+  }
+
+  ::ng-deep .ant-transfer-list {
+    max-width: 350px;
+  }
+}

@@ -9,7 +9,7 @@
 <div class="table-operations">
     <button *ngIf="canCreateUser" routerLink="/back-office/Administration/new-personal" nz-button nzType="primary"><i nz-icon nzType="plus"></i>Créer un utilisateur</button>
     <button *ngIf="canViewList" nz-button (click)="exportFile()"><i nz-icon nzType="export"></i>Exporter en Excel</button>
-    <a *ngIf="canViewList"  class="advanced-filter">Options avancées de filtres  <span class="advanced-filter-icon2" nz-icon nzType="down"></span><span class="advanced-filter-icon" nz-icon nzType="setting"></span> </a>
+    <!-- <a *ngIf="canViewList"  class="advanced-filter">Options avancées de filtres  <span class="advanced-filter-icon2" nz-icon nzType="down"></span><span class="advanced-filter-icon" nz-icon nzType="setting"></span> </a> -->
 </div>
 <div *ngIf="canViewList" class="selected-items">
     {{ setOfCheckedId.size }} éléments selectionnés
@@ -19,18 +19,19 @@
     #rowSelectionTable
     nzShowSizeChanger 
     [nzData]="filteredData"
+    [nzScroll]="{x: '800px'}"
     (nzCurrentPageDataChange)="onCurrentPageDataChange($event)"
 >
     <thead>
         <tr>
-            <th 
+            <th nzWidth="40px"
                 [nzSelections]="listOfSelection"
                 [(nzChecked)]="checked" 
                 [nzIndeterminate]="indeterminate" 
                 (nzCheckedChange)="onAllChecked($event)"
             ></th>
 
-            <th>User name</th>
+            <th>Username</th>
             <th>Name</th>
             <th>Roles</th>
             <th>Email address</th>

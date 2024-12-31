@@ -17,26 +17,26 @@
                     [nzScroll]="{ x: '800px' }">
             <thead>
                 <tr>
-                    <th nzLeft>#ID</th>
+                    <th>#ID</th>
                     <th>Jour</th>
                     <th>Heure Début</th>
                     <th>Heure fin</th>
                     <th>Salle</th>
                     <th>Nb de mois</th>
                     <th>Hopital</th>
-                    <th nzRight>Action</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let availability of availabilities; let i = index">
-                    <td nzLeft>{{ i + 1 }}</td>
+                    <td>{{ i + 1 }}</td>
                     <td>{{ availability.day['name'] }}</td>
                     <td>{{ availability.startTime }}</td>
                     <td>{{ availability.endTime }}</td>
                     <td>{{ availability.room }}</td>
                     <td>{{ availability.period }}</td>
                     <td>{{ availability.hospitalDTO.name }}</td>
-                    <td nzRight>
+                    <td>
                     <button *ngIf="canEditAvailibility" 
                             nz-button 
                             nzType="default" 

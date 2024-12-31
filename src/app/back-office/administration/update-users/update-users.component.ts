@@ -77,7 +77,7 @@ export class UpdateUsersComponent implements OnInit{
     }
   }
 
-  compareFn = (o1: any, o2: any): boolean => (o1 && o2 ? o1.value === o2.value : o1 === o2);
+  compareFn = (o1: Speciality, o2: Speciality): boolean => (o1 && o2 ? o1.id === o2.id : o1 === o2);
 
 
   getHospitals(): void {

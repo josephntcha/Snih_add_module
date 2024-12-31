@@ -30,6 +30,8 @@ export class RoomsComponent implements OnInit{
   isVisible = false;
   room: any
 
+  window = window;
+
 
   constructor(private apiService: ApiServiceService,
               private route: ActivatedRoute,

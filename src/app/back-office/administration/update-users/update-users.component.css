@@ -1,3 +1,118 @@
-nz-form-item button {
-    margin-left: 8px;
+.form-container {
+  padding: 16px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  height: 52em;
+}
+
+.action-button-container {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.main-action-button {
+  min-width: 200px;
+}
+
+.form-card {
+  margin-bottom: 24px;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.admin-form,
+.doctor-form {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.doctor-form {
+  height: 50vh;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.submit-button,
+.reset-button {
+  min-width: 120px;
+}
+
+.reset-button {
+  margin-left: 20px;
+}
+
+/* Media Queries */
+@media (max-width: 575px) {
+  .form-container {
+      padding: 8px;
+      height: 100%;
   }
+
+  .form-buttons {
+      flex-direction: column;
+      gap: 8px;
+  }
+
+  .submit-button,
+  .reset-button {
+      width: 100%;
+  }
+
+  .reset-button {
+      margin-top: 10px;
+      margin-left: 0;
+  }
+
+  .main-action-button {
+      width: 100%;
+  }
+
+  :host ::ng-deep {
+      .ant-form-item-label {
+          padding-bottom: 8px;
+      }
+  }
+}
+
+@media (max-width: 768px) {
+  .reset-button {
+      margin-top: 10px;
+      margin-left: 0;
+  }
+
+  .form-container {
+    height: 100%;
+  }
+}
+
+/* Styles NG-ZORRO spécifiques */
+:host ::ng-deep {
+  .ant-card-body {
+      padding: 24px 16px;
+  }
+
+  .ant-form-item:last-child {
+      margin-bottom: 0;
+  }
+
+  .ant-select {
+      width: 100%;
+  }
+
+  /* Ajustements pour les petits écrans */
+  @media (max-width: 575px) {
+      .ant-card-body {
+          padding: 16px 12px;
+      }
+  }
+}
