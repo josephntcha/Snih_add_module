@@ -46,7 +46,7 @@
 
 <nz-modal
     nzFooter=" "
-    [nzWidth]="(window.innerWidth > 768) ? '70%' : '90%'"
+    [nzWidth]="window.innerWidth>1024 ? '70%' : window.innerWidth > 768 && window.innerWidth < 1024 ? '90%' : '90%'"
     [(nzVisible)]="isVisible"
     [nzTitle]="isRoleForm ? 'Gérer les permissions de rôle' : 'Gérer les permissions d\'utilisateur'"
     (nzOnCancel)="handleCancel()"
